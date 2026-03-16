@@ -36,14 +36,14 @@ export function Layout() {
         </Link>
         <nav className="header-nav-center">
           <div className="nav-item-with-dropdown">
-            <NavLink to="/home" className="nav-link">
+            <NavLink to="/" className="nav-link">
               {t('navHome')}
             </NavLink>
             <div className="nav-submenu" role="menu">
               {GALLERY_TYPES.map((type) => (
                 <Link
                   key={type}
-                  to={`/home#${type}`}
+                  to={`#${type}`}
                   className="nav-submenu-link"
                   role="menuitem"
                 >
@@ -98,14 +98,14 @@ export function Layout() {
             </button>
             <nav className="drawer-nav">
               <div className="drawer-gallery-block">
-                <NavLink to="/home" className="drawer-link" onClick={() => setDrawerOpen(false)}>
+                <NavLink to="/" className="drawer-link" onClick={() => setDrawerOpen(false)}>
                   {t('navHome')}
                 </NavLink>
                 <div className="drawer-submenu">
                   {GALLERY_TYPES.map((type) => (
                     <Link
                       key={type}
-                      to={`/home#${type}`}
+                      to={`#${type}`}
                       className="drawer-submenu-link"
                       onClick={() => setDrawerOpen(false)}
                     >
