@@ -1000,6 +1000,16 @@ body {
   margin: 0;
 }
 
+.about-bio-quote {
+  margin: 1rem 0;
+  padding: 0.75rem 0 0.75rem 1.25rem;
+  border-left: 3px solid var(--border);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  font-style: italic;
+}
+
 .about-curriculum-contact {
   margin: 0 0 1.25rem;
   font-size: 0.95rem;

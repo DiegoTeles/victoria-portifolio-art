@@ -70,6 +70,8 @@ export function AboutPage() {
               <p className="page-text">{t('aboutBio1')}</p>
               <p className="page-text">{t('aboutBio2')}</p>
               <p className="page-text">{t('aboutBio3')}</p>
+              <blockquote className="about-bio-quote">{t('aboutBio4')}</blockquote>
+              <p className="page-text">{t('aboutBio5')}</p>
             </>
           )}
           {tab === 'curriculum' && (
