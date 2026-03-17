@@ -44,8 +44,11 @@ export default function handler(req, res) {
   }
 
   const protocol = req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http'
-  const host = req.headers['x-forwarded-host'] || req.headers.host || 'localhost:3000'
-  const origin = `${protocol}://${host}`
+  let host = req.headers['x-forwarded-host'] || req.headers.host || ''
+  if (!host || host.startsWith('localhost') || host.startsWith('127.0.0.1')) {
+    host = process.env.VERCEL_URL ? `${process.env.VERCEL_URL}` : 'www.victoriamaria-art.com'
+  }
+  const origin = host.startsWith('http') ? host.replace(/\/$/, '') : `${protocol}://${host}`
 
   const title = plainText(getText(artwork.title))
   const description = plainText(getText(artwork.description))
@@ -75,16 +78,18 @@ export default function handler(req, res) {
   const ogDesc = description || defaultDesc
 
   const escape = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
+  const ogImageTag = `<meta property="og:image" content="${escape(imageUrl)}" />`
+  const twImageTag = `<meta name="twitter:image" content="${escape(imageUrl)}" />`
   html = html
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${escape(ogTitle)}</title>`)
-    .replace(/<meta name="description" content="[^"]*"\s*\/?>/, `<meta name="description" content="${escape(ogDesc)}" />`)
-    .replace(/<meta property="og:title" content="[^"]*"\s*[^>]*\/?>/, `<meta property="og:title" content="${escape(ogTitle)}" />`)
-    .replace(/<meta property="og:description" content="[^"]*"\s*[^>]*\/?>/, `<meta property="og:description" content="${escape(ogDesc)}" />`)
-    .replace(/<meta property="og:image" content="[^"]*"\s*[^>]*\/?>/, `<meta property="og:image" content="${escape(imageUrl)}" />`)
-    .replace(/<meta property="og:url" content="[^"]*"\s*[^>]*\/?>/, `<meta property="og:url" content="${escape(fullUrl)}" />`)
-    .replace(/<meta name="twitter:title" content="[^"]*"\s*[^>]*\/?>/, `<meta name="twitter:title" content="${escape(ogTitle)}" />`)
-    .replace(/<meta name="twitter:description" content="[^"]*"\s*[^>]*\/?>/, `<meta name="twitter:description" content="${escape(ogDesc)}" />`)
-    .replace(/<meta name="twitter:image" content="[^"]*"\s*[^>]*\/?>/, `<meta name="twitter:image" content="${escape(imageUrl)}" />`)
+    .replace(/<meta name="description" content="[^"]*"[^>]*>/, `<meta name="description" content="${escape(ogDesc)}" />`)
+    .replace(/<meta property="og:title" content="[^"]*"[^>]*>/, `<meta property="og:title" content="${escape(ogTitle)}" />`)
+    .replace(/<meta property="og:description" content="[^"]*"[^>]*>/, `<meta property="og:description" content="${escape(ogDesc)}" />`)
+    .replace(/<meta property="og:image" content="[^"]*"[^>]*>/, ogImageTag)
+    .replace(/<meta property="og:url" content="[^"]*"[^>]*>/, `<meta property="og:url" content="${escape(fullUrl)}" />`)
+    .replace(/<meta name="twitter:title" content="[^"]*"[^>]*>/, `<meta name="twitter:title" content="${escape(ogTitle)}" />`)
+    .replace(/<meta name="twitter:description" content="[^"]*"[^>]*>/, `<meta name="twitter:description" content="${escape(ogDesc)}" />`)
+    .replace(/<meta name="twitter:image" content="[^"]*"[^>]*>/, twImageTag)
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8')
   res.setHeader('Cache-Control', 'public, max-age=3600')
