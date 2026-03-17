@@ -39,6 +39,30 @@ function buildCells(artworks: Artwork[]): Cell[] {
   return cells
 }
 
+function findArtworkPageAndIndex(
+  allCells: Cell[],
+  artworkId: string,
+  pageSize: number
+): { page: number; indexInPage: number } | null {
+  let cellIndex = 0
+  for (const cell of allCells) {
+    const artworksInCell = cell.type === 'single' ? [cell.artwork] : cell.artworks
+    const idx = artworksInCell.findIndex((a) => a.id === artworkId)
+    if (idx !== -1) {
+      const page = Math.floor(cellIndex / pageSize) + 1
+      const pageStart = (page - 1) * pageSize
+      const pageCells = allCells.slice(pageStart, pageStart + pageSize)
+      const pageArtworksList = pageCells.flatMap((c) =>
+        c.type === 'single' ? [c.artwork] : c.artworks
+      )
+      const indexInPage = pageArtworksList.findIndex((a) => a.id === artworkId)
+      return { page, indexInPage }
+    }
+    cellIndex += 1
+  }
+  return null
+}
+
 type GalleryProps = { viewMode: ViewMode; typeFilter?: GalleryFilterType }
 
 export function Gallery({ viewMode, typeFilter }: GalleryProps) {
@@ -82,10 +106,33 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
       setSearchParams((prev) => {
         const next = new URLSearchParams(prev)
         next.set('page', '1')
+        next.delete('image')
         return next
       })
     }
   }, [typeFilter, setSearchParams])
+
+  const imageParam = searchParams.get('image')
+  const imageTarget = useMemo(
+    () =>
+      imageParam && allCells.length > 0
+        ? findArtworkPageAndIndex(allCells, imageParam, PAGE_SIZE)
+        : null,
+    [imageParam, allCells]
+  )
+
+  useEffect(() => {
+    if (!imageTarget) return
+    if (currentPage !== imageTarget.page) {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev)
+        next.set('page', String(imageTarget.page))
+        return next
+      })
+      return
+    }
+    setLightboxIndex(imageTarget.indexInPage)
+  }, [imageTarget, currentPage, setSearchParams])
 
   const cells = useMemo(
     () =>
@@ -114,8 +161,26 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
   }
 
   let indexCounter = 0
-  const openLightbox = (index: number) => setLightboxIndex(index)
-  const closeLightbox = () => setLightboxIndex(null)
+  const openLightbox = (index: number) => {
+    const id = pageArtworks[index]?.id
+    setLightboxIndex(index)
+    if (id) {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev)
+        next.set('page', String(currentPage))
+        next.set('image', id)
+        return next
+      })
+    }
+  }
+  const closeLightbox = () => {
+    setLightboxIndex(null)
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev)
+      next.delete('image')
+      return next
+    })
+  }
 
   return (
     <section id="gallery" className="gallery" aria-label="Galeria">
