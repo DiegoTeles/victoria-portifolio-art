@@ -1,6 +1,8 @@
+import { useRef, useCallback } from 'react'
 import type { Artwork } from '../data/artworks'
 import type { Locale } from '../data/artworks'
 import { formatCaptionText, plainCaptionText } from '../utils/formatCaptionText'
+import { captureVideoPoster } from '../utils/videoPoster'
 import { ArtworkInfoIcon } from './ArtworkInfoIcon'
 
 type Props = {
@@ -13,6 +15,12 @@ export function ArtworkCard({ artwork, locale, onSelect }: Props) {
   const title = artwork.title[locale]
   const description = artwork.description[locale]
   const alt = plainCaptionText(title || description || '')
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const needPoster = Boolean(artwork.video && !artwork.image)
+  const onVideoLoadedData = useCallback(() => {
+    const el = videoRef.current
+    if (el && needPoster) captureVideoPoster(el)
+  }, [needPoster])
 
   return (
     <figure
@@ -36,12 +44,14 @@ export function ArtworkCard({ artwork, locale, onSelect }: Props) {
           <span className="artwork-image-inner">
             {artwork.video ? (
               <video
+                ref={videoRef}
                 src={artwork.video}
                 poster={artwork.image ?? undefined}
                 muted
                 loop
                 playsInline
-                preload="metadata"
+                preload="auto"
+                onLoadedData={onVideoLoadedData}
                 width={800}
                 height={600}
               />
