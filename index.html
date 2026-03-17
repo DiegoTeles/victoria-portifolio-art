@@ -28,8 +28,9 @@
     <script>
       (function() {
         var base = document.location.origin;
-        var path = document.location.pathname || 'https://www.victoriamaria-art.com';
-        var fullUrl = base + path;
+        var path = document.location.pathname || '/';
+        var hash = document.location.hash || '';
+        var fullUrl = base + path + hash;
         var img = base + '/images/digital-art/digital-art-01.png';
         var ogImg = document.getElementById('og-image');
         var twImg = document.getElementById('twitter-image');

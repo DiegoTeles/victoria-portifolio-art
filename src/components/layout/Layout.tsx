@@ -19,6 +19,17 @@ export function Layout() {
   }, [locale, t])
 
   useEffect(() => {
+    const base = window.location.origin
+    const path = location.pathname || '/'
+    const hash = location.hash || ''
+    const fullUrl = base + path + hash
+    const ogUrl = document.querySelector('meta[property="og:url"]')
+    const canon = document.querySelector('link[rel="canonical"]')
+    if (ogUrl) ogUrl.setAttribute('content', fullUrl)
+    if (canon) canon.setAttribute('href', fullUrl)
+  }, [location.pathname, location.hash])
+
+  useEffect(() => {
     setDrawerOpen(false)
   }, [location.pathname])
 
