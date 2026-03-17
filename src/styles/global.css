@@ -1017,6 +1017,26 @@ body {
   opacity: 0.9;
 }
 
+.about-curriculum-figure {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.about-curriculum-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+.about-curriculum-caption {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+  color: var(--text-muted, var(--text));
+  line-height: 1.4;
+}
+
 .about-curriculum-section {
   margin-bottom: 1.5rem;
 }

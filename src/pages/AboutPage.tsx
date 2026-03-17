@@ -93,6 +93,10 @@ export function AboutPage() {
                   ))}
                 </ul>
               </section>
+              <figure className="about-curriculum-figure">
+                <img src="/images/drawing/drawing-01.png" alt="" className="about-curriculum-image" width={400} height={533} />
+                <figcaption className="about-curriculum-caption">{t('curriculumBookCaption')}</figcaption>
+              </figure>
               <section className="about-curriculum-section">
                 <h2 className="about-curriculum-title">{t('curriculumSectionSkills')}</h2>
                 <ul className="about-curriculum-list">
