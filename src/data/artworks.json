@@ -746,24 +746,6 @@
     ]
   },
   {
-    "id": "drawing-01",
-    "order": 28,
-    "title": {
-      "pt-Br": "Desenho 1",
-      "en": "Drawing 1"
-    },
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/drawing/drawing-01.png",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "drawing"
-    ]
-  },
-  {
     "id": "drawing-02",
     "order": 50,
     "title": {
