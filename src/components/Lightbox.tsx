@@ -5,6 +5,7 @@ import type { Locale } from '../data/artworks'
 import { useLocale } from '../i18n/LocaleContext'
 import { formatArtworkTypes } from '../i18n/formatArtworkTypes'
 import { formatCaptionText, plainCaptionText } from '../utils/formatCaptionText'
+import { ArtworkInfoIcon } from './ArtworkInfoIcon'
 
 type Props = {
   artworks: Artwork[]
@@ -87,22 +88,25 @@ export function Lightbox({
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-        {current.video ? (
-          <video
-            src={current.video}
-            poster={current.image ?? undefined}
-            controls
-            preload="auto"
-            style={{ maxWidth: '100%', maxHeight: '85vh' }}
-          />
-        ) : (
-          <ImageZoom
-            src={current.image!}
-            alt={alt}
-            zoom={250}
-            theme={{ root: 'lightbox-zoom-root', image: 'lightbox-zoom-image' }}
-          />
-        )}
+        <div className="lightbox-media-wrap">
+          {current.video ? (
+            <video
+              src={current.video}
+              poster={current.image ?? undefined}
+              controls
+              preload="auto"
+              style={{ maxWidth: '100%', maxHeight: '85vh' }}
+            />
+          ) : (
+            <ImageZoom
+              src={current.image!}
+              alt={alt}
+              zoom={250}
+              theme={{ root: 'lightbox-zoom-root', image: 'lightbox-zoom-image' }}
+            />
+          )}
+          <ArtworkInfoIcon info={current.info?.[locale] ?? null} />
+        </div>
         {(typeLabel || title || description) && (
           <p className="lightbox-caption">
             {description && formatCaptionText(description)}
