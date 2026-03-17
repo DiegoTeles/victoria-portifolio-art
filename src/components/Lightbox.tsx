@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
+import ImageZoom from 'react-image-zooom'
 import type { Artwork } from '../data/artworks'
 import type { Locale } from '../data/artworks'
 import { useLocale } from '../i18n/LocaleContext'
@@ -86,13 +87,14 @@ export function Lightbox({
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-        <img src={current.image} alt={alt} />
+        <ImageZoom
+          src={current.image}
+          alt={alt}
+          zoom={250}
+          theme={{ root: 'lightbox-zoom-root', image: 'lightbox-zoom-image' }}
+        />
         {(typeLabel || title || description) && (
           <p className="lightbox-caption">
-            {typeLabel && <span>{typeLabel}</span>}
-            {typeLabel && (title || description) && ' — '}
-            {title && <strong>{formatCaptionText(title)}</strong>}
-            {title && description && ' — '}
             {description && formatCaptionText(description)}
           </p>
         )}

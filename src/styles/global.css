@@ -324,7 +324,11 @@ body {
     padding-top: max(1rem, var(--safe-top));
     padding-bottom: 5rem;
   }
-  .lightbox-content img {
+  .lightbox-content img,
+  .lightbox-zoom-image {
+    max-height: 60vh;
+  }
+  .lightbox-zoom-root {
     max-height: 60vh;
   }
   .lightbox-caption {
@@ -1037,7 +1041,20 @@ body {
   justify-content: center;
 }
 
-.lightbox-content img {
+.lightbox-zoom-root {
+  max-width: 90vw;
+  max-height: calc(100vh - 8rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-in;
+}
+
+.lightbox-zoom-root.zoomed {
+  cursor: zoom-out;
+}
+
+.lightbox-zoom-image {
   max-width: 100%;
   max-height: calc(100vh - 8rem);
   width: auto;
