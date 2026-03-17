@@ -68,7 +68,7 @@ export default function handler(req, res) {
     }
   }
 
-  const fullUrl = `${origin}/?image=${encodeURIComponent(imageId)}`
+  const fullUrl = `${origin}/s/${encodeURIComponent(imageId)}`
 
   const siteName = 'Victória Maria — Portfólio'
   const defaultTitle = 'Victória Maria — Portfólio e Currículo'
@@ -92,6 +92,7 @@ export default function handler(req, res) {
     .replace(/<meta name="twitter:image" content="[^"]*"[^>]*>/, twImageTag)
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8')
-  res.setHeader('Cache-Control', 'public, max-age=3600')
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate')
+  res.setHeader('Vary', 'Accept')
   res.status(200).send(html)
 }

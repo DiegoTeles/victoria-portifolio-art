@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect, useRef } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useParams, useNavigate, useLocation } from 'react-router-dom'
 import { artworks as artworksList, type Artwork, type ArtworkType, getLocalized } from '../data/artworks'
 import { useLocale } from '../i18n/LocaleContext'
 
@@ -115,7 +115,11 @@ type GalleryProps = { viewMode: ViewMode; typeFilter?: GalleryFilterType }
 export function Gallery({ viewMode, typeFilter }: GalleryProps) {
   const { locale, t } = useLocale()
   const [searchParams, setSearchParams] = useSearchParams()
+  const params = useParams()
+  const navigate = useNavigate()
+  const location = useLocation()
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const imageIdFromRoute = params.imageId ?? null
 
   const filteredArtworks = useMemo(() => {
     if (!typeFilter) return artworksList
@@ -159,7 +163,7 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
     }
   }, [typeFilter, setSearchParams])
 
-  const imageParam = searchParams.get('image')
+  const imageParam = searchParams.get('image') || imageIdFromRoute
   const imageTarget = useMemo(
     () =>
       imageParam && allCells.length > 0
@@ -225,21 +229,21 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
     const id = pageArtworks[index]?.id
     setLightboxIndex(index)
     if (id) {
-      setSearchParams((prev) => {
-        const next = new URLSearchParams(prev)
-        next.set('page', String(currentPage))
-        next.set('image', id)
-        return next
-      })
+      navigate('/s/' + encodeURIComponent(id), { replace: true })
     }
   }
   const closeLightbox = () => {
     setLightboxIndex(null)
-    setSearchParams((prev) => {
-      const next = new URLSearchParams(prev)
-      next.delete('image')
-      return next
-    })
+    if (location.pathname.startsWith('/s/')) {
+      const base = typeFilter === 'movies' ? '/movies' : '/'
+      navigate(base + '?page=' + String(currentPage), { replace: true })
+    } else {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev)
+        next.delete('image')
+        return next
+      })
+    }
   }
 
   return (
