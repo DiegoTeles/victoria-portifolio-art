@@ -5,6 +5,7 @@ import type { Locale } from '../data/artworks'
 import { useLocale } from '../i18n/LocaleContext'
 import { formatArtworkTypes } from '../i18n/formatArtworkTypes'
 import { formatCaptionText, plainCaptionText } from '../utils/formatCaptionText'
+import { captureVideoPoster } from '../utils/videoPoster'
 import { ArtworkInfoIcon } from './ArtworkInfoIcon'
 
 type Props = {
@@ -91,6 +92,9 @@ export function Lightbox({
         <div className="lightbox-media-wrap">
           {current.video ? (
             <video
+              ref={(el) => {
+                if (el && !current.image) el.addEventListener('loadeddata', () => captureVideoPoster(el), { once: true })
+              }}
               src={current.video}
               poster={current.image ?? undefined}
               controls
