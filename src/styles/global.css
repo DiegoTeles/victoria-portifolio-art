@@ -117,6 +117,83 @@ body {
   object-fit: contain;
 }
 
+.artwork-image-wrap {
+  display: block;
+  width: 100%;
+}
+
+.artwork-image-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.artwork-card .artwork-image-wrap {
+  text-align: center;
+}
+
+.artwork-card .artwork-image-inner {
+  display: inline-block;
+  width: auto;
+  max-width: 100%;
+}
+
+.artwork-card .artwork-image-inner img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+.artwork-info {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  cursor: help;
+  transition: background 0.2s ease;
+}
+
+.artwork-info:hover {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.artwork-info-icon {
+  display: block;
+  flex-shrink: 0;
+}
+
+.artwork-info-tooltip {
+  --rt-color-dark: var(--bg);
+  --rt-color-white: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1002;
+}
+
+.artwork-info-tooltip .artwork-info-tooltip-content {
+  max-width: 280px;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  text-align: left;
+  color: var(--text);
+}
+
+.artwork-info-tooltip .artwork-info-tooltip-content strong {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
 .artwork-card figcaption,
 .artwork-pair figcaption,
 .artwork-group figcaption {
@@ -267,6 +344,9 @@ body {
   .artwork-card img,
   .artwork-pair img,
   .artwork-group img {
+    max-height: 70vh;
+  }
+  .artwork-card .artwork-image-inner img {
     max-height: 70vh;
   }
   .artwork-card figcaption,

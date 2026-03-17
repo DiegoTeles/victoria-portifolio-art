@@ -1,6 +1,7 @@
 import type { Artwork, GroupDisplayType } from '../data/artworks'
 import type { Locale } from '../data/artworks'
 import { formatCaptionText } from '../utils/formatCaptionText'
+import { ArtworkInfoIcon } from './ArtworkInfoIcon'
 
 type Props = {
   artworks: Artwork[]
@@ -70,13 +71,18 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
               }}
               aria-label={alt}
             >
-              <img
-                src={artwork.image}
-                alt={alt}
-                loading="lazy"
-                width={800}
-                height={600}
-              />
+              <span className="artwork-image-wrap">
+                <span className="artwork-image-inner">
+                  <img
+                    src={artwork.image}
+                    alt={alt}
+                    loading="lazy"
+                    width={800}
+                    height={600}
+                  />
+                  <ArtworkInfoIcon info={artwork.info?.[locale] ?? null} />
+                </span>
+              </span>
             </button>
           )
         })}
@@ -124,13 +130,18 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
               }}
               aria-label={alt}
             >
-              <img
-                src={artwork.image}
-                alt={alt}
-                loading="lazy"
-                width={800}
-                height={600}
-              />
+              <span className="artwork-image-wrap">
+                <span className="artwork-image-inner">
+                  <img
+                    src={artwork.image}
+                    alt={alt}
+                    loading="lazy"
+                    width={800}
+                    height={600}
+                  />
+                  <ArtworkInfoIcon info={artwork.info?.[locale] ?? null} />
+                </span>
+              </span>
             </button>
           )
         })}
@@ -161,13 +172,18 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
               }}
               aria-label={alt}
             >
-              <img
-                src={artwork.image}
-                alt={alt}
-                loading="lazy"
-                width={800}
-                height={600}
-              />
+              <span className="artwork-image-wrap">
+                <span className="artwork-image-inner">
+                  <img
+                    src={artwork.image}
+                    alt={alt}
+                    loading="lazy"
+                    width={800}
+                    height={600}
+                  />
+                  <ArtworkInfoIcon info={artwork.info?.[locale] ?? null} />
+                </span>
+              </span>
             </button>
           )
         })}
@@ -204,13 +220,18 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
               }}
               aria-label={alt}
             >
-              <img
-                src={artwork.image}
-                alt={alt}
-                loading="lazy"
-                width={800}
-                height={600}
-              />
+              <span className="artwork-image-wrap">
+                <span className="artwork-image-inner">
+                  <img
+                    src={artwork.image}
+                    alt={alt}
+                    loading="lazy"
+                    width={800}
+                    height={600}
+                  />
+                  <ArtworkInfoIcon info={artwork.info?.[locale] ?? null} />
+                </span>
+              </span>
             </button>
             <figcaption>
               {desc ? (

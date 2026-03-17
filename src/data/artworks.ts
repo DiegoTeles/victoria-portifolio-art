@@ -19,6 +19,7 @@ export interface Artwork {
   group: string | null
   groupDisplay?: GroupDisplayType
   types: ArtworkType[]
+  info?: { [K in Locale]: string } | null
 }
 
 type ArtworkWithOrder = Artwork & { order: number }
