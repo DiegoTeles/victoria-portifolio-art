@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { artworks as artworksList, type Artwork } from '../data/artworks'
+import { artworks as artworksList, type Artwork, type ArtworkType } from '../data/artworks'
 import { useLocale } from '../i18n/LocaleContext'
 import type { ViewMode } from './ViewToggle'
 import { ArtworkCard } from './ArtworkCard'
@@ -34,21 +34,26 @@ function buildCells(artworks: Artwork[]): Cell[] {
   return cells
 }
 
-type GalleryProps = { viewMode: ViewMode }
+type GalleryProps = { viewMode: ViewMode; typeFilter?: ArtworkType }
 
-export function Gallery({ viewMode }: GalleryProps) {
+export function Gallery({ viewMode, typeFilter }: GalleryProps) {
   const { locale } = useLocale()
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
-  const cells = useMemo(() => buildCells(artworksList), [])
-  const flatArtworks = useMemo(() => artworksList, [])
+  const filteredArtworks = useMemo(() => {
+    if (!typeFilter) return artworksList
+    return artworksList.filter((a) => a.types.includes(typeFilter))
+  }, [typeFilter])
+
+  const cells = useMemo(() => buildCells(filteredArtworks), [filteredArtworks])
+  const flatArtworks = useMemo(() => filteredArtworks, [filteredArtworks])
 
   let indexCounter = 0
   const openLightbox = (index: number) => setLightboxIndex(index)
   const closeLightbox = () => setLightboxIndex(null)
 
   return (
-    <section className="gallery" aria-label="Galeria">
+    <section id="gallery" className="gallery" aria-label="Galeria">
       <div className={`gallery-grid view-${viewMode}`}>
         {cells.map((cell) => {
           if (cell.type === 'single') {

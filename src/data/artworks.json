@@ -508,6 +508,61 @@
     ]
   },
   {
+    "id": "drawing-02",
+    "order": 50,
+    "title": {
+      "pt-Br": "Desenho 2",
+      "en": "Drawing 2"
+    },
+    "description": {
+      "pt-Br": "Exercícios práticos para o desenvolvimento da imaginação com a temática \"árvore\". A poética escolhida foi relações interpessoais, dando um aspecto antropomórfico às figuras que remetem árvores. A representação é como uma \"dança de envolvimento\". Todos os desenhos foram feitos com nanquim sobre papel no tamanho A4.",
+      "en": "Practical exercises for the development of imagination with the theme \"tree\". The chosen poetics was interpersonal relationships, giving an anthropomorphic aspect to the figures that evoke trees. The representation is like a \"dance of involvement\". All drawings were made with ink on A4 paper."
+    },
+    "image": "/images/drawing/drawing-02.png",
+    "orientation": "vertical",
+    "group": "tree-studies",
+    "groupDisplay": "single-caption",
+    "types": [
+      "drawing"
+    ]
+  },
+  {
+    "id": "drawing-03",
+    "order": 51,
+    "title": {
+      "pt-Br": "Desenho 3",
+      "en": "Drawing 3"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/drawing/drawing-03.png",
+    "orientation": "vertical",
+    "group": "tree-studies",
+    "types": [
+      "drawing"
+    ]
+  },
+  {
+    "id": "drawing-04",
+    "order": 52,
+    "title": {
+      "pt-Br": "Desenho 4",
+      "en": "Drawing 4"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/drawing/drawing-04.png",
+    "orientation": "vertical",
+    "group": "tree-studies",
+    "types": [
+      "drawing"
+    ]
+  },
+  {
     "id": "photography-04",
     "order": 30,
     "title": {
