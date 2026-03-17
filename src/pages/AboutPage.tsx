@@ -1,6 +1,6 @@
 import { useLocale } from '../i18n/LocaleContext'
 
-const PORTRAIT_IMAGE = 'https://picsum.photos/seed/about-portrait/400/600'
+const PORTRAIT_IMAGE = '/images/profile.webp'
 
 export function AboutPage() {
   const { t } = useLocale()
@@ -17,7 +17,7 @@ export function AboutPage() {
             height={600}
           />
           <div className="about-social" aria-label="Redes sociais">
-            <a href="#" className="about-social-link" aria-label="Instagram">
+            <a href="https://www.instagram.com/corvitia/" target="_blank" rel="noopener noreferrer" className="about-social-link" aria-label="Instagram">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
@@ -40,7 +40,9 @@ export function AboutPage() {
           </div>
         </div>
         <div className="about-bio">
-          <p className="page-text">{t('aboutBio')}</p>
+          <p className="page-text">{t('aboutBio1')}</p>
+          <p className="page-text">{t('aboutBio2')}</p>
+          <p className="page-text">{t('aboutBio3')}</p>
         </div>
       </div>
     </section>

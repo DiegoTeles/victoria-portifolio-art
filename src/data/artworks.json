@@ -271,6 +271,240 @@
     ]
   },
   {
+    "id": "painting-16",
+    "order": 65,
+    "title": {
+      "pt-Br": "Pintura 16",
+      "en": "Painting 16"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-16.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-17",
+    "order": 66,
+    "title": {
+      "pt-Br": "Pintura 17",
+      "en": "Painting 17"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-17.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-19",
+    "order": 68,
+    "title": {
+      "pt-Br": "Pintura 19",
+      "en": "Painting 19"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-19.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-20",
+    "order": 69,
+    "title": {
+      "pt-Br": "Pintura 20",
+      "en": "Painting 20"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-20.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-21",
+    "order": 70,
+    "title": {
+      "pt-Br": "Pintura 21",
+      "en": "Painting 21"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-21.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-22",
+    "order": 71,
+    "title": {
+      "pt-Br": "Pintura 22",
+      "en": "Painting 22"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-22.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-23",
+    "order": 72,
+    "title": {
+      "pt-Br": "Pintura 23",
+      "en": "Painting 23"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-23.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-24",
+    "order": 73,
+    "title": {
+      "pt-Br": "Pintura 24",
+      "en": "Painting 24"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-24.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-25",
+    "order": 74,
+    "title": {
+      "pt-Br": "Pintura 25",
+      "en": "Painting 25"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-25.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-26",
+    "order": 75,
+    "title": {
+      "pt-Br": "Pintura 26",
+      "en": "Painting 26"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-26.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-27",
+    "order": 76,
+    "title": {
+      "pt-Br": "Pintura 27",
+      "en": "Painting 27"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-27.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-29",
+    "order": 78,
+    "title": {
+      "pt-Br": "Pintura 29",
+      "en": "Painting 29"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-29.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-30",
+    "order": 79,
+    "title": {
+      "pt-Br": "Pintura 30",
+      "en": "Painting 30"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-30.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
     "id": "photography-01",
     "order": 16,
     "title": {
