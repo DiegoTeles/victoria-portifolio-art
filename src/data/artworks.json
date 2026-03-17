@@ -3,12 +3,12 @@
     "id": "painting-01",
     "order": 1,
     "title": {
-      "pt-Br": "Pintura 1",
-      "en": "Painting 1"
+      "pt-Br": "Pintura 1.",
+      "en": "Painting 1."
     },
     "description": {
-      "pt-Br": "*No clube*, 2022. Nanquim, lápis de cor e acrilica sobre papel, A5.",
-      "en": "*At the club*, 2022. Nanquim, colored pencils and acrylic on paper, A5."
+      "pt-Br": "*No clube*, 2022. Nanquim, lápis de cor e acrilica sobre papel, 14,8 x 21 cm.",
+      "en": "*At the club*, 2022. Nanquim, colored pencils and acrylic on paper, 14,8 x 21 cm."
     },
     "image": "/images/painting/painting-01.png",
     "orientation": "square",
@@ -21,12 +21,12 @@
     "id": "painting-02",
     "order": 2,
     "title": {
-      "pt-Br": "Pintura 2",
-      "en": "Painting 2"
+"pt-Br": "Pintura 2.",
+    "en": "Painting 2."
     },
     "description": {
-      "pt-Br": "*It's all over*, 2018. Nanquim, lápis de cor e giz pastel oleoso sobre papel, A4.",
-      "en": "*It's all over*, 2018. Nanquim, colored pencils and oil pastel on paper, A4."
+      "pt-Br": "*It's all over*, 2018. Nanquim, lápis de cor e giz pastel oleoso sobre papel, 21 x 29,7 cm.",
+      "en": "*It's all over*, 2018. Nanquim, colored pencils and oil pastel on paper, 21 x 29,7 cm."
     },
     "image": "/images/painting/painting-02.png",
     "orientation": "square",
@@ -39,12 +39,12 @@
     "id": "painting-03",
     "order": 3,
     "title": {
-      "pt-Br": "Pintura 3",
-      "en": "Painting 3"
+"pt-Br": "Pintura 3.",
+    "en": "Painting 3."
     },
     "description": {
-      "pt-Br": "*Sem título*, 2016. Aquarela e nanquim sobre papel, A4.",
-      "en": "*Untitled*, 2016. Watercolor and nanquim on paper, A4."
+      "pt-Br": "*Sem título*, 2016. Aquarela e nanquim sobre papel, 21 x 29,7 cm.",
+      "en": "*Untitled*, 2016. Watercolor and nanquim on paper, 21 x 29,7 cm."
     },
     "image": "/images/painting/painting-03.png",
     "orientation": "square",
@@ -57,12 +57,12 @@
     "id": "painting-04",
     "order": 4,
     "title": {
-      "pt-Br": "Pintura 4",
-      "en": "Painting 4"
+"pt-Br": "Pintura 4.",
+    "en": "Painting 4."
     },
     "description": {
-      "pt-Br": "*A menina e o dragão*, 2016. Vários materiais sobre papel, A4.",
-      "en": "*The girl and the dragon*, 2016. Various materials on paper, A4."
+      "pt-Br": "*A menina e o dragão*, 2016. Vários materiais sobre papel, 21 x 29,7 cm.",
+      "en": "*The girl and the dragon*, 2016. Various materials on paper, 21 x 29,7 cm."
     },
     "image": "/images/painting/painting-04.png",
     "orientation": "square",
@@ -75,12 +75,12 @@
     "id": "painting-05",
     "order": 5,
     "title": {
-      "pt-Br": "Pintura 5",
-      "en": "Painting 5"
+"pt-Br": "Pintura 5.",
+    "en": "Painting 5."
     },
     "description": {
-      "pt-Br": "*Intimiodade*, 2022. Grafite e aquarela sobre papel, A4.",
-      "en": "*Intimidity*, 2022. Graphite and watercolor on paper, A4."
+      "pt-Br": "*Intimiodade*, 2022. Grafite e aquarela sobre papel, 21 x 29,7 cm.",
+      "en": "*Intimidity*, 2022. Graphite and watercolor on paper, 21 x 29,7 cm."
     },
     "image": "/images/painting/painting-05.png",
     "orientation": "square",
@@ -93,12 +93,12 @@
     "id": "painting-06",
     "order": 6,
     "title": {
-      "pt-Br": "Pintura 6",
-      "en": "Painting 6"
+"pt-Br": "Pintura 6.",
+    "en": "Painting 6."
     },
     "description": {
-      "pt-Br": "Pinturas realizadas para a série *Intimidade* decorrente da pintura com o mesmo título. Aquarela sobre papel, A3.",
-      "en": "Paintings made for the *Intimidity* series. Watercolor on paper, A3."
+      "pt-Br": "Pinturas realizadas para a série *Intimidade* decorrente da pintura com o mesmo título. Aquarela sobre papel, 29,7 x 42 cm.",
+      "en": "Paintings made for the *Intimidity* series. Watercolor on paper, 29,7 x 42 cm."
     },
     "image": "/images/painting/painting-06.png",
     "orientation": "square",
@@ -111,8 +111,8 @@
     "id": "painting-07",
     "order": 7,
     "title": {
-      "pt-Br": "Pintura 7",
-      "en": "Painting 7"
+"pt-Br": "Pintura 7.",
+    "en": "Painting 7."
     },
     "description": {
       "pt-Br": "",
@@ -129,8 +129,8 @@
     "id": "painting-08",
     "order": 8,
     "title": {
-      "pt-Br": "Pintura 8",
-      "en": "Painting 8"
+"pt-Br": "Pintura 8.",
+    "en": "Painting 8."
     },
     "description": {
       "pt-Br": "",
@@ -147,12 +147,12 @@
     "id": "painting-09",
     "order": 9,
     "title": {
-      "pt-Br": "Pintura 9",
-      "en": "Painting 9"
+"pt-Br": "Pintura 9.",
+    "en": "Painting 9."
     },
     "description": {
-      "pt-Br": "*Sem título*, 2022. Grafite, aquarela e giz pastel oleoso sobre papel, A4.",
-      "en": "*Untitled*, 2022. Graphite, watercolor and oil pastel on paper, A4."
+      "pt-Br": "*Sem título*, 2022. Grafite, aquarela e giz pastel oleoso sobre papel, 21 x 29,7 cm.",
+      "en": "*Untitled*, 2022. Graphite, watercolor and oil pastel on paper, 21 x 29,7 cm."
     },
     "image": "/images/painting/painting-09.png",
     "orientation": "square",
@@ -165,12 +165,12 @@
     "id": "painting-10",
     "order": 10,
     "title": {
-      "pt-Br": "Pintura 10",
-      "en": "Painting 10"
+"pt-Br": "Pintura 10.",
+    "en": "Painting 10."
     },
     "description": {
-      "pt-Br": "*Sem título*, 2022. Aquarela sobre papel, A3.",
-      "en": "*Untitled*, 2022. Watercolor on paper, A3."
+      "pt-Br": "*Sem título*, 2022. Aquarela sobre papel, 29,7 x 42 cm.",
+      "en": "*Untitled*, 2022. Watercolor on paper, 29,7 x 42 cm."
     },
     "image": "/images/painting/painting-10.png",
     "orientation": "square",
@@ -183,12 +183,12 @@
     "id": "painting-11",
     "order": 11,
     "title": {
-      "pt-Br": "Pintura 11",
-      "en": "Painting 11"
+"pt-Br": "Pintura 11.",
+    "en": "Painting 11."
     },
     "description": {
-      "pt-Br": "*Pescoço quebrado*, 2022. Aquarela sobre papel, A4.",
-      "en": "*Broken neck*, 2022. Watercolor on paper, A4."
+      "pt-Br": "*Pescoço quebrado*, 2022. Aquarela sobre papel, 21 x 29,7 cm.",
+      "en": "*Broken neck*, 2022. Watercolor on paper, 21 x 29,7 cm."
     },
     "image": "/images/painting/painting-11.png",
     "orientation": "square",
@@ -201,12 +201,12 @@
     "id": "painting-12",
     "order": 12,
     "title": {
-      "pt-Br": "Pintura 12",
-      "en": "Painting 12"
+"pt-Br": "Pintura 12.",
+    "en": "Painting 12."
     },
     "description": {
-      "pt-Br": "*Blood blued pillow*, 2022. Aquarela, nanquim e sangue sobre papel, A5",
-      "en": "*Blood blued pillow*, 2022. Watercolor, nanquim and blood on paper, A5"
+      "pt-Br": "*Blood blued pillow*, 2022. Aquarela, nanquim e sangue sobre papel, 14,8 x 21 cm.",
+      "en": "*Blood blued pillow*, 2022. Watercolor, nanquim and blood on paper, 14,8 x 21 cm."
     },
     "image": "/images/painting/painting-12.png",
     "orientation": "square",
@@ -219,12 +219,12 @@
     "id": "painting-13",
     "order": 13,
     "title": {
-      "pt-Br": "Pintura 13",
-      "en": "Painting 13"
+"pt-Br": "Pintura 13.",
+    "en": "Painting 13."
     },
     "description": {
-      "pt-Br": "Série de estudos de morcegos em aquarela sobre papel realizada para a siciplina Pintura II, no ano 2021. Todas as pinturas são tamanho A6",
-      "en": "Series of bat studies in watercolor on paper made for the Painting II discipline, in 2021. All paintings are size A6"
+      "pt-Br": "Série de estudos de morcegos em aquarela sobre papel realizada para a siciplina Pintura II, no ano 2021. Todas as pinturas são tamanho 10,5 x 14,8 cm.",
+      "en": "Series of bat studies in watercolor on paper made for the Painting II discipline, in 2021. All paintings are size 10,5 x 14,8 cm."
     },
     "image": "/images/painting/painting-13.png",
     "orientation": "square",
@@ -238,8 +238,8 @@
     "id": "painting-14",
     "order": 14,
     "title": {
-      "pt-Br": "Pintura 14",
-      "en": "Painting 14"
+"pt-Br": "Pintura 14.",
+    "en": "Painting 14."
     },
     "description": {
       "pt-Br": "",
@@ -256,8 +256,8 @@
     "id": "painting-15",
     "order": 15,
     "title": {
-      "pt-Br": "Pintura 15",
-      "en": "Painting 15"
+"pt-Br": "Pintura 15.",
+    "en": "Painting 15."
     },
     "description": {
       "pt-Br": "",
@@ -274,8 +274,8 @@
     "id": "painting-16",
     "order": 65,
     "title": {
-      "pt-Br": "Pintura 16",
-      "en": "Painting 16"
+"pt-Br": "Pintura 16.",
+    "en": "Painting 16."
     },
     "description": {
       "pt-Br": "",
@@ -292,8 +292,8 @@
     "id": "painting-17",
     "order": 66,
     "title": {
-      "pt-Br": "Pintura 17",
-      "en": "Painting 17"
+"pt-Br": "Pintura 17.",
+    "en": "Painting 17."
     },
     "description": {
       "pt-Br": "",
@@ -310,8 +310,8 @@
     "id": "painting-19",
     "order": 68,
     "title": {
-      "pt-Br": "Pintura 19",
-      "en": "Painting 19"
+"pt-Br": "Pintura 19.",
+    "en": "Painting 19."
     },
     "description": {
       "pt-Br": "",
@@ -328,8 +328,8 @@
     "id": "painting-20",
     "order": 69,
     "title": {
-      "pt-Br": "Pintura 20",
-      "en": "Painting 20"
+"pt-Br": "Pintura 20.",
+    "en": "Painting 20."
     },
     "description": {
       "pt-Br": "",
@@ -346,8 +346,8 @@
     "id": "painting-21",
     "order": 70,
     "title": {
-      "pt-Br": "Pintura 21",
-      "en": "Painting 21"
+"pt-Br": "Pintura 21.",
+    "en": "Painting 21."
     },
     "description": {
       "pt-Br": "",
@@ -364,8 +364,8 @@
     "id": "painting-22",
     "order": 71,
     "title": {
-      "pt-Br": "Pintura 22",
-      "en": "Painting 22"
+"pt-Br": "Pintura 22.",
+    "en": "Painting 22."
     },
     "description": {
       "pt-Br": "",
@@ -382,8 +382,8 @@
     "id": "painting-23",
     "order": 72,
     "title": {
-      "pt-Br": "Pintura 23",
-      "en": "Painting 23"
+"pt-Br": "Pintura 23.",
+    "en": "Painting 23."
     },
     "description": {
       "pt-Br": "",
@@ -400,8 +400,8 @@
     "id": "painting-24",
     "order": 73,
     "title": {
-      "pt-Br": "Pintura 24",
-      "en": "Painting 24"
+"pt-Br": "Pintura 24.",
+    "en": "Painting 24."
     },
     "description": {
       "pt-Br": "",
@@ -418,8 +418,8 @@
     "id": "painting-25",
     "order": 74,
     "title": {
-      "pt-Br": "Pintura 25",
-      "en": "Painting 25"
+"pt-Br": "Pintura 25.",
+    "en": "Painting 25."
     },
     "description": {
       "pt-Br": "",
@@ -436,8 +436,8 @@
     "id": "painting-26",
     "order": 75,
     "title": {
-      "pt-Br": "Pintura 26",
-      "en": "Painting 26"
+"pt-Br": "Pintura 26.",
+    "en": "Painting 26."
     },
     "description": {
       "pt-Br": "",
@@ -454,8 +454,8 @@
     "id": "painting-27",
     "order": 76,
     "title": {
-      "pt-Br": "Pintura 27",
-      "en": "Painting 27"
+"pt-Br": "Pintura 27.",
+    "en": "Painting 27."
     },
     "description": {
       "pt-Br": "",
@@ -472,8 +472,8 @@
     "id": "painting-29",
     "order": 78,
     "title": {
-      "pt-Br": "Pintura 29",
-      "en": "Painting 29"
+"pt-Br": "Pintura 29.",
+    "en": "Painting 29."
     },
     "description": {
       "pt-Br": "",
@@ -490,8 +490,8 @@
     "id": "painting-30",
     "order": 79,
     "title": {
-      "pt-Br": "Pintura 30",
-      "en": "Painting 30"
+"pt-Br": "Pintura 30.",
+    "en": "Painting 30."
     },
     "description": {
       "pt-Br": "",
@@ -508,8 +508,8 @@
     "id": "movies-01",
     "order": 80,
     "title": {
-      "pt-Br": "Rambling about death",
-      "en": "Rambling about death"
+"pt-Br": "Rambling about death.",
+    "en": "Rambling about death."
     },
     "description": {
       "pt-Br": "",
@@ -526,11 +526,11 @@
     "id": "photography-01",
     "order": 16,
     "title": {
-      "pt-Br": "Título da foto 1",
-      "en": "Photo 1 title"
+"pt-Br": "Título da foto 1.",
+    "en": "Photo 1 title."
     },
     "description": {
-      "pt-Br": "*Retrato nº 5*, 2018",
+      "pt-Br": "*Retrato nº 5*, 2018.",
       "en": "*Portrait nº 5, 2018*."
     },
     "image": "/images/photography/photography-01.png",
@@ -545,11 +545,11 @@
     "id": "photography-03",
     "order": 17,
     "title": {
-      "pt-Br": "*Retrato nº 6*, 2018",
-      "en": "Photo 2 title"
+"pt-Br": "*Retrato nº 6*, 2018.",
+    "en": "Photo 2 title."
     },
     "description": {
-      "pt-Br": "*Retrato nº 6*, 2018",
+      "pt-Br": "*Retrato nº 6*, 2018.",
       "en": ""
     },
     "image": "/images/photography/photography-03.png",
@@ -563,8 +563,8 @@
     "id": "digital-art-01",
     "order": 29,
     "title": {
-      "pt-Br": "Arte digital 1",
-      "en": "Digital art 1"
+"pt-Br": "Arte digital 1.",
+    "en": "Digital art 1."
     },
     "description": {
       "pt-Br": "*Cativeiro*, 2018. Lambe, aproximadamente 90 x 110cm.",
@@ -585,8 +585,8 @@
     "id": "digital-art-02",
     "order": 19,
     "title": {
-      "pt-Br": "Arte digital 2",
-      "en": "Digital art 2"
+"pt-Br": "Arte digital 2.",
+    "en": "Digital art 2."
     },
     "description": {
       "pt-Br": "Série de experimentações realizadas em 2021 através do aplicativo proposto, Glitch Lab, com imagens autorais.",
@@ -604,8 +604,8 @@
     "id": "digital-art-03",
     "order": 20,
     "title": {
-      "pt-Br": "Arte digital 3",
-      "en": "Digital art 3"
+"pt-Br": "Arte digital 3.",
+    "en": "Digital art 3."
     },
     "description": {
       "pt-Br": "",
@@ -622,8 +622,8 @@
     "id": "digital-art-04",
     "order": 21,
     "title": {
-      "pt-Br": "Arte digital 4",
-      "en": "Digital art 4"
+"pt-Br": "Arte digital 4.",
+    "en": "Digital art 4."
     },
     "description": {
       "pt-Br": "",
@@ -640,8 +640,8 @@
     "id": "digital-art-05",
     "order": 22,
     "title": {
-      "pt-Br": "Arte digital 5",
-      "en": "Digital art 5"
+"pt-Br": "Arte digital 5.",
+    "en": "Digital art 5."
     },
     "description": {
       "pt-Br": "",
@@ -658,8 +658,8 @@
     "id": "digital-art-06",
     "order": 23,
     "title": {
-      "pt-Br": "Arte digital 6",
-      "en": "Digital art 6"
+"pt-Br": "Arte digital 6.",
+    "en": "Digital art 6."
     },
     "description": {
       "pt-Br": "",
@@ -676,8 +676,8 @@
     "id": "digital-art-07",
     "order": 24,
     "title": {
-      "pt-Br": "Arte digital 7",
-      "en": "Digital art 7"
+"pt-Br": "Arte digital 7.",
+    "en": "Digital art 7."
     },
     "description": {
       "pt-Br": "Série de experimentações em glitch art realizadas em 2021.",
@@ -695,8 +695,8 @@
     "id": "digital-art-08",
     "order": 25,
     "title": {
-      "pt-Br": "Arte digital 8",
-      "en": "Digital art 8"
+"pt-Br": "Arte digital 8.",
+    "en": "Digital art 8."
     },
     "description": {
       "pt-Br": "",
@@ -713,8 +713,8 @@
     "id": "digital-art-09",
     "order": 26,
     "title": {
-      "pt-Br": "Arte digital 9",
-      "en": "Digital art 9"
+"pt-Br": "Arte digital 9.",
+    "en": "Digital art 9."
     },
     "description": {
       "pt-Br": "",
@@ -731,8 +731,8 @@
     "id": "digital-art-10",
     "order": 27,
     "title": {
-      "pt-Br": "Arte digital 10",
-      "en": "Digital art 10"
+"pt-Br": "Arte digital 10.",
+    "en": "Digital art 10."
     },
     "description": {
       "pt-Br": "",
@@ -749,12 +749,12 @@
     "id": "drawing-02",
     "order": 50,
     "title": {
-      "pt-Br": "Desenho 2",
-      "en": "Drawing 2"
+"pt-Br": "Desenho 2.",
+    "en": "Drawing 2."
     },
     "description": {
-      "pt-Br": "Exercícios práticos para o desenvolvimento da imaginação com a temática \"árvore\". A poética escolhida foi relações interpessoais, dando um aspecto antropomórfico às figuras que remetem árvores. A representação é como uma \"dança de envolvimento\". Todos os desenhos foram feitos com nanquim sobre papel no tamanho A4.",
-      "en": "Practical exercises for the development of imagination with the theme \"tree\". The chosen poetics was interpersonal relationships, giving an anthropomorphic aspect to the figures that evoke trees. The representation is like a \"dance of involvement\". All drawings were made with ink on A4 paper."
+      "pt-Br": "Exercícios práticos para o desenvolvimento da imaginação com a temática \"árvore\". A poética escolhida foi relações interpessoais, dando um aspecto antropomórfico às figuras que remetem árvores. A representação é como uma \"dança de envolvimento\". Todos os desenhos foram feitos com nanquim sobre papel no tamanho 21 x 29,7 cm.",
+      "en": "Practical exercises for the development of imagination with the theme \"tree\". The chosen poetics was interpersonal relationships, giving an anthropomorphic aspect to the figures that evoke trees. The representation is like a \"dance of involvement\". All drawings were made with ink on 21 x 29,7 cm paper."
     },
     "image": "/images/drawing/drawing-02.png",
     "orientation": "vertical",
@@ -768,8 +768,8 @@
     "id": "drawing-03",
     "order": 51,
     "title": {
-      "pt-Br": "Desenho 3",
-      "en": "Drawing 3"
+"pt-Br": "Desenho 3.",
+    "en": "Drawing 3."
     },
     "description": {
       "pt-Br": "",
@@ -786,8 +786,8 @@
     "id": "drawing-04",
     "order": 52,
     "title": {
-      "pt-Br": "Desenho 4",
-      "en": "Drawing 4"
+"pt-Br": "Desenho 4.",
+    "en": "Drawing 4."
     },
     "description": {
       "pt-Br": "",
@@ -804,8 +804,8 @@
     "id": "photography-04",
     "order": 30,
     "title": {
-      "pt-Br": "*Estranha senhora no parque*, 2018",
-      "en": "Photography 4"
+"pt-Br": "*Estranha senhora no parque*, 2018.",
+    "en": "Photography 4."
     },
     "description": {
       "pt-Br": "*Strange lady in the park*, 2018.",
@@ -822,8 +822,8 @@
     "id": "photography-05",
     "order": 31,
     "title": {
-      "pt-Br": "Fotografia 5",
-      "en": "Photography 5"
+"pt-Br": "Fotografia 5.",
+    "en": "Photography 5."
     },
     "description": {
       "pt-Br": "*Sem título*, 2018.",
@@ -840,8 +840,8 @@
     "id": "photography-06",
     "order": 32,
     "title": {
-      "pt-Br": "Fotografia 6",
-      "en": "Photography 6"
+"pt-Br": "Fotografia 6.",
+    "en": "Photography 6."
     },
     "description": {
       "pt-Br": "*Sem título*, 2022.",
@@ -859,8 +859,8 @@
     "id": "photography-07",
     "order": 33,
     "title": {
-      "pt-Br": "Fotografia 7",
-      "en": "Photography 7"
+"pt-Br": "Fotografia 7.",
+    "en": "Photography 7."
     },
     "description": {
       "pt-Br": "",
@@ -877,8 +877,8 @@
     "id": "photography-08",
     "order": 34,
     "title": {
-      "pt-Br": "Fotografia 8",
-      "en": "Photography 8"
+"pt-Br": "Fotografia 8.",
+    "en": "Photography 8."
     },
     "description": {
       "pt-Br": "",
@@ -895,8 +895,8 @@
     "id": "photography-09",
     "order": 35,
     "title": {
-      "pt-Br": "Fotografia 9",
-      "en": "Photography 9"
+"pt-Br": "Fotografia 9.",
+    "en": "Photography 9."
     },
     "description": {
       "pt-Br": "",
@@ -913,8 +913,8 @@
     "id": "photography-10",
     "order": 36,
     "title": {
-      "pt-Br": "Fotografia 10",
-      "en": "Photography 10"
+"pt-Br": "Fotografia 10.",
+    "en": "Photography 10."
     },
     "description": {
       "pt-Br": "",
@@ -931,8 +931,8 @@
     "id": "photography-11",
     "order": 37,
     "title": {
-      "pt-Br": "Fotografia 11",
-      "en": "Photography 11"
+"pt-Br": "Fotografia 11.",
+    "en": "Photography 11."
     },
     "description": {
       "pt-Br": "*Sem título*, 2022.",
@@ -949,8 +949,8 @@
     "id": "photography-12",
     "order": 38,
     "title": {
-      "pt-Br": "Fotografia 12",
-      "en": "Photography 12"
+"pt-Br": "Fotografia 12.",
+    "en": "Photography 12."
     },
     "description": {
       "pt-Br": "*Sem título*, 2022.",
@@ -967,8 +967,8 @@
     "id": "photography-13",
     "order": 39,
     "title": {
-      "pt-Br": "Fotografia 13",
-      "en": "Photography 13"
+"pt-Br": "Fotografia 13.",
+    "en": "Photography 13."
     },
     "description": {
       "pt-Br": "*Sem título*, 2022.",
@@ -985,8 +985,8 @@
     "id": "photography-14",
     "order": 40,
     "title": {
-      "pt-Br": "Fotografia 14",
-      "en": "Photography 14"
+"pt-Br": "Fotografia 14.",
+    "en": "Photography 14."
     },
     "description": {
       "pt-Br": "*Sem título*, 2021.",
@@ -1003,8 +1003,8 @@
     "id": "photography-15",
     "order": 41,
     "title": {
-      "pt-Br": "Fotografia 15",
-      "en": "Photography 15"
+"pt-Br": "Fotografia 15.",
+    "en": "Photography 15."
     },
     "description": {
       "pt-Br": "*Sem título*, 2021.",
@@ -1021,8 +1021,8 @@
     "id": "photography-16",
     "order": 42,
     "title": {
-      "pt-Br": "Fotografia 16",
-      "en": "Photography 16"
+"pt-Br": "Fotografia 16.",
+    "en": "Photography 16."
     },
     "description": {
       "pt-Br": "*Sem título*, 2021.",
@@ -1039,8 +1039,8 @@
     "id": "photography-17",
     "order": 43,
     "title": {
-      "pt-Br": "Fotografia 17",
-      "en": "Photography 17"
+"pt-Br": "Fotografia 17.",
+    "en": "Photography 17."
     },
     "description": {
       "pt-Br": "*Sem título*, 2021.",
@@ -1057,8 +1057,8 @@
     "id": "photography-18",
     "order": 44,
     "title": {
-      "pt-Br": "Fotografia 18",
-      "en": "Photography 18"
+"pt-Br": "Fotografia 18.",
+    "en": "Photography 18."
     },
     "description": {
       "pt-Br": "Série fotografias experimentais realizadas em 2022 fora do ambiente academico, utilizando a camera do celular em movimento gerando abstrações de paisagens.",
@@ -1076,8 +1076,8 @@
     "id": "photography-19",
     "order": 45,
     "title": {
-      "pt-Br": "Fotografia 19",
-      "en": "Photography 19"
+"pt-Br": "Fotografia 19.",
+    "en": "Photography 19."
     },
     "description": {
       "pt-Br": "",
@@ -1095,8 +1095,8 @@
     "id": "photography-20",
     "order": 46,
     "title": {
-      "pt-Br": "Fotografia 20",
-      "en": "Photography 20"
+"pt-Br": "Fotografia 20.",
+    "en": "Photography 20."
     },
     "description": {
       "pt-Br": "",
@@ -1114,8 +1114,8 @@
     "id": "photography-21",
     "order": 47,
     "title": {
-      "pt-Br": "Fotografia 21",
-      "en": "Photography 21"
+"pt-Br": "Fotografia 21.",
+    "en": "Photography 21."
     },
     "description": {
       "pt-Br": "",
@@ -1133,8 +1133,8 @@
     "id": "photography-22",
     "order": 48,
     "title": {
-      "pt-Br": "Fotografia 22",
-      "en": "Photography 22"
+"pt-Br": "Fotografia 22.",
+    "en": "Photography 22."
     },
     "description": {
       "pt-Br": "",
@@ -1152,8 +1152,8 @@
     "id": "photography-23",
     "order": 49,
     "title": {
-      "pt-Br": "Fotografia 23",
-      "en": "Photography 23"
+"pt-Br": "Fotografia 23.",
+    "en": "Photography 23."
     },
     "description": {
       "pt-Br": "*Dinner*, 2018.",
