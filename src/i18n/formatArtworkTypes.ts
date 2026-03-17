@@ -2,10 +2,10 @@ import type { ArtworkType } from '../data/artworks'
 import type { TranslationKey } from './translations'
 
 const typeKeys: Record<ArtworkType, TranslationKey> = {
-  'desenho': 'typeDesenho',
-  'pintura': 'typePintura',
-  'fotografia': 'typeFotografia',
-  'arte-digital': 'typeArteDigital',
+  'drawing': 'typeDrawing',
+  'painting': 'typePainting',
+  'photography': 'typePhotography',
+  'digital-art': 'typeDigitalArt',
 }
 
 export function formatArtworkTypes(

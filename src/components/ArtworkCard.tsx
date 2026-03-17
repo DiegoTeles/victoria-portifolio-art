@@ -1,7 +1,6 @@
 import type { Artwork } from '../data/artworks'
 import type { Locale } from '../data/artworks'
-import { useLocale } from '../i18n/LocaleContext'
-import { formatArtworkTypes } from '../i18n/formatArtworkTypes'
+import { formatCaptionText, plainCaptionText } from '../utils/formatCaptionText'
 
 type Props = {
   artwork: Artwork
@@ -10,11 +9,9 @@ type Props = {
 }
 
 export function ArtworkCard({ artwork, locale, onSelect }: Props) {
-  const { t } = useLocale()
   const title = artwork.title[locale]
   const description = artwork.description[locale]
-  const alt = title || description
-  const typeLabel = formatArtworkTypes(artwork.types, t)
+  const alt = plainCaptionText(title || description || '')
 
   return (
     <figure
@@ -43,11 +40,7 @@ export function ArtworkCard({ artwork, locale, onSelect }: Props) {
         />
       </button>
       <figcaption>
-        {typeLabel && <span className="artwork-types">{typeLabel}</span>}
-        {typeLabel && (title || description) && ' · '}
-        {title && <strong>{title}</strong>}
-        {title && description && ' — '}
-        {description}
+        {description && <span className="artwork-description">{formatCaptionText(description)}</span>}
       </figcaption>
     </figure>
   )

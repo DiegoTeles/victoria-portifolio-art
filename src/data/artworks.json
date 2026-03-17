@@ -1,0 +1,876 @@
+[
+  {
+    "id": "painting-01",
+    "order": 1,
+    "title": {
+      "pt-Br": "Pintura 1",
+      "en": "Painting 1"
+    },
+    "description": {
+      "pt-Br": "*No clube*, 2022. Nanquim, lápis de cor e acrilica sobre papel, A5.",
+      "en": "*At the club*, 2022. Nanquim, colored pencils and acrylic on paper, A5."
+    },
+    "image": "/images/painting/painting-01.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-02",
+    "order": 2,
+    "title": {
+      "pt-Br": "Pintura 2",
+      "en": "Painting 2"
+    },
+    "description": {
+      "pt-Br": "*It's all over*, 2018. Nanquim, lápis de cor e giz pastel oleoso sobre papel, A4.",
+      "en": "*It's all over*, 2018. Nanquim, colored pencils and oil pastel on paper, A4."
+    },
+    "image": "/images/painting/painting-02.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-03",
+    "order": 3,
+    "title": {
+      "pt-Br": "Pintura 3",
+      "en": "Painting 3"
+    },
+    "description": {
+      "pt-Br": "*Sem título*, 2016. Aquarela e nanquim sobre papel, A4.",
+      "en": "*Untitled*, 2016. Watercolor and nanquim on paper, A4."
+    },
+    "image": "/images/painting/painting-03.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-04",
+    "order": 4,
+    "title": {
+      "pt-Br": "Pintura 4",
+      "en": "Painting 4"
+    },
+    "description": {
+      "pt-Br": "*A menina e o dragão*, 2016. Vários materiais sobre papel, A4.",
+      "en": "*The girl and the dragon*, 2016. Various materials on paper, A4."
+    },
+    "image": "/images/painting/painting-04.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-05",
+    "order": 5,
+    "title": {
+      "pt-Br": "Pintura 5",
+      "en": "Painting 5"
+    },
+    "description": {
+      "pt-Br": "*Intimiodade*, 2022. Grafite e aquarela sobre papel, A4.",
+      "en": "*Intimidity*, 2022. Graphite and watercolor on paper, A4."
+    },
+    "image": "/images/painting/painting-05.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-06",
+    "order": 6,
+    "title": {
+      "pt-Br": "Pintura 6",
+      "en": "Painting 6"
+    },
+    "description": {
+      "pt-Br": "Pinturas realizadas para a série *Intimidade* decorrente da pintura com o mesmo título. Aquarela sobre papel, A3.",
+      "en": "Paintings made for the *Intimidity* series. Watercolor on paper, A3."
+    },
+    "image": "/images/painting/painting-06.png",
+    "orientation": "square",
+    "group": "intimidade",
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-07",
+    "order": 7,
+    "title": {
+      "pt-Br": "Pintura 7",
+      "en": "Painting 7"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-07.png",
+    "orientation": "square",
+    "group": "intimidade",
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-08",
+    "order": 8,
+    "title": {
+      "pt-Br": "Pintura 8",
+      "en": "Painting 8"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-08.png",
+    "orientation": "square",
+    "group": "intimidade",
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-09",
+    "order": 9,
+    "title": {
+      "pt-Br": "Pintura 9",
+      "en": "Painting 9"
+    },
+    "description": {
+      "pt-Br": "*Sem título*, 2022. Grafite, aquarela e giz pastel oleoso sobre papel, A4.",
+      "en": "*Untitled*, 2022. Graphite, watercolor and oil pastel on paper, A4."
+    },
+    "image": "/images/painting/painting-09.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-10",
+    "order": 10,
+    "title": {
+      "pt-Br": "Pintura 10",
+      "en": "Painting 10"
+    },
+    "description": {
+      "pt-Br": "*Sem título*, 2022. Aquarela sobre papel, A3.",
+      "en": "*Untitled*, 2022. Watercolor on paper, A3."
+    },
+    "image": "/images/painting/painting-10.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-11",
+    "order": 11,
+    "title": {
+      "pt-Br": "Pintura 11",
+      "en": "Painting 11"
+    },
+    "description": {
+      "pt-Br": "*Pescoço quebrado*, 2022. Aquarela sobre papel, A4.",
+      "en": "*Broken neck*, 2022. Watercolor on paper, A4."
+    },
+    "image": "/images/painting/painting-11.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-12",
+    "order": 12,
+    "title": {
+      "pt-Br": "Pintura 12",
+      "en": "Painting 12"
+    },
+    "description": {
+      "pt-Br": "*Blood blued pillow*, 2022. Aquarela, nanquim e sangue sobre papel, A5",
+      "en": "*Blood blued pillow*, 2022. Watercolor, nanquim and blood on paper, A5"
+    },
+    "image": "/images/painting/painting-12.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-13",
+    "order": 13,
+    "title": {
+      "pt-Br": "Pintura 13",
+      "en": "Painting 13"
+    },
+    "description": {
+      "pt-Br": "Série de estudos de morcegos em aquarela sobre papel realizada para a siciplina Pintura II, no ano 2021. Todas as pinturas são tamanho A6",
+      "en": "Series of bat studies in watercolor on paper made for the Painting II discipline, in 2021. All paintings are size A6"
+    },
+    "image": "/images/painting/painting-13.png",
+    "orientation": "square",
+    "group": "bat-studies",
+    "groupDisplay": "single-caption",
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-14",
+    "order": 14,
+    "title": {
+      "pt-Br": "Pintura 14",
+      "en": "Painting 14"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-14.png",
+    "orientation": "square",
+    "group": "bat-studies",
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "painting-15",
+    "order": 15,
+    "title": {
+      "pt-Br": "Pintura 15",
+      "en": "Painting 15"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-15.png",
+    "orientation": "square",
+    "group": "bat-studies",
+    "types": [
+      "painting"
+    ]
+  },
+  {
+    "id": "photography-01",
+    "order": 16,
+    "title": {
+      "pt-Br": "Título da foto 1",
+      "en": "Photo 1 title"
+    },
+    "description": {
+      "pt-Br": "*Retrato nº 5*, 2018",
+      "en": "*Portrait nº 5, 2018*."
+    },
+    "image": "/images/photography/photography-01.png",
+    "orientation": "square",
+    "group": "serie-1",
+    "groupDisplay": "per-image-caption",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-03",
+    "order": 17,
+    "title": {
+      "pt-Br": "*Retrato nº 6*, 2018",
+      "en": "Photo 2 title"
+    },
+    "description": {
+      "pt-Br": "*Retrato nº 6*, 2018",
+      "en": ""
+    },
+    "image": "/images/photography/photography-03.png",
+    "orientation": "square",
+    "group": "serie-1",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "digital-art-01",
+    "order": 18,
+    "title": {
+      "pt-Br": "Arte digital 1",
+      "en": "Digital art 1"
+    },
+    "description": {
+      "pt-Br": "*Cativeiro*, 2018. Lambe, aproximadamente 90 x 110cm.",
+      "en": ""
+    },
+    "image": "/images/digital-art/digital-art-01.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "digital-art"
+    ]
+  },
+  {
+    "id": "digital-art-02",
+    "order": 19,
+    "title": {
+      "pt-Br": "Arte digital 2",
+      "en": "Digital art 2"
+    },
+    "description": {
+      "pt-Br": "Série de experimentações realizadas em 2021 através do aplicativo proposto, Glitch Lab, com imagens autorais.",
+      "en": "Series of experiments carried out in 2021 through the proposed application, Glitch Lab, with authorial images."
+    },
+    "image": "/images/digital-art/digital-art-02.png",
+    "orientation": "square",
+    "group": "01",
+    "groupDisplay": "caption-in-grid",
+    "types": [
+      "digital-art"
+    ]
+  },
+  {
+    "id": "digital-art-03",
+    "order": 20,
+    "title": {
+      "pt-Br": "Arte digital 3",
+      "en": "Digital art 3"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/digital-art/digital-art-03.png",
+    "orientation": "square",
+    "group": "01",
+    "types": [
+      "digital-art"
+    ]
+  },
+  {
+    "id": "digital-art-04",
+    "order": 21,
+    "title": {
+      "pt-Br": "Arte digital 4",
+      "en": "Digital art 4"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/digital-art/digital-art-04.png",
+    "orientation": "square",
+    "group": "01",
+    "types": [
+      "digital-art"
+    ]
+  },
+  {
+    "id": "digital-art-05",
+    "order": 22,
+    "title": {
+      "pt-Br": "Arte digital 5",
+      "en": "Digital art 5"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/digital-art/digital-art-05.png",
+    "orientation": "square",
+    "group": "01",
+    "types": [
+      "digital-art"
+    ]
+  },
+  {
+    "id": "digital-art-06",
+    "order": 23,
+    "title": {
+      "pt-Br": "Arte digital 6",
+      "en": "Digital art 6"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/digital-art/digital-art-06.png",
+    "orientation": "square",
+    "group": "01",
+    "types": [
+      "digital-art"
+    ]
+  },
+  {
+    "id": "digital-art-07",
+    "order": 24,
+    "title": {
+      "pt-Br": "Arte digital 7",
+      "en": "Digital art 7"
+    },
+    "description": {
+      "pt-Br": "Série de experimentações em glitch art realizadas em 2021.",
+      "en": "Series of glitch art experiments carried out in 2021."
+    },
+    "image": "/images/digital-art/digital-art-07.png",
+    "orientation": "square",
+    "group": "02",
+    "groupDisplay": "asymmetric-5",
+    "types": [
+      "digital-art"
+    ]
+  },
+  {
+    "id": "digital-art-08",
+    "order": 25,
+    "title": {
+      "pt-Br": "Arte digital 8",
+      "en": "Digital art 8"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/digital-art/digital-art-08.png",
+    "orientation": "square",
+    "group": "02",
+    "types": [
+      "digital-art"
+    ]
+  },
+  {
+    "id": "digital-art-09",
+    "order": 26,
+    "title": {
+      "pt-Br": "Arte digital 9",
+      "en": "Digital art 9"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/digital-art/digital-art-09.png",
+    "orientation": "square",
+    "group": "02",
+    "types": [
+      "digital-art"
+    ]
+  },
+  {
+    "id": "digital-art-10",
+    "order": 27,
+    "title": {
+      "pt-Br": "Arte digital 10",
+      "en": "Digital art 10"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/digital-art/digital-art-10.png",
+    "orientation": "square",
+    "group": "02",
+    "types": [
+      "digital-art"
+    ]
+  },
+  {
+    "id": "drawing-01",
+    "order": 28,
+    "title": {
+      "pt-Br": "Desenho 1",
+      "en": "Drawing 1"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/drawing/drawing-01.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "drawing"
+    ]
+  },
+  {
+    "id": "photography-04",
+    "order": 30,
+    "title": {
+      "pt-Br": "*Estranha senhora no parque*, 2018",
+      "en": "Photography 4"
+    },
+    "description": {
+      "pt-Br": "*Strange lady in the park*, 2018.",
+      "en": "*Strange lady in the park*, 2018."
+    },
+    "image": "/images/photography/photography-04.png",
+    "orientation": "square",
+    "group": "strange-people",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-05",
+    "order": 31,
+    "title": {
+      "pt-Br": "Fotografia 5",
+      "en": "Photography 5"
+    },
+    "description": {
+      "pt-Br": "*Sem título*, 2018.",
+      "en": "*Untitled*, 2018."
+    },
+    "image": "/images/photography/photography-05.png",
+    "orientation": "square",
+    "group": "strange-people",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-06",
+    "order": 32,
+    "title": {
+      "pt-Br": "Fotografia 6",
+      "en": "Photography 6"
+    },
+    "description": {
+      "pt-Br": "*Sem título*, 2022.",
+      "en": "*Untitled*, 2022."
+    },
+    "image": "/images/photography/photography-06.png",
+    "orientation": "square",
+    "group": "strange-people-2",
+    "groupDisplay": "single-caption",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-07",
+    "order": 33,
+    "title": {
+      "pt-Br": "Fotografia 7",
+      "en": "Photography 7"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/photography/photography-07.png",
+    "orientation": "square",
+    "group": "strange-people-2",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-08",
+    "order": 34,
+    "title": {
+      "pt-Br": "Fotografia 8",
+      "en": "Photography 8"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/photography/photography-08.png",
+    "orientation": "square",
+    "group": "strange-people-2",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-09",
+    "order": 35,
+    "title": {
+      "pt-Br": "Fotografia 9",
+      "en": "Photography 9"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/photography/photography-09.png",
+    "orientation": "square",
+    "group": "strange-people-2",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-10",
+    "order": 36,
+    "title": {
+      "pt-Br": "Fotografia 10",
+      "en": "Photography 10"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/photography/photography-10.png",
+    "orientation": "square",
+    "group": "strange-people-2",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-11",
+    "order": 37,
+    "title": {
+      "pt-Br": "Fotografia 11",
+      "en": "Photography 11"
+    },
+    "description": {
+      "pt-Br": "*Sem título*, 2022.",
+      "en": "*Untitled*, 2022."
+    },
+    "image": "/images/photography/photography-11.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-12",
+    "order": 38,
+    "title": {
+      "pt-Br": "Fotografia 12",
+      "en": "Photography 12"
+    },
+    "description": {
+      "pt-Br": "*Sem título*, 2022.",
+      "en": "*Untitled*, 2022."
+    },
+    "image": "/images/photography/photography-12.png",
+    "orientation": "square",
+    "group": "strange-landscape",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-13",
+    "order": 39,
+    "title": {
+      "pt-Br": "Fotografia 13",
+      "en": "Photography 13"
+    },
+    "description": {
+      "pt-Br": "*Sem título*, 2022.",
+      "en": "*Untitled*, 2022."
+    },
+    "image": "/images/photography/photography-13.png",
+    "orientation": "square",
+    "group": "strange-landscape",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-14",
+    "order": 40,
+    "title": {
+      "pt-Br": "Fotografia 14",
+      "en": "Photography 14"
+    },
+    "description": {
+      "pt-Br": "*Sem título*, 2021.",
+      "en": "*Untitled*, 2021."
+    },
+    "image": "/images/photography/photography-14.png",
+    "orientation": "square",
+    "group": "strange-landscape-2",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-15",
+    "order": 41,
+    "title": {
+      "pt-Br": "Fotografia 15",
+      "en": "Photography 15"
+    },
+    "description": {
+      "pt-Br": "*Sem título*, 2021.",
+      "en": "*Untitled*, 2021."
+    },
+    "image": "/images/photography/photography-15.png",
+    "orientation": "square",
+    "group": "strange-landscape-2",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-16",
+    "order": 42,
+    "title": {
+      "pt-Br": "Fotografia 16",
+      "en": "Photography 16"
+    },
+    "description": {
+      "pt-Br": "*Sem título*, 2021.",
+      "en": "*Untitled*, 2021."
+    },
+    "image": "/images/photography/photography-16.png",
+    "orientation": "square",
+    "group": "strange-landscape-1",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-17",
+    "order": 43,
+    "title": {
+      "pt-Br": "Fotografia 17",
+      "en": "Photography 17"
+    },
+    "description": {
+      "pt-Br": "*Sem título*, 2021.",
+      "en": "*Untitled*, 2021."
+    },
+    "image": "/images/photography/photography-17.png",
+    "orientation": "square",
+    "group": "strange-landscape-1",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-18",
+    "order": 44,
+    "title": {
+      "pt-Br": "Fotografia 18",
+      "en": "Photography 18"
+    },
+    "description": {
+      "pt-Br": "Série fotografias experimentais realizadas em 2022 fora do ambiente academico, utilizando a camera do celular em movimento gerando abstrações de paisagens.",
+      "en": "Series of experimental photographs made in 2022 outside the academic environment, using the phone camera in motion generating abstractions of landscapes."
+    },
+    "image": "/images/photography/photography-18.png",
+    "orientation": "square",
+    "group": "strange-landscape-outdoor",
+    "groupDisplay": "single-caption",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-19",
+    "order": 45,
+    "title": {
+      "pt-Br": "Fotografia 19",
+      "en": "Photography 19"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/photography/photography-19.png",
+    "orientation": "square",
+    "group": "strange-landscape-outdoor",
+    "groupDisplay": "single-caption",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-20",
+    "order": 46,
+    "title": {
+      "pt-Br": "Fotografia 20",
+      "en": "Photography 20"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/photography/photography-20.png",
+    "orientation": "square",
+    "group": "strange-landscape-outdoor",
+    "groupDisplay": "single-caption",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-21",
+    "order": 47,
+    "title": {
+      "pt-Br": "Fotografia 21",
+      "en": "Photography 21"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/photography/photography-21.png",
+    "orientation": "square",
+    "group": "strange-landscape-outdoor",
+    "groupDisplay": "single-caption",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-22",
+    "order": 48,
+    "title": {
+      "pt-Br": "Fotografia 22",
+      "en": "Photography 22"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/photography/photography-22.png",
+    "orientation": "square",
+    "group": "strange-landscape-outdoor",
+    "groupDisplay": "single-caption",
+    "types": [
+      "photography"
+    ]
+  },
+  {
+    "id": "photography-23",
+    "order": 49,
+    "title": {
+      "pt-Br": "Fotografia 23",
+      "en": "Photography 23"
+    },
+    "description": {
+      "pt-Br": "*Dinner*, 2018.",
+      "en": "*Dinner*, 2018."
+    },
+    "image": "/images/photography/photography-23.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "photography"
+    ]
+  }
+]

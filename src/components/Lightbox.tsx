@@ -3,6 +3,7 @@ import type { Artwork } from '../data/artworks'
 import type { Locale } from '../data/artworks'
 import { useLocale } from '../i18n/LocaleContext'
 import { formatArtworkTypes } from '../i18n/formatArtworkTypes'
+import { formatCaptionText, plainCaptionText } from '../utils/formatCaptionText'
 
 type Props = {
   artworks: Artwork[]
@@ -72,8 +73,7 @@ export function Lightbox({
   const title = current.title[locale]
   const description = current.description[locale]
   const typeLabel = formatArtworkTypes(current.types, t)
-  const caption = [typeLabel, title, description].filter(Boolean).join(' — ')
-  const alt = caption || current.id
+  const alt = [typeLabel, plainCaptionText(title || ''), plainCaptionText(description || '')].filter(Boolean).join(' — ') || current.id
 
   return (
     <div
@@ -87,7 +87,15 @@ export function Lightbox({
     >
       <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
         <img src={current.image} alt={alt} />
-        {caption && <p className="lightbox-caption">{caption}</p>}
+        {(typeLabel || title || description) && (
+          <p className="lightbox-caption">
+            {typeLabel && <span>{typeLabel}</span>}
+            {typeLabel && (title || description) && ' — '}
+            {title && <strong>{formatCaptionText(title)}</strong>}
+            {title && description && ' — '}
+            {description && formatCaptionText(description)}
+          </p>
+        )}
       </div>
       <div className="lightbox-actions" onClick={(e) => e.stopPropagation()}>
         <button

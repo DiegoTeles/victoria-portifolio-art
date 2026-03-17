@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import { Outlet, Link, NavLink, useLocation } from 'react-router-dom'
 import { useLocale } from '../../i18n/LocaleContext'
 import { LocaleSelector } from '../LocaleSelector'
+import { ThemeToggle } from '../ThemeToggle'
 
-const GALLERY_TYPES = ['desenho', 'pintura', 'fotografia', 'arte-digital'] as const
+const GALLERY_TYPES = ['drawing', 'painting', 'photography', 'digital-art'] as const
 
 export function Layout() {
   const { locale, t } = useLocale()
@@ -22,10 +23,10 @@ export function Layout() {
   }, [location.pathname])
 
   const typeKeys = {
-    'desenho': 'typeDesenho',
-    'pintura': 'typePintura',
-    'fotografia': 'typeFotografia',
-    'arte-digital': 'typeArteDigital',
+    'drawing': 'typeDrawing',
+    'painting': 'typePainting',
+    'photography': 'typePhotography',
+    'digital-art': 'typeDigitalArt',
   } as const
 
   return (
@@ -61,6 +62,7 @@ export function Layout() {
         </nav>
         <div className="header-locale">
           <LocaleSelector />
+          <ThemeToggle />
         </div>
         <button
           type="button"
@@ -123,6 +125,7 @@ export function Layout() {
             </nav>
             <div className="drawer-locale">
               <LocaleSelector />
+              <ThemeToggle />
             </div>
           </aside>
         </>

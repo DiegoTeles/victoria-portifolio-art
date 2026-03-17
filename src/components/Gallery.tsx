@@ -3,23 +3,28 @@ import { artworks as artworksList, type Artwork } from '../data/artworks'
 import { useLocale } from '../i18n/LocaleContext'
 import type { ViewMode } from './ViewToggle'
 import { ArtworkCard } from './ArtworkCard'
-import { ArtworkPair } from './ArtworkPair'
+import { ArtworkGroup } from './ArtworkGroup'
 import { Lightbox } from './Lightbox'
 
 type Cell =
   | { type: 'single'; artwork: Artwork }
-  | { type: 'pair'; artworks: [Artwork, Artwork] }
+  | { type: 'group'; artworks: Artwork[] }
 
 function buildCells(artworks: Artwork[]): Cell[] {
   const cells: Cell[] = []
   let i = 0
   while (i < artworks.length) {
     const a = artworks[i]
-    if (a.pair) {
-      const j = artworks.findIndex((x, idx) => idx > i && x.pair === a.pair)
-      if (j !== -1) {
-        cells.push({ type: 'pair', artworks: [a, artworks[j]] })
-        i = j + 1
+    if (a.group) {
+      const group: Artwork[] = [a]
+      let j = i + 1
+      while (j < artworks.length && artworks[j].group === a.group && group.length < 5) {
+        group.push(artworks[j])
+        j += 1
+      }
+      if (group.length >= 2) {
+        cells.push({ type: 'group', artworks: group })
+        i = j
         continue
       }
     }
@@ -57,16 +62,15 @@ export function Gallery({ viewMode }: GalleryProps) {
               />
             )
           }
-          const idxFirst = indexCounter
-          const idxSecond = indexCounter + 1
-          indexCounter += 2
+          const startIdx = indexCounter
+          indexCounter += cell.artworks.length
           return (
-            <ArtworkPair
-              key={cell.artworks[0].id + cell.artworks[1].id}
+            <ArtworkGroup
+              key={cell.artworks.map((a) => a.id).join('-')}
               artworks={cell.artworks}
               locale={locale}
-              onSelectFirst={() => openLightbox(idxFirst)}
-              onSelectSecond={() => openLightbox(idxSecond)}
+              groupDisplay={cell.artworks[0].groupDisplay}
+              onSelect={(offset) => openLightbox(startIdx + offset)}
             />
           )
         })}
