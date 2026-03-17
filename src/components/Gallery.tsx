@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
 import { artworks as artworksList, type Artwork, type ArtworkType } from '../data/artworks'
+
+export type GalleryFilterType = ArtworkType | 'drawing-painting'
 import { useLocale } from '../i18n/LocaleContext'
 import type { ViewMode } from './ViewToggle'
 import { ArtworkCard } from './ArtworkCard'
@@ -34,7 +36,7 @@ function buildCells(artworks: Artwork[]): Cell[] {
   return cells
 }
 
-type GalleryProps = { viewMode: ViewMode; typeFilter?: ArtworkType }
+type GalleryProps = { viewMode: ViewMode; typeFilter?: GalleryFilterType }
 
 export function Gallery({ viewMode, typeFilter }: GalleryProps) {
   const { locale } = useLocale()
@@ -42,6 +44,9 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
 
   const filteredArtworks = useMemo(() => {
     if (!typeFilter) return artworksList
+    if (typeFilter === 'drawing-painting') {
+      return artworksList.filter((a) => a.types.includes('drawing') || a.types.includes('painting'))
+    }
     return artworksList.filter((a) => a.types.includes(typeFilter))
   }, [typeFilter])
 

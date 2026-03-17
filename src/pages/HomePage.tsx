@@ -5,7 +5,7 @@ import { Gallery } from '../components/Gallery'
 import { BackToTop } from '../components/BackToTop'
 
 const VIEW_STORAGE_KEY = 'portfolio-view'
-const GALLERY_TYPES = ['drawing', 'painting', 'photography', 'digital-art', 'movies'] as const
+const GALLERY_TYPES = ['drawing-painting', 'photography', 'digital-art', 'movies'] as const
 type GalleryType = (typeof GALLERY_TYPES)[number]
 
 export function HomePage() {

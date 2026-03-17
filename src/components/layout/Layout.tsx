@@ -4,7 +4,7 @@ import { useLocale } from '../../i18n/LocaleContext'
 import { LocaleSelector } from '../LocaleSelector'
 import { ThemeToggle } from '../ThemeToggle'
 
-const GALLERY_TYPES = ['drawing', 'painting', 'photography', 'digital-art', 'movies'] as const
+const GALLERY_TYPES = ['drawing-painting', 'photography', 'digital-art', 'movies'] as const
 
 export function Layout() {
   const { locale, t } = useLocale()
@@ -23,8 +23,7 @@ export function Layout() {
   }, [location.pathname])
 
   const typeKeys = {
-    'drawing': 'typeDrawing',
-    'painting': 'typePainting',
+    'drawing-painting': 'typeDrawingPainting',
     'photography': 'typePhotography',
     'digital-art': 'typeDigitalArt',
     'movies': 'typeMovies',
