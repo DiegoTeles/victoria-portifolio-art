@@ -52,6 +52,10 @@ export const translations = {
     closeMenu: 'Fechar menu',
     themeToggleDark: 'Ativar modo escuro',
     themeToggleLight: 'Ativar modo claro',
+    paginationPrev: 'Anterior',
+    paginationNext: 'Próxima',
+    paginationPage: 'Página',
+    paginationOf: 'de',
   },
   en: {
     next: 'Next',
@@ -104,6 +108,10 @@ export const translations = {
     closeMenu: 'Close menu',
     themeToggleDark: 'Enable dark mode',
     themeToggleLight: 'Enable light mode',
+    paginationPrev: 'Previous',
+    paginationNext: 'Next',
+    paginationPage: 'Page',
+    paginationOf: 'of',
   },
   fr: {
     next: 'Suivante',
@@ -156,6 +164,10 @@ export const translations = {
     closeMenu: 'Fermer le menu',
     themeToggleDark: 'Activer le mode sombre',
     themeToggleLight: 'Activer le mode clair',
+    paginationPrev: 'Précédent',
+    paginationNext: 'Suivant',
+    paginationPage: 'Page',
+    paginationOf: 'sur',
   },
   it: {
     next: 'Successiva',
@@ -208,6 +220,10 @@ export const translations = {
     closeMenu: 'Chiudi menu',
     themeToggleDark: 'Attiva modalità scura',
     themeToggleLight: 'Attiva modalità chiara',
+    paginationPrev: 'Precedente',
+    paginationNext: 'Successiva',
+    paginationPage: 'Pagina',
+    paginationOf: 'di',
   },
   de: {
     next: 'Weiter',
@@ -260,6 +276,10 @@ export const translations = {
     closeMenu: 'Menü schließen',
     themeToggleDark: 'Dunkelmodus aktivieren',
     themeToggleLight: 'Hellmodus aktivieren',
+    paginationPrev: 'Zurück',
+    paginationNext: 'Weiter',
+    paginationPage: 'Seite',
+    paginationOf: 'von',
   },
 } as const satisfies Record<Locale, Record<string, string>>
 

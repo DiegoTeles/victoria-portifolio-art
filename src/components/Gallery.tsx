@@ -1,12 +1,15 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect, useRef } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { artworks as artworksList, type Artwork, type ArtworkType } from '../data/artworks'
-
-export type GalleryFilterType = ArtworkType | 'drawing-painting'
 import { useLocale } from '../i18n/LocaleContext'
 import type { ViewMode } from './ViewToggle'
 import { ArtworkCard } from './ArtworkCard'
 import { ArtworkGroup } from './ArtworkGroup'
 import { Lightbox } from './Lightbox'
+
+export type GalleryFilterType = ArtworkType | 'drawing-painting'
+
+const PAGE_SIZE = 10
 
 type Cell =
   | { type: 'single'; artwork: Artwork }
@@ -39,7 +42,8 @@ function buildCells(artworks: Artwork[]): Cell[] {
 type GalleryProps = { viewMode: ViewMode; typeFilter?: GalleryFilterType }
 
 export function Gallery({ viewMode, typeFilter }: GalleryProps) {
-  const { locale } = useLocale()
+  const { locale, t } = useLocale()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
   const filteredArtworks = useMemo(() => {
@@ -50,8 +54,64 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
     return artworksList.filter((a) => a.types.includes(typeFilter))
   }, [typeFilter])
 
-  const cells = useMemo(() => buildCells(filteredArtworks), [filteredArtworks])
-  const flatArtworks = useMemo(() => filteredArtworks, [filteredArtworks])
+  const allCells = useMemo(() => buildCells(filteredArtworks), [filteredArtworks])
+  const totalPages = Math.max(1, Math.ceil(allCells.length / PAGE_SIZE))
+  const pageParam = searchParams.get('page')
+  const currentPage = Math.min(
+    totalPages,
+    Math.max(1, parseInt(pageParam ?? '1', 10) || 1)
+  )
+
+  const prevFilterRef = useRef(typeFilter)
+
+  useEffect(() => {
+    const param = searchParams.get('page')
+    const expected = String(currentPage)
+    if (param != null && param !== expected) {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev)
+        next.set('page', expected)
+        return next
+      })
+    }
+  }, [currentPage, searchParams, setSearchParams])
+
+  useEffect(() => {
+    if (prevFilterRef.current !== typeFilter) {
+      prevFilterRef.current = typeFilter
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev)
+        next.set('page', '1')
+        return next
+      })
+    }
+  }, [typeFilter, setSearchParams])
+
+  const cells = useMemo(
+    () =>
+      allCells.slice(
+        (currentPage - 1) * PAGE_SIZE,
+        currentPage * PAGE_SIZE
+      ),
+    [allCells, currentPage]
+  )
+
+  const pageArtworks = useMemo(
+    () =>
+      cells.flatMap((c) =>
+        c.type === 'single' ? [c.artwork] : c.artworks
+      ),
+    [cells]
+  )
+
+  const goToPage = (n: number) => {
+    const page = Math.max(1, Math.min(totalPages, n))
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev)
+      next.set('page', String(page))
+      return next
+    })
+  }
 
   let indexCounter = 0
   const openLightbox = (index: number) => setLightboxIndex(index)
@@ -85,9 +145,34 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
           )
         })}
       </div>
+      {totalPages > 1 && (
+        <nav className="gallery-pagination" aria-label="Paginação da galeria">
+          <button
+            type="button"
+            className="pagination-btn"
+            disabled={currentPage <= 1}
+            onClick={() => goToPage(currentPage - 1)}
+            aria-label={t('paginationPrev')}
+          >
+            {t('paginationPrev')}
+          </button>
+          <span className="pagination-info" aria-live="polite">
+            {t('paginationPage')} {currentPage} {t('paginationOf')} {totalPages}
+          </span>
+          <button
+            type="button"
+            className="pagination-btn"
+            disabled={currentPage >= totalPages}
+            onClick={() => goToPage(currentPage + 1)}
+            aria-label={t('paginationNext')}
+          >
+            {t('paginationNext')}
+          </button>
+        </nav>
+      )}
       {lightboxIndex !== null && (
         <Lightbox
-          artworks={flatArtworks}
+          artworks={pageArtworks}
           initialIndex={lightboxIndex}
           locale={locale}
           onClose={closeLightbox}
