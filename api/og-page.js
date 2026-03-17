@@ -5,7 +5,9 @@ import { fileURLToPath } from 'url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 function getText(obj, locale = 'pt-Br') {
-  if (!obj || typeof obj !== 'object') return ''
+  if (obj == null) return ''
+  if (typeof obj === 'string') return obj
+  if (typeof obj !== 'object') return ''
   return obj[locale] ?? obj['en'] ?? obj['pt-Br'] ?? Object.values(obj)[0] ?? ''
 }
 

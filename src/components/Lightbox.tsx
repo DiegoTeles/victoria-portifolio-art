@@ -74,7 +74,7 @@ export function Lightbox({
 
   if (!current) return null
 
-  const title = getLocalized(current.title, locale)
+  const title = current.title
   const description = getLocalized(current.description, locale)
   const typeLabel = formatArtworkTypes(current.types, t)
   const alt = [typeLabel, plainCaptionText(title || ''), plainCaptionText(description || '')].filter(Boolean).join(' — ') || current.id

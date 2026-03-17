@@ -13,7 +13,7 @@ type Props = {
 }
 
 export function ArtworkCard({ artwork, locale, onSelect }: Props) {
-  const title = getLocalized(artwork.title, locale)
+  const title = artwork.title
   const description = getLocalized(artwork.description, locale)
   const alt = plainCaptionText(title || description || '')
   const videoRef = useRef<HTMLVideoElement>(null)

@@ -13,7 +13,7 @@ function setArtworkMeta(
   siteTitle: string,
   defaultDesc: string
 ) {
-  const title = plainMetaText(getLocalized(artwork.title, locale))
+  const title = plainMetaText(artwork.title)
   const desc = plainMetaText(getLocalized(artwork.description, locale))
   const img = artwork.image || '/images/digital-art/digital-art-01.png'
   const base = window.location.origin

@@ -21,9 +21,9 @@ export function ArtworkPair({
   const [a, b] = artworks
   const typeA = formatArtworkTypes(a.types, t)
   const typeB = formatArtworkTypes(b.types, t)
-  const aTitle = getLocalized(a.title, locale)
+  const aTitle = a.title
   const aDesc = getLocalized(a.description, locale)
-  const bTitle = getLocalized(b.title, locale)
+  const bTitle = b.title
   const bDesc = getLocalized(b.description, locale)
 
   return (

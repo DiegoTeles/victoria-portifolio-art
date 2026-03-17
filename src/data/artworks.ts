@@ -18,7 +18,7 @@ export function getLocalized(obj: LocalizedText | null | undefined, locale: Loca
 
 export interface Artwork {
   id: string
-  title: LocalizedText
+  title: string
   description: LocalizedText
   image?: string
   video?: string
