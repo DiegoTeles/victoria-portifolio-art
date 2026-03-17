@@ -34,7 +34,7 @@ export function Layout() {
     <div className="layout">
       <header className="header">
         <Link to="/" className="navbar-logo" aria-label={t('goHome')}>
-          Victoria Maria
+          Victória Maria
         </Link>
         <nav className="header-nav-center">
           <div className="nav-item-with-dropdown">

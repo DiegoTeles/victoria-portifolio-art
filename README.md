@@ -1,4 +1,4 @@
-# Portfólio Victoria Maria
+# Portfólio Victória Maria
 
 Site de portfólio em React (Vite + TypeScript) com galeria, página Sobre, Contato e suporte a PT-BR/EN.
 

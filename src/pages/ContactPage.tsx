@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { useLocale } from '../i18n/LocaleContext'
 
-const CONTACT_EMAIL = 'vi.vicm@hotmail.com'
+const CONTACT_EMAIL = 'viccctoriamaria@gmail.com'
 
 export function ContactPage() {
   const { t } = useLocale()

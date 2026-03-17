@@ -1,12 +1,36 @@
+import { useState } from 'react'
 import { useLocale } from '../i18n/LocaleContext'
 
 const PORTRAIT_IMAGE = '/images/profile.webp'
 
+type AboutTab = 'about' | 'curriculum'
+
 export function AboutPage() {
   const { t } = useLocale()
+  const [tab, setTab] = useState<AboutTab>('about')
   return (
     <section className="page-content about-page">
       <h1 className="page-title">{t('navAbout')}</h1>
+      <div className="about-tabs" role="tablist" aria-label={t('navAbout')}>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={tab === 'about'}
+          className={`about-tab ${tab === 'about' ? 'about-tab--active' : ''}`}
+          onClick={() => setTab('about')}
+        >
+          {t('aboutTabAbout')}
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={tab === 'curriculum'}
+          className={`about-tab ${tab === 'curriculum' ? 'about-tab--active' : ''}`}
+          onClick={() => setTab('curriculum')}
+        >
+          {t('aboutTabCurriculum')}
+        </button>
+      </div>
       <div className="about-layout">
         <div className="about-photo-block">
           <img
@@ -24,25 +48,65 @@ export function AboutPage() {
                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
               </svg>
             </a>
-            <a href="#" className="about-social-link" aria-label="Twitter">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
-                <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
-              </svg>
-            </a>
-            <a href="#" className="about-social-link" aria-label="LinkedIn">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                <rect x="2" y="9" width="4" height="12" />
-                <circle cx="4" cy="4" r="2" />
-              </svg>
-            </a>
           </div>
         </div>
-        <div className="about-bio">
-          <p className="page-text">{t('aboutBio1')}</p>
-          <p className="page-text">{t('aboutBio2')}</p>
-          <p className="page-text">{t('aboutBio3')}</p>
+        <div className="about-bio" role="tabpanel">
+          {tab === 'about' && (
+            <>
+              <p className="page-text">{t('aboutBio1')}</p>
+              <p className="page-text">{t('aboutBio2')}</p>
+              <p className="page-text">{t('aboutBio3')}</p>
+            </>
+          )}
+          {tab === 'curriculum' && (
+            <div className="about-curriculum">
+              <p className="about-curriculum-contact">{t('curriculumContact')}</p>
+              <section className="about-curriculum-section">
+                <h2 className="about-curriculum-title">{t('curriculumSectionObjective')}</h2>
+                <p className="page-text">{t('curriculumObjective')}</p>
+              </section>
+              <section className="about-curriculum-section">
+                <h2 className="about-curriculum-title">{t('curriculumSectionFormation')}</h2>
+                <p className="page-text">{t('curriculumFormation')}</p>
+              </section>
+              <section className="about-curriculum-section">
+                <h2 className="about-curriculum-title">{t('curriculumSectionExperience')}</h2>
+                <ul className="about-curriculum-list">
+                  {t('curriculumExperience').split('\n').filter(Boolean).map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+              <section className="about-curriculum-section">
+                <h2 className="about-curriculum-title">{t('curriculumSectionSkills')}</h2>
+                <ul className="about-curriculum-list">
+                  {t('curriculumSkills').split('\n').filter(Boolean).map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+              <section className="about-curriculum-section">
+                <h2 className="about-curriculum-title">{t('curriculumSectionIT')}</h2>
+                <ul className="about-curriculum-list">
+                  {t('curriculumIT').split('\n').filter(Boolean).map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+              <section className="about-curriculum-section">
+                <h2 className="about-curriculum-title">{t('curriculumSectionLanguages')}</h2>
+                <ul className="about-curriculum-list">
+                  {t('curriculumLanguages').split('\n').filter(Boolean).map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+              <section className="about-curriculum-section">
+                <h2 className="about-curriculum-title">{t('curriculumSectionAdditional')}</h2>
+                <p className="page-text">{t('curriculumAdditional')}</p>
+              </section>
+            </div>
+          )}
         </div>
       </div>
     </section>
