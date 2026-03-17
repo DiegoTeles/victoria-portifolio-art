@@ -34,13 +34,26 @@ export function ArtworkCard({ artwork, locale, onSelect }: Props) {
       >
         <span className="artwork-image-wrap">
           <span className="artwork-image-inner">
-            <img
-              src={artwork.image}
-              alt={alt}
-              loading="lazy"
-              width={800}
-              height={600}
-            />
+            {artwork.video ? (
+              <video
+                src={artwork.video}
+                poster={artwork.image ?? undefined}
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                width={800}
+                height={600}
+              />
+            ) : (
+              <img
+                src={artwork.image}
+                alt={alt}
+                loading="lazy"
+                width={800}
+                height={600}
+              />
+            )}
             <ArtworkInfoIcon info={artwork.info?.[locale] ?? null} />
           </span>
         </span>

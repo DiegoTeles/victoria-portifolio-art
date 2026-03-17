@@ -5,15 +5,17 @@ import { Gallery } from '../components/Gallery'
 import { BackToTop } from '../components/BackToTop'
 
 const VIEW_STORAGE_KEY = 'portfolio-view'
-const GALLERY_TYPES = ['drawing', 'painting', 'photography', 'digital-art'] as const
+const GALLERY_TYPES = ['drawing', 'painting', 'photography', 'digital-art', 'movies'] as const
 type GalleryType = (typeof GALLERY_TYPES)[number]
 
 export function HomePage() {
   const location = useLocation()
   const typeFilter =
-    location.pathname === '/' && location.hash
-      ? (location.hash.slice(1) as GalleryType)
-      : undefined
+    location.pathname === '/movies'
+      ? 'movies'
+      : location.pathname === '/' && location.hash
+        ? (location.hash.slice(1) as GalleryType)
+        : undefined
   const validFilter =
     typeFilter && GALLERY_TYPES.includes(typeFilter) ? typeFilter : undefined
 

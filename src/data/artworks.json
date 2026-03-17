@@ -505,6 +505,24 @@
     ]
   },
   {
+    "id": "movies-01",
+    "order": 80,
+    "title": {
+      "pt-Br": "Rambling about death",
+      "en": "Rambling about death"
+    },
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "video": "/movies/movies-01.mp4",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "movies"
+    ]
+  },
+  {
     "id": "photography-01",
     "order": 16,
     "title": {
@@ -543,17 +561,21 @@
   },
   {
     "id": "digital-art-01",
-    "order": 18,
+    "order": 29,
     "title": {
       "pt-Br": "Arte digital 1",
       "en": "Digital art 1"
     },
     "description": {
       "pt-Br": "*Cativeiro*, 2018. Lambe, aproximadamente 90 x 110cm.",
-      "en": ""
+      "en": "*Cativeiro*, 2018. Lambe, approximately 90 x 110cm."
     },
     "image": "/images/digital-art/digital-art-01.png",
     "orientation": "square",
+    "info": {
+      "pt-Br": "Lambe realizado em 2018 intitulado Cativeiro. A montagem foi feita com base em uma pintura, um desenho e fotografias autorais através do Photoshop. Na obra vê-se a sociedade como cativeiro, onde alguém está preso na em relações sociais nada afetivas e as consequências que tal indiferença gera na \"natureza\" ,aqui vista como não somente em sua forma mais pura, mas também em sua forma mais cruel: na natureza humana.",
+      "en": "Lambe realizado em 2018 intitulado Cativeiro. A montagem foi feita com base em uma pintura, um desenho e fotografias autorais através do Photoshop. Na obra vê-se a sociedade como cativeiro, onde alguém está preso na em relações sociais nada afetivas e as consequências que tal indiferença gera na \"natureza\" ,aqui vista como não somente em sua forma mais pura, mas também em sua forma mais cruel: na natureza humana."
+    },
     "group": null,
     "types": [
       "digital-art"

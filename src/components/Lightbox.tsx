@@ -87,12 +87,22 @@ export function Lightbox({
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-        <ImageZoom
-          src={current.image}
-          alt={alt}
-          zoom={250}
-          theme={{ root: 'lightbox-zoom-root', image: 'lightbox-zoom-image' }}
-        />
+        {current.video ? (
+          <video
+            src={current.video}
+            poster={current.image ?? undefined}
+            controls
+            preload="auto"
+            style={{ maxWidth: '100%', maxHeight: '85vh' }}
+          />
+        ) : (
+          <ImageZoom
+            src={current.image!}
+            alt={alt}
+            zoom={250}
+            theme={{ root: 'lightbox-zoom-root', image: 'lightbox-zoom-image' }}
+          />
+        )}
         {(typeLabel || title || description) && (
           <p className="lightbox-caption">
             {description && formatCaptionText(description)}

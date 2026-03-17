@@ -6,6 +6,7 @@ const typeKeys: Record<ArtworkType, TranslationKey> = {
   'painting': 'typePainting',
   'photography': 'typePhotography',
   'digital-art': 'typeDigitalArt',
+  'movies': 'typeMovies',
 }
 
 export function formatArtworkTypes(

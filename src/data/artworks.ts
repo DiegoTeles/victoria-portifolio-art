@@ -2,7 +2,7 @@ import artworksData from './artworks.json'
 
 export type Locale = 'pt-Br' | 'en'
 
-export type ArtworkType = 'drawing' | 'painting' | 'photography' | 'digital-art'
+export type ArtworkType = 'drawing' | 'painting' | 'photography' | 'digital-art' | 'movies'
 
 export type GroupDisplayType =
   | 'caption-in-grid'
@@ -14,7 +14,8 @@ export interface Artwork {
   id: string
   title: { [K in Locale]: string }
   description: { [K in Locale]: string }
-  image: string
+  image?: string
+  video?: string
   orientation: 'square' | 'horizontal' | 'vertical'
   group: string | null
   groupDisplay?: GroupDisplayType
