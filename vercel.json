@@ -1,5 +1,10 @@
 {
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  ],
+  "functions": {
+    "api/og-page.js": {
+      "includeFiles": "src/data/artworks.json"
+    }
+  }
 }

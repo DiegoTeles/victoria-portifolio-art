@@ -1,7 +1,54 @@
 import { useMemo, useState, useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { artworks as artworksList, type Artwork, type ArtworkType } from '../data/artworks'
+import { artworks as artworksList, type Artwork, type ArtworkType, getLocalized } from '../data/artworks'
 import { useLocale } from '../i18n/LocaleContext'
+
+function plainMetaText(str: string): string {
+  return str.replace(/\*([^*]+)\*/g, '$1').replace(/\n/g, ' ').trim()
+}
+
+function setArtworkMeta(
+  artwork: Artwork,
+  locale: 'pt-Br' | 'en' | 'fr' | 'it' | 'de',
+  siteTitle: string,
+  defaultDesc: string
+) {
+  const title = plainMetaText(getLocalized(artwork.title, locale))
+  const desc = plainMetaText(getLocalized(artwork.description, locale))
+  const img = artwork.image || '/images/digital-art/digital-art-01.png'
+  const base = window.location.origin
+  const imageUrl = img.startsWith('http') ? img : base + img
+  const pageTitle = title ? `${title} — ${siteTitle}` : siteTitle
+  const metaDesc = desc || defaultDesc
+  document.title = pageTitle
+  const setMeta = (selector: string, attr: string, value: string) => {
+    const el = document.querySelector(selector)
+    if (el) el.setAttribute(attr, value)
+  }
+  setMeta('meta[name="description"]', 'content', metaDesc)
+  setMeta('meta[property="og:title"]', 'content', pageTitle)
+  setMeta('meta[property="og:description"]', 'content', metaDesc)
+  setMeta('meta[property="og:image"]', 'content', imageUrl)
+  setMeta('meta[name="twitter:title"]', 'content', pageTitle)
+  setMeta('meta[name="twitter:description"]', 'content', metaDesc)
+  setMeta('meta[name="twitter:image"]', 'content', imageUrl)
+}
+
+function resetMeta(siteTitle: string, siteDesc: string, defaultImage: string) {
+  const base = window.location.origin
+  document.title = siteTitle
+  const setMeta = (selector: string, attr: string, value: string) => {
+    const el = document.querySelector(selector)
+    if (el) el.setAttribute(attr, value)
+  }
+  setMeta('meta[name="description"]', 'content', siteDesc)
+  setMeta('meta[property="og:title"]', 'content', siteTitle)
+  setMeta('meta[property="og:description"]', 'content', siteDesc)
+  setMeta('meta[property="og:image"]', 'content', base + defaultImage)
+  setMeta('meta[name="twitter:title"]', 'content', siteTitle)
+  setMeta('meta[name="twitter:description"]', 'content', siteDesc)
+  setMeta('meta[name="twitter:image"]', 'content', base + defaultImage)
+}
 import type { ViewMode } from './ViewToggle'
 import { ArtworkCard } from './ArtworkCard'
 import { ArtworkGroup } from './ArtworkGroup'
@@ -133,6 +180,19 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
     }
     setLightboxIndex(imageTarget.indexInPage)
   }, [imageTarget, currentPage, setSearchParams])
+
+  useEffect(() => {
+    const siteTitle = t('siteTitle')
+    const siteDesc = t('siteDescription')
+    const defaultImg = '/images/digital-art/digital-art-01.png'
+    if (imageParam) {
+      const artwork = artworksList.find((a) => a.id === imageParam)
+      if (artwork) setArtworkMeta(artwork, locale, siteTitle, siteDesc)
+      else resetMeta(siteTitle, siteDesc, defaultImg)
+    } else {
+      resetMeta(siteTitle, siteDesc, defaultImg)
+    }
+  }, [imageParam, locale, t])
 
   const cells = useMemo(
     () =>
