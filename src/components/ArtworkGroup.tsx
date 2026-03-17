@@ -1,5 +1,6 @@
 import type { Artwork, GroupDisplayType } from '../data/artworks'
 import type { Locale } from '../data/artworks'
+import { getLocalized } from '../data/artworks'
 import { formatCaptionText } from '../utils/formatCaptionText'
 import { ArtworkInfoIcon } from './ArtworkInfoIcon'
 
@@ -16,11 +17,11 @@ const ASYMMETRIC_5_CAPTION_SLOT = 2
 export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props) {
   const count = Math.min(Math.max(artworks.length, 2), 6)
   const slice = artworks.slice(0, count)
-  const descriptions = slice.map((a) => a.description[locale])
+  const descriptions = slice.map((a) => getLocalized(a.description, locale))
   const nonEmptyCount = descriptions.filter(Boolean).length
   const singleCaption = nonEmptyCount <= 1
   const sharedCaption = descriptions.find(Boolean) ?? ''
-  const captionedIndex = slice.findIndex((a) => a.description[locale])
+  const captionedIndex = slice.findIndex((a) => getLocalized(a.description, locale))
   const captionInGridAuto = singleCaption && !!sharedCaption && (count === 5 || count === 6)
   const useAsymmetric5 = groupDisplay === 'asymmetric-5' && count === 5
   const useCaptionInGrid =
@@ -56,7 +57,7 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
             )
           }
           const artwork = slice[sourceIndex]!
-          const alt = artwork.description[locale] || artwork.id
+          const alt = getLocalized(artwork.description, locale) || artwork.id
           return (
             <button
               key={artwork.id}
@@ -80,7 +81,7 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
                     width={800}
                     height={600}
                   />
-                  <ArtworkInfoIcon info={artwork.info?.[locale] ?? null} />
+                  <ArtworkInfoIcon info={getLocalized(artwork.info, locale) || null} />
                 </span>
               </span>
             </button>
@@ -115,7 +116,7 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
           const imgIdx = cellIdx < CAPTION_CELL_INDEX ? cellIdx : cellIdx - 1
           const sourceIndex = count === 6 ? imageIndices[imgIdx]! : [0, 1, 2, 3, 4][imgIdx]!
           const artwork = slice[sourceIndex]!
-          const alt = artwork.description[locale] || artwork.id
+          const alt = getLocalized(artwork.description, locale) || artwork.id
           return (
             <button
               key={artwork.id}
@@ -139,7 +140,7 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
                     width={800}
                     height={600}
                   />
-                  <ArtworkInfoIcon info={artwork.info?.[locale] ?? null} />
+                  <ArtworkInfoIcon info={getLocalized(artwork.info, locale) || null} />
                 </span>
               </span>
             </button>
@@ -156,7 +157,7 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
         style={{ margin: 0 }}
       >
         {slice.map((artwork, idx) => {
-          const desc = artwork.description[locale]
+          const desc = getLocalized(artwork.description, locale)
           const alt = desc || artwork.id
           return (
             <button
@@ -181,7 +182,7 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
                     width={800}
                     height={600}
                   />
-                  <ArtworkInfoIcon info={artwork.info?.[locale] ?? null} />
+                  <ArtworkInfoIcon info={getLocalized(artwork.info, locale) || null} />
                 </span>
               </span>
             </button>
@@ -204,7 +205,7 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
       role="group"
     >
       {slice.map((artwork, idx) => {
-        const desc = artwork.description[locale]
+        const desc = getLocalized(artwork.description, locale)
         const alt = desc || artwork.id
         return (
           <figure key={artwork.id} style={{ margin: 0 }}>
@@ -229,7 +230,7 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
                     width={800}
                     height={600}
                   />
-                  <ArtworkInfoIcon info={artwork.info?.[locale] ?? null} />
+                  <ArtworkInfoIcon info={getLocalized(artwork.info, locale) || null} />
                 </span>
               </span>
             </button>

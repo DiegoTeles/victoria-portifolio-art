@@ -1,5 +1,6 @@
 import type { Artwork } from '../data/artworks'
 import type { Locale } from '../data/artworks'
+import { getLocalized } from '../data/artworks'
 import { useLocale } from '../i18n/LocaleContext'
 import { formatArtworkTypes } from '../i18n/formatArtworkTypes'
 
@@ -20,6 +21,10 @@ export function ArtworkPair({
   const [a, b] = artworks
   const typeA = formatArtworkTypes(a.types, t)
   const typeB = formatArtworkTypes(b.types, t)
+  const aTitle = getLocalized(a.title, locale)
+  const aDesc = getLocalized(a.description, locale)
+  const bTitle = getLocalized(b.title, locale)
+  const bDesc = getLocalized(b.description, locale)
 
   return (
     <figure className="artwork-pair" style={{ margin: 0 }}>
@@ -33,11 +38,11 @@ export function ArtworkPair({
           cursor: 'pointer',
           width: '100%',
         }}
-        aria-label={a.title[locale] || a.description[locale]}
+        aria-label={aTitle || aDesc}
       >
         <img
           src={a.image}
-          alt={a.title[locale] || a.description[locale]}
+          alt={aTitle || aDesc}
           loading="lazy"
           width={800}
           height={600}
@@ -53,11 +58,11 @@ export function ArtworkPair({
           cursor: 'pointer',
           width: '100%',
         }}
-        aria-label={b.title[locale] || b.description[locale]}
+        aria-label={bTitle || bDesc}
       >
         <img
           src={b.image}
-          alt={b.title[locale] || b.description[locale]}
+          alt={bTitle || bDesc}
           loading="lazy"
           width={800}
           height={600}
@@ -65,16 +70,16 @@ export function ArtworkPair({
       </button>
       <figcaption style={{ gridColumn: '1 / -1' }}>
         {typeA && <span className="artwork-types">{typeA}</span>}
-        {typeA && (a.title[locale] || a.description[locale]) && ' · '}
-        {a.title[locale] && <strong>{a.title[locale]}</strong>}
-        {a.title[locale] && a.description[locale] && ' — '}
-        {a.description[locale]}
+        {typeA && (aTitle || aDesc) && ' · '}
+        {aTitle && <strong>{aTitle}</strong>}
+        {aTitle && aDesc && ' — '}
+        {aDesc}
         {' · '}
         {typeB && <span className="artwork-types">{typeB}</span>}
-        {typeB && (b.title[locale] || b.description[locale]) && ' · '}
-        {b.title[locale] && <strong>{b.title[locale]}</strong>}
-        {b.title[locale] && b.description[locale] && ' — '}
-        {b.description[locale]}
+        {typeB && (bTitle || bDesc) && ' · '}
+        {bTitle && <strong>{bTitle}</strong>}
+        {bTitle && bDesc && ' — '}
+        {bDesc}
       </figcaption>
     </figure>
   )

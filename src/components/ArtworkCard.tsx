@@ -1,6 +1,7 @@
 import { useRef, useCallback } from 'react'
 import type { Artwork } from '../data/artworks'
 import type { Locale } from '../data/artworks'
+import { getLocalized } from '../data/artworks'
 import { formatCaptionText, plainCaptionText } from '../utils/formatCaptionText'
 import { captureVideoPoster } from '../utils/videoPoster'
 import { ArtworkInfoIcon } from './ArtworkInfoIcon'
@@ -12,8 +13,8 @@ type Props = {
 }
 
 export function ArtworkCard({ artwork, locale, onSelect }: Props) {
-  const title = artwork.title[locale]
-  const description = artwork.description[locale]
+  const title = getLocalized(artwork.title, locale)
+  const description = getLocalized(artwork.description, locale)
   const alt = plainCaptionText(title || description || '')
   const videoRef = useRef<HTMLVideoElement>(null)
   const needPoster = Boolean(artwork.video && !artwork.image)
@@ -64,7 +65,7 @@ export function ArtworkCard({ artwork, locale, onSelect }: Props) {
                 height={600}
               />
             )}
-            <ArtworkInfoIcon info={artwork.info?.[locale] ?? null} />
+            <ArtworkInfoIcon info={getLocalized(artwork.info, locale) || null} />
           </span>
         </span>
       </button>

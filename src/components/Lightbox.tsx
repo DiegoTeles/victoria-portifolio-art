@@ -2,6 +2,7 @@ import { useEffect, useRef, useCallback, useState } from 'react'
 import ImageZoom from 'react-image-zooom'
 import type { Artwork } from '../data/artworks'
 import type { Locale } from '../data/artworks'
+import { getLocalized } from '../data/artworks'
 import { useLocale } from '../i18n/LocaleContext'
 import { formatArtworkTypes } from '../i18n/formatArtworkTypes'
 import { formatCaptionText, plainCaptionText } from '../utils/formatCaptionText'
@@ -73,8 +74,8 @@ export function Lightbox({
 
   if (!current) return null
 
-  const title = current.title[locale]
-  const description = current.description[locale]
+  const title = getLocalized(current.title, locale)
+  const description = getLocalized(current.description, locale)
   const typeLabel = formatArtworkTypes(current.types, t)
   const alt = [typeLabel, plainCaptionText(title || ''), plainCaptionText(description || '')].filter(Boolean).join(' — ') || current.id
 
@@ -109,7 +110,7 @@ export function Lightbox({
               theme={{ root: 'lightbox-zoom-root', image: 'lightbox-zoom-image' }}
             />
           )}
-          <ArtworkInfoIcon info={current.info?.[locale] ?? null} />
+          <ArtworkInfoIcon info={getLocalized(current.info, locale) || null} />
         </div>
         {(typeLabel || title || description) && (
           <p className="lightbox-caption">

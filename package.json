@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "react": "^19.2.4",
+    "react-country-flags-lazyload": "^1.0.9",
     "react-dom": "^19.2.4",
     "react-image-zooom": "^1.7.0",
     "react-router-dom": "^7.13.1",

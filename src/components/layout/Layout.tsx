@@ -13,7 +13,8 @@ export function Layout() {
 
   useEffect(() => {
     document.title = t('siteTitle')
-    document.documentElement.lang = locale === 'en' ? 'en' : 'pt-BR'
+    const langMap: Record<string, string> = { 'pt-Br': 'pt-BR', en: 'en', fr: 'fr', it: 'it', de: 'de' }
+    document.documentElement.lang = langMap[locale] ?? 'en'
     const meta = document.querySelector('meta[name="description"]')
     if (meta) meta.setAttribute('content', t('siteDescription'))
   }, [locale, t])

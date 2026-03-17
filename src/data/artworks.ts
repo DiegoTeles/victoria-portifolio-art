@@ -1,6 +1,6 @@
 import artworksData from './artworks.json'
 
-export type Locale = 'pt-Br' | 'en'
+export type Locale = 'pt-Br' | 'en' | 'fr' | 'it' | 'de'
 
 export type ArtworkType = 'drawing' | 'painting' | 'photography' | 'digital-art' | 'movies'
 
@@ -10,17 +10,23 @@ export type GroupDisplayType =
   | 'single-caption'
   | 'per-image-caption'
 
+export type LocalizedText = Partial<Record<Locale, string>>
+
+export function getLocalized(obj: LocalizedText | null | undefined, locale: Locale): string {
+  return obj?.[locale] ?? obj?.['en'] ?? obj?.['pt-Br'] ?? ''
+}
+
 export interface Artwork {
   id: string
-  title: { [K in Locale]: string }
-  description: { [K in Locale]: string }
+  title: LocalizedText
+  description: LocalizedText
   image?: string
   video?: string
   orientation: 'square' | 'horizontal' | 'vertical'
   group: string | null
   groupDisplay?: GroupDisplayType
   types: ArtworkType[]
-  info?: { [K in Locale]: string } | null
+  info?: LocalizedText | null
 }
 
 type ArtworkWithOrder = Artwork & { order: number }
