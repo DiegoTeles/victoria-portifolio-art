@@ -1,13 +1,27 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useLocale } from '../i18n/LocaleContext'
 
 const PORTRAIT_IMAGE = '/images/profile.webp'
+const MOBILE_BREAKPOINT = 639
 
 type AboutTab = 'about' | 'curriculum'
 
 export function AboutPage() {
   const { t } = useLocale()
   const [tab, setTab] = useState<AboutTab>('about')
+  const curriculumRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (window.innerWidth > MOBILE_BREAKPOINT) return
+    const id = setTimeout(() => {
+      const el = curriculumRef.current
+      if (!el) return
+      const top = el.getBoundingClientRect().top + window.scrollY - 110
+      window.scrollTo({ top, behavior: 'smooth' })
+    }, 0)
+    return () => clearTimeout(id)
+  }, [tab])
+
   return (
     <section className="page-content about-page">
       <h1 className="page-title">{t('navAbout')}</h1>
@@ -59,7 +73,7 @@ export function AboutPage() {
             </>
           )}
           {tab === 'curriculum' && (
-            <div className="about-curriculum">
+            <div ref={curriculumRef} className="about-curriculum">
               <p className="about-curriculum-contact">{t('curriculumContact')}</p>
               <section className="about-curriculum-section">
                 <h2 className="about-curriculum-title">{t('curriculumSectionObjective')}</h2>
