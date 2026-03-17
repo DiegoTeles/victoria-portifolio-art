@@ -5,6 +5,8 @@
   --border: #e0e0e0;
   --overlay: rgba(0, 0, 0, 0.9);
   --font: system-ui, -apple-system, sans-serif;
+  --scrollbar-track: #f0f0f0;
+  --scrollbar-thumb: #c0c0c0;
   --safe-top: env(safe-area-inset-top, 0);
   --safe-right: env(safe-area-inset-right, 0);
   --safe-bottom: env(safe-area-inset-bottom, 0);
@@ -17,6 +19,8 @@
   --text-muted: #a0a0a0;
   --border: #3a3a3a;
   --overlay: rgba(0, 0, 0, 0.95);
+  --scrollbar-track: #1a1a1a;
+  --scrollbar-thumb: #4a4a4a;
 }
 
 *,
@@ -33,6 +37,34 @@ body {
   color: var(--text);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
+}
+
+* {
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 6px;
+  border: 3px solid var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+*::-webkit-scrollbar-button {
+  display: none;
 }
 
 #root {
