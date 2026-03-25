@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "measure-resolution": "node scripts/measure-resolution.mjs",
+    "sort-by-resolution": "node scripts/sort-by-resolution.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

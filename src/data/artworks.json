@@ -1,492 +1,7 @@
 [
   {
-    "id": "painting-01",
-    "order": 1,
-    "title": "No clube",
-    "description": {
-      "pt-Br": "*No clube*, 2022. Nanquim, lápis de cor e acrilica sobre papel, 14,8 x 21 cm.",
-      "en": "*At the club*, 2022. Nanquim, colored pencils and acrylic on paper, 14,8 x 21 cm."
-    },
-    "image": "/images/painting/painting-01.png",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 426,
-      "height": 627,
-      "megapixels": 0.27,
-      "tier": "low",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-02",
-    "order": 2,
-    "title": "It's all over",
-    "description": {
-      "pt-Br": "*It's all over*, 2018. Nanquim, lápis de cor e giz pastel oleoso sobre papel, 21 x 29,7 cm.",
-      "en": "*It's all over*, 2018. Nanquim, colored pencils and oil pastel on paper, 21 x 29,7 cm."
-    },
-    "image": "/images/painting/painting-02.png",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 548,
-      "height": 548,
-      "megapixels": 0.3,
-      "tier": "low",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-03",
-    "order": 3,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "*Sem título*, 2016. Aquarela e nanquim sobre papel, 21 x 29,7 cm.",
-      "en": "*Untitled*, 2016. Watercolor and nanquim on paper, 21 x 29,7 cm."
-    },
-    "image": "/images/painting/painting-03.png",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 376,
-      "height": 548,
-      "megapixels": 0.21,
-      "tier": "low",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-04",
-    "order": 4,
-    "title": "A menina e o dragão",
-    "description": {
-      "pt-Br": "*A menina e o dragão*, 2016. Vários materiais sobre papel, 21 x 29,7 cm.",
-      "en": "*The girl and the dragon*, 2016. Various materials on paper, 21 x 29,7 cm."
-    },
-    "image": "/images/painting/painting-04.png",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 4001,
-      "height": 5922,
-      "megapixels": 23.69,
-      "tier": "high",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-05",
-    "order": 5,
-    "title": "Intimidade",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-05.png",
-    "orientation": "square",
-    "group": "intimidade",
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 397,
-      "height": 595,
-      "megapixels": 0.24,
-      "tier": "low",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-06",
-    "order": 6,
-    "title": "Intimidade",
-    "description": {
-      "pt-Br": "Pinturas realizadas para a série *Intimidade* decorrente da pintura com o mesmo título. Aquarela sobre papel, 29,7 x 42 cm.",
-      "en": "Paintings made for the *Intimidity* series. Watercolor on paper, 29,7 x 42 cm."
-    },
-    "image": "/images/painting/painting-06.png",
-    "orientation": "square",
-    "group": "intimidade",
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 342,
-      "height": 458,
-      "megapixels": 0.16,
-      "tier": "low",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-07",
-    "order": 7,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-07.png",
-    "orientation": "square",
-    "group": "intimidade",
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 314,
-      "height": 460,
-      "megapixels": 0.14,
-      "tier": "low",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-09",
-    "order": 9,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "*Sem título*, 2022. Grafite, aquarela e giz pastel oleoso sobre papel, 21 x 29,7 cm.",
-      "en": "*Untitled*, 2022. Graphite, watercolor and oil pastel on paper, 21 x 29,7 cm."
-    },
-    "image": "/images/painting/painting-09.png",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 459,
-      "height": 615,
-      "megapixels": 0.28,
-      "tier": "low",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-10",
-    "order": 10,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "*Sem título*, 2022. Aquarela sobre papel, 29,7 x 42 cm.",
-      "en": "*Untitled*, 2022. Watercolor on paper, 29,7 x 42 cm."
-    },
-    "image": "/images/painting/painting-10.png",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 408,
-      "height": 554,
-      "megapixels": 0.23,
-      "tier": "low",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-11",
-    "order": 11,
-    "title": "Pescoço quebrado",
-    "description": {
-      "pt-Br": "*Pescoço quebrado*, 2022. Aquarela sobre papel, 21 x 29,7 cm.",
-      "en": "*Broken neck*, 2022. Watercolor on paper, 21 x 29,7 cm."
-    },
-    "image": "/images/painting/painting-11.png",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 805,
-      "height": 559,
-      "megapixels": 0.45,
-      "tier": "low",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-12",
-    "order": 12,
-    "title": "Blood blued pillow",
-    "description": {
-      "pt-Br": "*Blood blued pillow*, 2022. Aquarela, nanquim e sangue sobre papel, 14,8 x 21 cm.",
-      "en": "*Blood blued pillow*, 2022. Watercolor, nanquim and blood on paper, 14,8 x 21 cm."
-    },
-    "image": "/images/painting/painting-12.png",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 780,
-      "height": 555,
-      "megapixels": 0.43,
-      "tier": "low",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-13",
-    "order": 13,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "Série de estudos de morcegos em aquarela sobre papel realizada para a siciplina Pintura II, no ano 2021. Todas as pinturas são tamanho 10,5 x 14,8 cm.",
-      "en": "Series of bat studies in watercolor on paper made for the Painting II discipline, in 2021. All paintings are size 10,5 x 14,8 cm."
-    },
-    "image": "/images/painting/painting-13.png",
-    "orientation": "square",
-    "group": "bat-studies",
-    "groupDisplay": "single-caption",
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 402,
-      "height": 276,
-      "megapixels": 0.11,
-      "tier": "low",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-14",
-    "order": 14,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-14.png",
-    "orientation": "square",
-    "group": "bat-studies",
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 369,
-      "height": 278,
-      "megapixels": 0.1,
-      "tier": "low",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-15",
-    "order": 15,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-15.png",
-    "orientation": "square",
-    "group": "bat-studies",
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 419,
-      "height": 273,
-      "megapixels": 0.11,
-      "tier": "low",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-16",
-    "order": 65,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-16.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 2504,
-      "height": 3484,
-      "megapixels": 8.72,
-      "tier": "high",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-17",
-    "order": 66,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-17.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 4944,
-      "height": 6944,
-      "megapixels": 34.33,
-      "tier": "high",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-19",
-    "order": 68,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-19.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 4976,
-      "height": 6968,
-      "megapixels": 34.67,
-      "tier": "high",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-20",
-    "order": 69,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-20.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 4984,
-      "height": 6936,
-      "megapixels": 34.57,
-      "tier": "high",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-21",
-    "order": 70,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-21.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 4824,
-      "height": 6952,
-      "megapixels": 33.54,
-      "tier": "high",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-22",
-    "order": 71,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-22.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 4878,
-      "height": 6776,
-      "megapixels": 33.05,
-      "tier": "high",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-23",
-    "order": 72,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-23.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 4960,
-      "height": 6784,
-      "megapixels": 33.65,
-      "tier": "high",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-24",
-    "order": 73,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-24.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 4939,
-      "height": 7016,
-      "megapixels": 34.65,
-      "tier": "high",
-      "repo": "painting"
-    }
-  },
-  {
     "id": "painting-25",
-    "order": 74,
+    "order": 1,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
@@ -508,7 +23,7 @@
   },
   {
     "id": "painting-26",
-    "order": 75,
+    "order": 2,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
@@ -530,7 +45,7 @@
   },
   {
     "id": "painting-27",
-    "order": 76,
+    "order": 3,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
@@ -551,30 +66,251 @@
     }
   },
   {
-    "id": "painting-29",
-    "order": 78,
+    "id": "painting-19",
+    "order": 4,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
       "en": ""
     },
-    "image": "/images/painting/painting-29.jpg",
+    "image": "/images/painting/painting-19.jpg",
     "orientation": "square",
     "group": null,
     "types": [
       "painting"
     ],
     "resolution": {
-      "width": 5672,
-      "height": 3745,
-      "megapixels": 21.24,
+      "width": 4976,
+      "height": 6968,
+      "megapixels": 34.67,
       "tier": "high",
       "repo": "painting"
     }
   },
   {
+    "id": "painting-24",
+    "order": 5,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-24.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 4939,
+      "height": 7016,
+      "megapixels": 34.65,
+      "tier": "high",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-20",
+    "order": 6,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-20.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 4984,
+      "height": 6936,
+      "megapixels": 34.57,
+      "tier": "high",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-17",
+    "order": 7,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-17.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 4944,
+      "height": 6944,
+      "megapixels": 34.33,
+      "tier": "high",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-23",
+    "order": 8,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-23.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 4960,
+      "height": 6784,
+      "megapixels": 33.65,
+      "tier": "high",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-21",
+    "order": 9,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-21.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 4824,
+      "height": 6952,
+      "megapixels": 33.54,
+      "tier": "high",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-22",
+    "order": 10,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-22.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 4878,
+      "height": 6776,
+      "megapixels": 33.05,
+      "tier": "high",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "drawing-02",
+    "order": 11,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "Exercícios práticos para o desenvolvimento da imaginação com a temática \"árvore\". A poética escolhida foi relações interpessoais, dando um aspecto antropomórfico às figuras que remetem árvores. A representação é como uma \"dança de envolvimento\". Todos os desenhos foram feitos com nanquim sobre papel no tamanho 21 x 29,7 cm.",
+      "en": "Practical exercises for the development of imagination with the theme \"tree\". The chosen poetics was interpersonal relationships, giving an anthropomorphic aspect to the figures that evoke trees. The representation is like a \"dance of involvement\". All drawings were made with ink on 21 x 29,7 cm paper."
+    },
+    "image": "/images/drawing/drawing-02.jpg",
+    "orientation": "vertical",
+    "group": "tree-studies",
+    "groupDisplay": "single-caption",
+    "types": [
+      "drawing"
+    ],
+    "resolution": {
+      "width": 4204,
+      "height": 5946,
+      "megapixels": 25,
+      "tier": "high",
+      "repo": "drawing"
+    }
+  },
+  {
+    "id": "drawing-03",
+    "order": 12,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/drawing/drawing-03.jpg",
+    "orientation": "vertical",
+    "group": "tree-studies",
+    "types": [
+      "drawing"
+    ],
+    "resolution": {
+      "width": 4204,
+      "height": 5946,
+      "megapixels": 25,
+      "tier": "high",
+      "repo": "drawing"
+    }
+  },
+  {
+    "id": "drawing-04",
+    "order": 13,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/drawing/drawing-04.jpg",
+    "orientation": "vertical",
+    "group": "tree-studies",
+    "types": [
+      "drawing"
+    ],
+    "resolution": {
+      "width": 4204,
+      "height": 5946,
+      "megapixels": 25,
+      "tier": "high",
+      "repo": "drawing"
+    }
+  },
+  {
+    "id": "drawing-05",
+    "order": 14,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/drawing/drawing-05.jpg",
+    "orientation": "vertical",
+    "group": "tree-studies",
+    "types": [
+      "drawing"
+    ],
+    "resolution": {
+      "width": 4204,
+      "height": 5946,
+      "megapixels": 25,
+      "tier": "high",
+      "repo": "drawing"
+    }
+  },
+  {
     "id": "painting-30",
-    "order": 79,
+    "order": 15,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
@@ -596,7 +332,7 @@
   },
   {
     "id": "painting-31",
-    "order": 80,
+    "order": 16,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
@@ -617,74 +353,30 @@
     }
   },
   {
-    "id": "painting-32",
-    "order": 81,
+    "id": "painting-45",
+    "order": 17,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
       "en": ""
     },
-    "image": "/images/painting/painting-32.jpg",
+    "image": "/images/painting/painting-45.jpg",
     "orientation": "square",
     "group": null,
     "types": [
       "painting"
     ],
     "resolution": {
-      "width": 3353,
-      "height": 4939,
-      "megapixels": 16.56,
-      "tier": "high",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-33",
-    "order": 82,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-33.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 4031,
-      "height": 5945,
-      "megapixels": 23.96,
-      "tier": "high",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-34",
-    "order": 83,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-34.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 4960,
-      "height": 3489,
-      "megapixels": 17.31,
+      "width": 4204,
+      "height": 5946,
+      "megapixels": 25,
       "tier": "high",
       "repo": "painting"
     }
   },
   {
     "id": "painting-39",
-    "order": 88,
+    "order": 18,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
@@ -705,8 +397,52 @@
     }
   },
   {
+    "id": "painting-46",
+    "order": 19,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-46.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 4056,
+      "height": 5945,
+      "megapixels": 24.11,
+      "tier": "high",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-43",
+    "order": 20,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-43.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 4045,
+      "height": 5945,
+      "megapixels": 24.05,
+      "tier": "high",
+      "repo": "painting"
+    }
+  },
+  {
     "id": "painting-40",
-    "order": 89,
+    "order": 21,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
@@ -728,7 +464,7 @@
   },
   {
     "id": "painting-41",
-    "order": 90,
+    "order": 22,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
@@ -749,118 +485,30 @@
     }
   },
   {
-    "id": "painting-42",
-    "order": 91,
+    "id": "painting-33",
+    "order": 23,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
       "en": ""
     },
-    "image": "/images/painting/painting-42.jpg",
+    "image": "/images/painting/painting-33.jpg",
     "orientation": "square",
     "group": null,
     "types": [
       "painting"
     ],
     "resolution": {
-      "width": 4007,
-      "height": 5908,
-      "megapixels": 23.67,
-      "tier": "high",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-43",
-    "order": 92,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-43.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 4045,
+      "width": 4031,
       "height": 5945,
-      "megapixels": 24.05,
-      "tier": "high",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-44",
-    "order": 93,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-44.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 4020,
-      "height": 5945,
-      "megapixels": 23.9,
-      "tier": "high",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-45",
-    "order": 94,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-45.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 4204,
-      "height": 5946,
-      "megapixels": 25,
-      "tier": "high",
-      "repo": "painting"
-    }
-  },
-  {
-    "id": "painting-46",
-    "order": 95,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-46.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ],
-    "resolution": {
-      "width": 4056,
-      "height": 5945,
-      "megapixels": 24.11,
+      "megapixels": 23.96,
       "tier": "high",
       "repo": "painting"
     }
   },
   {
     "id": "painting-47",
-    "order": 96,
+    "order": 24,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
@@ -881,68 +529,206 @@
     }
   },
   {
-    "id": "movies-01",
-    "order": 97,
+    "id": "painting-44",
+    "order": 25,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
       "en": ""
     },
-    "video": "/movies/movies-01.mp4",
+    "image": "/images/painting/painting-44.jpg",
     "orientation": "square",
     "group": null,
     "types": [
-      "movies"
-    ]
-  },
-  {
-    "id": "photography-01",
-    "order": 16,
-    "title": "Retrato nº 5",
-    "description": {
-      "pt-Br": "*Retrato nº 5*, 2018.",
-      "en": "*Portrait nº 5, 2018*."
-    },
-    "image": "/images/photography/photography-01.png",
-    "orientation": "square",
-    "group": "serie-1",
-    "groupDisplay": "per-image-caption",
-    "types": [
-      "photography"
+      "painting"
     ],
     "resolution": {
-      "width": 510,
-      "height": 388,
-      "megapixels": 0.2,
-      "tier": "low",
-      "repo": "photography"
+      "width": 4020,
+      "height": 5945,
+      "megapixels": 23.9,
+      "tier": "high",
+      "repo": "painting"
     }
   },
   {
-    "id": "photography-03",
-    "order": 17,
-    "title": "Retrato nº 6",
+    "id": "painting-04",
+    "order": 26,
+    "title": "A menina e o dragão",
     "description": {
-      "pt-Br": "*Retrato nº 6*, 2018.",
-      "en": ""
+      "pt-Br": "*A menina e o dragão*, 2016. Vários materiais sobre papel, 21 x 29,7 cm.",
+      "en": "*The girl and the dragon*, 2016. Various materials on paper, 21 x 29,7 cm."
     },
-    "image": "/images/photography/photography-03.png",
+    "image": "/images/painting/painting-04.png",
     "orientation": "square",
-    "group": "serie-1",
+    "group": null,
     "types": [
-      "photography"
+      "painting"
     ],
     "resolution": {
-      "width": 507,
-      "height": 385,
-      "megapixels": 0.2,
+      "width": 4001,
+      "height": 5922,
+      "megapixels": 23.69,
+      "tier": "high",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-42",
+    "order": 27,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-42.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 4007,
+      "height": 5908,
+      "megapixels": 23.67,
+      "tier": "high",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-29",
+    "order": 28,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-29.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 5672,
+      "height": 3745,
+      "megapixels": 21.24,
+      "tier": "high",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-34",
+    "order": 29,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-34.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 4960,
+      "height": 3489,
+      "megapixels": 17.31,
+      "tier": "high",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-32",
+    "order": 30,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-32.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 3353,
+      "height": 4939,
+      "megapixels": 16.56,
+      "tier": "high",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-16",
+    "order": 31,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-16.jpg",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 2504,
+      "height": 3484,
+      "megapixels": 8.72,
+      "tier": "high",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-11",
+    "order": 32,
+    "title": "Pescoço quebrado",
+    "description": {
+      "pt-Br": "*Pescoço quebrado*, 2022. Aquarela sobre papel, 21 x 29,7 cm.",
+      "en": "*Broken neck*, 2022. Watercolor on paper, 21 x 29,7 cm."
+    },
+    "image": "/images/painting/painting-11.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 805,
+      "height": 559,
+      "megapixels": 0.45,
       "tier": "low",
-      "repo": "photography"
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-12",
+    "order": 33,
+    "title": "Blood blued pillow",
+    "description": {
+      "pt-Br": "*Blood blued pillow*, 2022. Aquarela, nanquim e sangue sobre papel, 14,8 x 21 cm.",
+      "en": "*Blood blued pillow*, 2022. Watercolor, nanquim and blood on paper, 14,8 x 21 cm."
+    },
+    "image": "/images/painting/painting-12.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 780,
+      "height": 555,
+      "megapixels": 0.43,
+      "tier": "low",
+      "repo": "painting"
     }
   },
   {
     "id": "digital-art-01",
-    "order": 29,
+    "order": 34,
     "title": "Cativeiro",
     "description": {
       "pt-Br": "*Cativeiro*, 2018. Lambe, aproximadamente 90 x 110cm.",
@@ -967,119 +753,361 @@
     }
   },
   {
-    "id": "digital-art-02",
-    "order": 19,
+    "id": "photography-11",
+    "order": 35,
     "title": "Sem título",
     "description": {
-      "pt-Br": "Série de experimentações realizadas em 2021 através do aplicativo proposto, Glitch Lab, com imagens autorais.",
-      "en": "Series of experiments carried out in 2021 through the proposed application, Glitch Lab, with authorial images."
+      "pt-Br": "*Sem título*, 2022.",
+      "en": "*Untitled*, 2022."
     },
-    "image": "/images/digital-art/digital-art-02.png",
+    "image": "/images/photography/photography-11.png",
     "orientation": "square",
-    "group": "01",
-    "groupDisplay": "caption-in-grid",
+    "group": null,
     "types": [
-      "digital-art"
+      "photography"
     ],
     "resolution": {
-      "width": 336,
-      "height": 255,
-      "megapixels": 0.09,
+      "width": 670,
+      "height": 504,
+      "megapixels": 0.34,
       "tier": "low",
-      "repo": "digital-art"
+      "repo": "photography"
     }
   },
   {
-    "id": "digital-art-03",
-    "order": 20,
+    "id": "painting-02",
+    "order": 36,
+    "title": "It's all over",
+    "description": {
+      "pt-Br": "*It's all over*, 2018. Nanquim, lápis de cor e giz pastel oleoso sobre papel, 21 x 29,7 cm.",
+      "en": "*It's all over*, 2018. Nanquim, colored pencils and oil pastel on paper, 21 x 29,7 cm."
+    },
+    "image": "/images/painting/painting-02.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 548,
+      "height": 548,
+      "megapixels": 0.3,
+      "tier": "low",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-09",
+    "order": 37,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "*Sem título*, 2022. Grafite, aquarela e giz pastel oleoso sobre papel, 21 x 29,7 cm.",
+      "en": "*Untitled*, 2022. Graphite, watercolor and oil pastel on paper, 21 x 29,7 cm."
+    },
+    "image": "/images/painting/painting-09.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 459,
+      "height": 615,
+      "megapixels": 0.28,
+      "tier": "low",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-01",
+    "order": 38,
+    "title": "No clube",
+    "description": {
+      "pt-Br": "*No clube*, 2022. Nanquim, lápis de cor e acrilica sobre papel, 14,8 x 21 cm.",
+      "en": "*At the club*, 2022. Nanquim, colored pencils and acrylic on paper, 14,8 x 21 cm."
+    },
+    "image": "/images/painting/painting-01.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 426,
+      "height": 627,
+      "megapixels": 0.27,
+      "tier": "low",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "photography-23",
+    "order": 39,
+    "title": "Dinner",
+    "description": {
+      "pt-Br": "*Dinner*, 2018.",
+      "en": "*Dinner*, 2018."
+    },
+    "image": "/images/photography/photography-23.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "photography"
+    ],
+    "resolution": {
+      "width": 584,
+      "height": 442,
+      "megapixels": 0.26,
+      "tier": "low",
+      "repo": "photography"
+    }
+  },
+  {
+    "id": "painting-05",
+    "order": 40,
+    "title": "Intimidade",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-05.png",
+    "orientation": "square",
+    "group": "intimidade",
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 397,
+      "height": 595,
+      "megapixels": 0.24,
+      "tier": "low",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-06",
+    "order": 41,
+    "title": "Intimidade",
+    "description": {
+      "pt-Br": "Pinturas realizadas para a série *Intimidade* decorrente da pintura com o mesmo título. Aquarela sobre papel, 29,7 x 42 cm.",
+      "en": "Paintings made for the *Intimidity* series. Watercolor on paper, 29,7 x 42 cm."
+    },
+    "image": "/images/painting/painting-06.png",
+    "orientation": "square",
+    "group": "intimidade",
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 342,
+      "height": 458,
+      "megapixels": 0.16,
+      "tier": "low",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-07",
+    "order": 42,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
       "en": ""
     },
-    "image": "/images/digital-art/digital-art-03.png",
+    "image": "/images/painting/painting-07.png",
     "orientation": "square",
-    "group": "01",
+    "group": "intimidade",
     "types": [
-      "digital-art"
+      "painting"
     ],
     "resolution": {
-      "width": 340,
-      "height": 255,
-      "megapixels": 0.09,
+      "width": 314,
+      "height": 460,
+      "megapixels": 0.14,
       "tier": "low",
-      "repo": "digital-art"
+      "repo": "painting"
     }
   },
   {
-    "id": "digital-art-04",
-    "order": 21,
+    "id": "painting-10",
+    "order": 43,
     "title": "Sem título",
     "description": {
-      "pt-Br": "",
-      "en": ""
+      "pt-Br": "*Sem título*, 2022. Aquarela sobre papel, 29,7 x 42 cm.",
+      "en": "*Untitled*, 2022. Watercolor on paper, 29,7 x 42 cm."
     },
-    "image": "/images/digital-art/digital-art-04.png",
+    "image": "/images/painting/painting-10.png",
     "orientation": "square",
-    "group": "01",
+    "group": null,
     "types": [
-      "digital-art"
+      "painting"
     ],
     "resolution": {
-      "width": 337,
-      "height": 254,
-      "megapixels": 0.09,
+      "width": 408,
+      "height": 554,
+      "megapixels": 0.23,
       "tier": "low",
-      "repo": "digital-art"
+      "repo": "painting"
     }
   },
   {
-    "id": "digital-art-05",
-    "order": 22,
-    "title": "Sem título",
+    "id": "photography-04",
+    "order": 44,
+    "title": "Estranha senhora no parque",
     "description": {
-      "pt-Br": "",
-      "en": ""
+      "pt-Br": "*Strange lady in the park*, 2018.",
+      "en": "*Strange lady in the park*, 2018."
     },
-    "image": "/images/digital-art/digital-art-05.png",
+    "image": "/images/photography/photography-04.png",
     "orientation": "square",
-    "group": "01",
+    "group": "strange-people",
     "types": [
-      "digital-art"
+      "photography"
     ],
     "resolution": {
-      "width": 348,
-      "height": 258,
-      "megapixels": 0.09,
+      "width": 548,
+      "height": 415,
+      "megapixels": 0.23,
       "tier": "low",
-      "repo": "digital-art"
+      "repo": "photography"
     }
   },
   {
-    "id": "digital-art-06",
-    "order": 23,
+    "id": "photography-05",
+    "order": 45,
     "title": "Sem título",
     "description": {
-      "pt-Br": "",
-      "en": ""
+      "pt-Br": "*Sem título*, 2018.",
+      "en": "*Untitled*, 2018."
     },
-    "image": "/images/digital-art/digital-art-06.png",
+    "image": "/images/photography/photography-05.png",
     "orientation": "square",
-    "group": "01",
+    "group": "strange-people",
     "types": [
-      "digital-art"
+      "photography"
     ],
     "resolution": {
-      "width": 334,
-      "height": 251,
-      "megapixels": 0.08,
+      "width": 554,
+      "height": 414,
+      "megapixels": 0.23,
       "tier": "low",
-      "repo": "digital-art"
+      "repo": "photography"
+    }
+  },
+  {
+    "id": "photography-12",
+    "order": 46,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "*Sem título*, 2022.",
+      "en": "*Untitled*, 2022."
+    },
+    "image": "/images/photography/photography-12.png",
+    "orientation": "square",
+    "group": "strange-landscape",
+    "types": [
+      "photography"
+    ],
+    "resolution": {
+      "width": 418,
+      "height": 560,
+      "megapixels": 0.23,
+      "tier": "low",
+      "repo": "photography"
+    }
+  },
+  {
+    "id": "photography-13",
+    "order": 47,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "*Sem título*, 2022.",
+      "en": "*Untitled*, 2022."
+    },
+    "image": "/images/photography/photography-13.png",
+    "orientation": "square",
+    "group": "strange-landscape",
+    "types": [
+      "photography"
+    ],
+    "resolution": {
+      "width": 414,
+      "height": 555,
+      "megapixels": 0.23,
+      "tier": "low",
+      "repo": "photography"
+    }
+  },
+  {
+    "id": "painting-03",
+    "order": 48,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "*Sem título*, 2016. Aquarela e nanquim sobre papel, 21 x 29,7 cm.",
+      "en": "*Untitled*, 2016. Watercolor and nanquim on paper, 21 x 29,7 cm."
+    },
+    "image": "/images/painting/painting-03.png",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 376,
+      "height": 548,
+      "megapixels": 0.21,
+      "tier": "low",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "photography-01",
+    "order": 49,
+    "title": "Retrato nº 5",
+    "description": {
+      "pt-Br": "*Retrato nº 5*, 2018.",
+      "en": "*Portrait nº 5, 2018*."
+    },
+    "image": "/images/photography/photography-01.png",
+    "orientation": "square",
+    "group": "serie-1",
+    "groupDisplay": "per-image-caption",
+    "types": [
+      "photography"
+    ],
+    "resolution": {
+      "width": 510,
+      "height": 388,
+      "megapixels": 0.2,
+      "tier": "low",
+      "repo": "photography"
+    }
+  },
+  {
+    "id": "photography-03",
+    "order": 50,
+    "title": "Retrato nº 6",
+    "description": {
+      "pt-Br": "*Retrato nº 6*, 2018.",
+      "en": ""
+    },
+    "image": "/images/photography/photography-03.png",
+    "orientation": "square",
+    "group": "serie-1",
+    "types": [
+      "photography"
+    ],
+    "resolution": {
+      "width": 507,
+      "height": 385,
+      "megapixels": 0.2,
+      "tier": "low",
+      "repo": "photography"
     }
   },
   {
     "id": "digital-art-07",
-    "order": 24,
+    "order": 51,
     "title": "Sem título",
     "description": {
       "pt-Br": "Série de experimentações em glitch art realizadas em 2021.",
@@ -1102,7 +1130,7 @@
   },
   {
     "id": "digital-art-08",
-    "order": 25,
+    "order": 52,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
@@ -1124,7 +1152,7 @@
   },
   {
     "id": "digital-art-09",
-    "order": 26,
+    "order": 53,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
@@ -1146,7 +1174,7 @@
   },
   {
     "id": "digital-art-10",
-    "order": 27,
+    "order": 54,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
@@ -1167,318 +1195,8 @@
     }
   },
   {
-    "id": "drawing-02",
-    "order": 50,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "Exercícios práticos para o desenvolvimento da imaginação com a temática \"árvore\". A poética escolhida foi relações interpessoais, dando um aspecto antropomórfico às figuras que remetem árvores. A representação é como uma \"dança de envolvimento\". Todos os desenhos foram feitos com nanquim sobre papel no tamanho 21 x 29,7 cm.",
-      "en": "Practical exercises for the development of imagination with the theme \"tree\". The chosen poetics was interpersonal relationships, giving an anthropomorphic aspect to the figures that evoke trees. The representation is like a \"dance of involvement\". All drawings were made with ink on 21 x 29,7 cm paper."
-    },
-    "image": "/images/drawing/drawing-02.jpg",
-    "orientation": "vertical",
-    "group": "tree-studies",
-    "groupDisplay": "single-caption",
-    "types": [
-      "drawing"
-    ],
-    "resolution": {
-      "width": 4204,
-      "height": 5946,
-      "megapixels": 25,
-      "tier": "high",
-      "repo": "drawing"
-    }
-  },
-  {
-    "id": "drawing-03",
-    "order": 51,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/drawing/drawing-03.jpg",
-    "orientation": "vertical",
-    "group": "tree-studies",
-    "types": [
-      "drawing"
-    ],
-    "resolution": {
-      "width": 4204,
-      "height": 5946,
-      "megapixels": 25,
-      "tier": "high",
-      "repo": "drawing"
-    }
-  },
-  {
-    "id": "drawing-04",
-    "order": 52,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/drawing/drawing-04.jpg",
-    "orientation": "vertical",
-    "group": "tree-studies",
-    "types": [
-      "drawing"
-    ],
-    "resolution": {
-      "width": 4204,
-      "height": 5946,
-      "megapixels": 25,
-      "tier": "high",
-      "repo": "drawing"
-    }
-  },
-  {
-    "id": "drawing-05",
-    "order": 52,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/drawing/drawing-05.jpg",
-    "orientation": "vertical",
-    "group": "tree-studies",
-    "types": [
-      "drawing"
-    ],
-    "resolution": {
-      "width": 4204,
-      "height": 5946,
-      "megapixels": 25,
-      "tier": "high",
-      "repo": "drawing"
-    }
-  },
-  {
-    "id": "photography-04",
-    "order": 30,
-    "title": "Estranha senhora no parque",
-    "description": {
-      "pt-Br": "*Strange lady in the park*, 2018.",
-      "en": "*Strange lady in the park*, 2018."
-    },
-    "image": "/images/photography/photography-04.png",
-    "orientation": "square",
-    "group": "strange-people",
-    "types": [
-      "photography"
-    ],
-    "resolution": {
-      "width": 548,
-      "height": 415,
-      "megapixels": 0.23,
-      "tier": "low",
-      "repo": "photography"
-    }
-  },
-  {
-    "id": "photography-05",
-    "order": 31,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "*Sem título*, 2018.",
-      "en": "*Untitled*, 2018."
-    },
-    "image": "/images/photography/photography-05.png",
-    "orientation": "square",
-    "group": "strange-people",
-    "types": [
-      "photography"
-    ],
-    "resolution": {
-      "width": 554,
-      "height": 414,
-      "megapixels": 0.23,
-      "tier": "low",
-      "repo": "photography"
-    }
-  },
-  {
-    "id": "photography-06",
-    "order": 32,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "*Sem título*, 2022.",
-      "en": "*Untitled*, 2022."
-    },
-    "image": "/images/photography/photography-06.png",
-    "orientation": "square",
-    "group": "strange-people-2",
-    "groupDisplay": "single-caption",
-    "types": [
-      "photography"
-    ],
-    "resolution": {
-      "width": 185,
-      "height": 252,
-      "megapixels": 0.05,
-      "tier": "low",
-      "repo": "photography"
-    }
-  },
-  {
-    "id": "photography-07",
-    "order": 33,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/photography/photography-07.png",
-    "orientation": "square",
-    "group": "strange-people-2",
-    "types": [
-      "photography"
-    ],
-    "resolution": {
-      "width": 180,
-      "height": 255,
-      "megapixels": 0.05,
-      "tier": "low",
-      "repo": "photography"
-    }
-  },
-  {
-    "id": "photography-08",
-    "order": 34,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/photography/photography-08.png",
-    "orientation": "square",
-    "group": "strange-people-2",
-    "types": [
-      "photography"
-    ],
-    "resolution": {
-      "width": 186,
-      "height": 252,
-      "megapixels": 0.05,
-      "tier": "low",
-      "repo": "photography"
-    }
-  },
-  {
-    "id": "photography-09",
-    "order": 35,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/photography/photography-09.png",
-    "orientation": "square",
-    "group": "strange-people-2",
-    "types": [
-      "photography"
-    ],
-    "resolution": {
-      "width": 187,
-      "height": 254,
-      "megapixels": 0.05,
-      "tier": "low",
-      "repo": "photography"
-    }
-  },
-  {
-    "id": "photography-10",
-    "order": 36,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/photography/photography-10.png",
-    "orientation": "square",
-    "group": "strange-people-2",
-    "types": [
-      "photography"
-    ],
-    "resolution": {
-      "width": 187,
-      "height": 252,
-      "megapixels": 0.05,
-      "tier": "low",
-      "repo": "photography"
-    }
-  },
-  {
-    "id": "photography-11",
-    "order": 37,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "*Sem título*, 2022.",
-      "en": "*Untitled*, 2022."
-    },
-    "image": "/images/photography/photography-11.png",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "photography"
-    ],
-    "resolution": {
-      "width": 670,
-      "height": 504,
-      "megapixels": 0.34,
-      "tier": "low",
-      "repo": "photography"
-    }
-  },
-  {
-    "id": "photography-12",
-    "order": 38,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "*Sem título*, 2022.",
-      "en": "*Untitled*, 2022."
-    },
-    "image": "/images/photography/photography-12.png",
-    "orientation": "square",
-    "group": "strange-landscape",
-    "types": [
-      "photography"
-    ],
-    "resolution": {
-      "width": 418,
-      "height": 560,
-      "megapixels": 0.23,
-      "tier": "low",
-      "repo": "photography"
-    }
-  },
-  {
-    "id": "photography-13",
-    "order": 39,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "*Sem título*, 2022.",
-      "en": "*Untitled*, 2022."
-    },
-    "image": "/images/photography/photography-13.png",
-    "orientation": "square",
-    "group": "strange-landscape",
-    "types": [
-      "photography"
-    ],
-    "resolution": {
-      "width": 414,
-      "height": 555,
-      "megapixels": 0.23,
-      "tier": "low",
-      "repo": "photography"
-    }
-  },
-  {
     "id": "photography-14",
-    "order": 40,
+    "order": 55,
     "title": "Sem título",
     "description": {
       "pt-Br": "*Sem título*, 2021.",
@@ -1500,7 +1218,7 @@
   },
   {
     "id": "photography-15",
-    "order": 41,
+    "order": 56,
     "title": "Sem título",
     "description": {
       "pt-Br": "*Sem título*, 2021.",
@@ -1522,7 +1240,7 @@
   },
   {
     "id": "photography-16",
-    "order": 42,
+    "order": 57,
     "title": "Sem título",
     "description": {
       "pt-Br": "*Sem título*, 2021.",
@@ -1544,7 +1262,7 @@
   },
   {
     "id": "photography-17",
-    "order": 43,
+    "order": 58,
     "title": "Sem título",
     "description": {
       "pt-Br": "*Sem título*, 2021.",
@@ -1565,8 +1283,186 @@
     }
   },
   {
+    "id": "painting-13",
+    "order": 59,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "Série de estudos de morcegos em aquarela sobre papel realizada para a siciplina Pintura II, no ano 2021. Todas as pinturas são tamanho 10,5 x 14,8 cm.",
+      "en": "Series of bat studies in watercolor on paper made for the Painting II discipline, in 2021. All paintings are size 10,5 x 14,8 cm."
+    },
+    "image": "/images/painting/painting-13.png",
+    "orientation": "square",
+    "group": "bat-studies",
+    "groupDisplay": "single-caption",
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 402,
+      "height": 276,
+      "megapixels": 0.11,
+      "tier": "low",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-14",
+    "order": 60,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-14.png",
+    "orientation": "square",
+    "group": "bat-studies",
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 369,
+      "height": 278,
+      "megapixels": 0.1,
+      "tier": "low",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "painting-15",
+    "order": 61,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/painting/painting-15.png",
+    "orientation": "square",
+    "group": "bat-studies",
+    "types": [
+      "painting"
+    ],
+    "resolution": {
+      "width": 419,
+      "height": 273,
+      "megapixels": 0.11,
+      "tier": "low",
+      "repo": "painting"
+    }
+  },
+  {
+    "id": "digital-art-02",
+    "order": 62,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "Série de experimentações realizadas em 2021 através do aplicativo proposto, Glitch Lab, com imagens autorais.",
+      "en": "Series of experiments carried out in 2021 through the proposed application, Glitch Lab, with authorial images."
+    },
+    "image": "/images/digital-art/digital-art-02.png",
+    "orientation": "square",
+    "group": "01",
+    "groupDisplay": "caption-in-grid",
+    "types": [
+      "digital-art"
+    ],
+    "resolution": {
+      "width": 336,
+      "height": 255,
+      "megapixels": 0.09,
+      "tier": "low",
+      "repo": "digital-art"
+    }
+  },
+  {
+    "id": "digital-art-03",
+    "order": 63,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/digital-art/digital-art-03.png",
+    "orientation": "square",
+    "group": "01",
+    "types": [
+      "digital-art"
+    ],
+    "resolution": {
+      "width": 340,
+      "height": 255,
+      "megapixels": 0.09,
+      "tier": "low",
+      "repo": "digital-art"
+    }
+  },
+  {
+    "id": "digital-art-04",
+    "order": 64,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/digital-art/digital-art-04.png",
+    "orientation": "square",
+    "group": "01",
+    "types": [
+      "digital-art"
+    ],
+    "resolution": {
+      "width": 337,
+      "height": 254,
+      "megapixels": 0.09,
+      "tier": "low",
+      "repo": "digital-art"
+    }
+  },
+  {
+    "id": "digital-art-05",
+    "order": 65,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/digital-art/digital-art-05.png",
+    "orientation": "square",
+    "group": "01",
+    "types": [
+      "digital-art"
+    ],
+    "resolution": {
+      "width": 348,
+      "height": 258,
+      "megapixels": 0.09,
+      "tier": "low",
+      "repo": "digital-art"
+    }
+  },
+  {
+    "id": "digital-art-06",
+    "order": 66,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/digital-art/digital-art-06.png",
+    "orientation": "square",
+    "group": "01",
+    "types": [
+      "digital-art"
+    ],
+    "resolution": {
+      "width": 334,
+      "height": 251,
+      "megapixels": 0.08,
+      "tier": "low",
+      "repo": "digital-art"
+    }
+  },
+  {
     "id": "photography-18",
-    "order": 44,
+    "order": 67,
     "title": "Sem título",
     "description": {
       "pt-Br": "Série fotografias experimentais realizadas em 2022 fora do ambiente academico, utilizando a camera do celular em movimento gerando abstrações de paisagens.",
@@ -1589,7 +1485,7 @@
   },
   {
     "id": "photography-19",
-    "order": 45,
+    "order": 68,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
@@ -1612,7 +1508,7 @@
   },
   {
     "id": "photography-20",
-    "order": 46,
+    "order": 69,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
@@ -1635,7 +1531,7 @@
   },
   {
     "id": "photography-21",
-    "order": 47,
+    "order": 70,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
@@ -1658,7 +1554,7 @@
   },
   {
     "id": "photography-22",
-    "order": 48,
+    "order": 71,
     "title": "Sem título",
     "description": {
       "pt-Br": "",
@@ -1680,25 +1576,129 @@
     }
   },
   {
-    "id": "photography-23",
-    "order": 49,
-    "title": "Dinner",
+    "id": "photography-06",
+    "order": 72,
+    "title": "Sem título",
     "description": {
-      "pt-Br": "*Dinner*, 2018.",
-      "en": "*Dinner*, 2018."
+      "pt-Br": "*Sem título*, 2022.",
+      "en": "*Untitled*, 2022."
     },
-    "image": "/images/photography/photography-23.png",
+    "image": "/images/photography/photography-06.png",
     "orientation": "square",
-    "group": null,
+    "group": "strange-people-2",
+    "groupDisplay": "single-caption",
     "types": [
       "photography"
     ],
     "resolution": {
-      "width": 584,
-      "height": 442,
-      "megapixels": 0.26,
+      "width": 185,
+      "height": 252,
+      "megapixels": 0.05,
       "tier": "low",
       "repo": "photography"
     }
+  },
+  {
+    "id": "photography-07",
+    "order": 73,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/photography/photography-07.png",
+    "orientation": "square",
+    "group": "strange-people-2",
+    "types": [
+      "photography"
+    ],
+    "resolution": {
+      "width": 180,
+      "height": 255,
+      "megapixels": 0.05,
+      "tier": "low",
+      "repo": "photography"
+    }
+  },
+  {
+    "id": "photography-08",
+    "order": 74,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/photography/photography-08.png",
+    "orientation": "square",
+    "group": "strange-people-2",
+    "types": [
+      "photography"
+    ],
+    "resolution": {
+      "width": 186,
+      "height": 252,
+      "megapixels": 0.05,
+      "tier": "low",
+      "repo": "photography"
+    }
+  },
+  {
+    "id": "photography-09",
+    "order": 75,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/photography/photography-09.png",
+    "orientation": "square",
+    "group": "strange-people-2",
+    "types": [
+      "photography"
+    ],
+    "resolution": {
+      "width": 187,
+      "height": 254,
+      "megapixels": 0.05,
+      "tier": "low",
+      "repo": "photography"
+    }
+  },
+  {
+    "id": "photography-10",
+    "order": 76,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/photography/photography-10.png",
+    "orientation": "square",
+    "group": "strange-people-2",
+    "types": [
+      "photography"
+    ],
+    "resolution": {
+      "width": 187,
+      "height": 252,
+      "megapixels": 0.05,
+      "tier": "low",
+      "repo": "photography"
+    }
+  },
+  {
+    "id": "movies-01",
+    "order": 77,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "video": "/movies/movies-01.mp4",
+    "orientation": "square",
+    "group": null,
+    "types": [
+      "movies"
+    ]
   }
 ]
