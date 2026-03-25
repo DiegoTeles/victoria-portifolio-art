@@ -4,6 +4,18 @@ export type Locale = 'pt-Br' | 'en' | 'fr' | 'it' | 'de'
 
 export type ArtworkType = 'drawing' | 'painting' | 'photography' | 'digital-art' | 'movies'
 
+export type ResolutionTier = 'high' | 'medium' | 'low'
+
+export type ImageRepo = 'painting' | 'photography' | 'digital-art' | 'drawing' | null
+
+export type ArtworkResolution = {
+  width: number
+  height: number
+  megapixels: number
+  tier: ResolutionTier
+  repo: ImageRepo
+}
+
 export type GroupDisplayType =
   | 'caption-in-grid'
   | 'asymmetric-5'
@@ -22,6 +34,7 @@ export interface Artwork {
   description: LocalizedText
   image?: string
   video?: string
+  resolution?: ArtworkResolution
   orientation: 'square' | 'horizontal' | 'vertical'
   group: string | null
   groupDisplay?: GroupDisplayType

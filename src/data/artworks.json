@@ -12,7 +12,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 426,
+      "height": 627,
+      "megapixels": 0.27,
+      "tier": "low",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-02",
@@ -27,7 +34,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 548,
+      "height": 548,
+      "megapixels": 0.3,
+      "tier": "low",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-03",
@@ -42,7 +56,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 376,
+      "height": 548,
+      "megapixels": 0.21,
+      "tier": "low",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-04",
@@ -57,7 +78,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4001,
+      "height": 5922,
+      "megapixels": 23.69,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-05",
@@ -72,7 +100,14 @@
     "group": "intimidade",
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 397,
+      "height": 595,
+      "megapixels": 0.24,
+      "tier": "low",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-06",
@@ -87,7 +122,14 @@
     "group": "intimidade",
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 342,
+      "height": 458,
+      "megapixels": 0.16,
+      "tier": "low",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-07",
@@ -102,7 +144,14 @@
     "group": "intimidade",
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 314,
+      "height": 460,
+      "megapixels": 0.14,
+      "tier": "low",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-09",
@@ -117,7 +166,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 459,
+      "height": 615,
+      "megapixels": 0.28,
+      "tier": "low",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-10",
@@ -132,7 +188,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 408,
+      "height": 554,
+      "megapixels": 0.23,
+      "tier": "low",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-11",
@@ -147,7 +210,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 805,
+      "height": 559,
+      "megapixels": 0.45,
+      "tier": "low",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-12",
@@ -162,7 +232,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 780,
+      "height": 555,
+      "megapixels": 0.43,
+      "tier": "low",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-13",
@@ -178,7 +255,14 @@
     "groupDisplay": "single-caption",
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 402,
+      "height": 276,
+      "megapixels": 0.11,
+      "tier": "low",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-14",
@@ -193,7 +277,14 @@
     "group": "bat-studies",
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 369,
+      "height": 278,
+      "megapixels": 0.1,
+      "tier": "low",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-15",
@@ -208,7 +299,14 @@
     "group": "bat-studies",
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 419,
+      "height": 273,
+      "megapixels": 0.11,
+      "tier": "low",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-16",
@@ -223,7 +321,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 2504,
+      "height": 3484,
+      "megapixels": 8.72,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-17",
@@ -238,7 +343,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4944,
+      "height": 6944,
+      "megapixels": 34.33,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-19",
@@ -253,7 +365,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4976,
+      "height": 6968,
+      "megapixels": 34.67,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-20",
@@ -268,7 +387,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4984,
+      "height": 6936,
+      "megapixels": 34.57,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-21",
@@ -283,7 +409,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4824,
+      "height": 6952,
+      "megapixels": 33.54,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-22",
@@ -298,7 +431,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4878,
+      "height": 6776,
+      "megapixels": 33.05,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-23",
@@ -313,7 +453,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4960,
+      "height": 6784,
+      "megapixels": 33.65,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-24",
@@ -328,7 +475,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4939,
+      "height": 7016,
+      "megapixels": 34.65,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-25",
@@ -343,7 +497,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4960,
+      "height": 7015,
+      "megapixels": 34.79,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-26",
@@ -358,7 +519,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4960,
+      "height": 7015,
+      "megapixels": 34.79,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-27",
@@ -373,7 +541,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4960,
+      "height": 7015,
+      "megapixels": 34.79,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-29",
@@ -388,7 +563,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 5672,
+      "height": 3745,
+      "megapixels": 21.24,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-30",
@@ -403,7 +585,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4204,
+      "height": 5946,
+      "megapixels": 25,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-31",
@@ -418,7 +607,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 5946,
+      "height": 4204,
+      "megapixels": 25,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-32",
@@ -433,7 +629,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 3353,
+      "height": 4939,
+      "megapixels": 16.56,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-33",
@@ -448,7 +651,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4031,
+      "height": 5945,
+      "megapixels": 23.96,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-34",
@@ -463,7 +673,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4960,
+      "height": 3489,
+      "megapixels": 17.31,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-39",
@@ -478,7 +695,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 5946,
+      "height": 4167,
+      "megapixels": 24.78,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-40",
@@ -493,7 +717,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4038,
+      "height": 5945,
+      "megapixels": 24.01,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-41",
@@ -508,7 +739,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4038,
+      "height": 5945,
+      "megapixels": 24.01,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-42",
@@ -523,7 +761,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4007,
+      "height": 5908,
+      "megapixels": 23.67,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-43",
@@ -538,7 +783,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4045,
+      "height": 5945,
+      "megapixels": 24.05,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-44",
@@ -553,7 +805,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4020,
+      "height": 5945,
+      "megapixels": 23.9,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-45",
@@ -568,7 +827,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4204,
+      "height": 5946,
+      "megapixels": 25,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-46",
@@ -583,7 +849,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 4056,
+      "height": 5945,
+      "megapixels": 24.11,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "painting-47",
@@ -598,7 +871,14 @@
     "group": null,
     "types": [
       "painting"
-    ]
+    ],
+    "resolution": {
+      "width": 5946,
+      "height": 4030,
+      "megapixels": 23.96,
+      "tier": "high",
+      "repo": "painting"
+    }
   },
   {
     "id": "movies-01",
@@ -629,7 +909,14 @@
     "groupDisplay": "per-image-caption",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 510,
+      "height": 388,
+      "megapixels": 0.2,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-03",
@@ -644,7 +931,14 @@
     "group": "serie-1",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 507,
+      "height": 385,
+      "megapixels": 0.2,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "digital-art-01",
@@ -663,7 +957,14 @@
     "group": null,
     "types": [
       "digital-art"
-    ]
+    ],
+    "resolution": {
+      "width": 691,
+      "height": 563,
+      "megapixels": 0.39,
+      "tier": "low",
+      "repo": "digital-art"
+    }
   },
   {
     "id": "digital-art-02",
@@ -679,7 +980,14 @@
     "groupDisplay": "caption-in-grid",
     "types": [
       "digital-art"
-    ]
+    ],
+    "resolution": {
+      "width": 336,
+      "height": 255,
+      "megapixels": 0.09,
+      "tier": "low",
+      "repo": "digital-art"
+    }
   },
   {
     "id": "digital-art-03",
@@ -694,7 +1002,14 @@
     "group": "01",
     "types": [
       "digital-art"
-    ]
+    ],
+    "resolution": {
+      "width": 340,
+      "height": 255,
+      "megapixels": 0.09,
+      "tier": "low",
+      "repo": "digital-art"
+    }
   },
   {
     "id": "digital-art-04",
@@ -709,7 +1024,14 @@
     "group": "01",
     "types": [
       "digital-art"
-    ]
+    ],
+    "resolution": {
+      "width": 337,
+      "height": 254,
+      "megapixels": 0.09,
+      "tier": "low",
+      "repo": "digital-art"
+    }
   },
   {
     "id": "digital-art-05",
@@ -724,7 +1046,14 @@
     "group": "01",
     "types": [
       "digital-art"
-    ]
+    ],
+    "resolution": {
+      "width": 348,
+      "height": 258,
+      "megapixels": 0.09,
+      "tier": "low",
+      "repo": "digital-art"
+    }
   },
   {
     "id": "digital-art-06",
@@ -739,7 +1068,14 @@
     "group": "01",
     "types": [
       "digital-art"
-    ]
+    ],
+    "resolution": {
+      "width": 334,
+      "height": 251,
+      "megapixels": 0.08,
+      "tier": "low",
+      "repo": "digital-art"
+    }
   },
   {
     "id": "digital-art-07",
@@ -755,7 +1091,14 @@
     "groupDisplay": "asymmetric-5",
     "types": [
       "digital-art"
-    ]
+    ],
+    "resolution": {
+      "width": 321,
+      "height": 572,
+      "megapixels": 0.18,
+      "tier": "low",
+      "repo": "digital-art"
+    }
   },
   {
     "id": "digital-art-08",
@@ -770,7 +1113,14 @@
     "group": "02",
     "types": [
       "digital-art"
-    ]
+    ],
+    "resolution": {
+      "width": 322,
+      "height": 574,
+      "megapixels": 0.18,
+      "tier": "low",
+      "repo": "digital-art"
+    }
   },
   {
     "id": "digital-art-09",
@@ -785,7 +1135,14 @@
     "group": "02",
     "types": [
       "digital-art"
-    ]
+    ],
+    "resolution": {
+      "width": 354,
+      "height": 232,
+      "megapixels": 0.08,
+      "tier": "low",
+      "repo": "digital-art"
+    }
   },
   {
     "id": "digital-art-10",
@@ -800,7 +1157,14 @@
     "group": "02",
     "types": [
       "digital-art"
-    ]
+    ],
+    "resolution": {
+      "width": 355,
+      "height": 263,
+      "megapixels": 0.09,
+      "tier": "low",
+      "repo": "digital-art"
+    }
   },
   {
     "id": "drawing-02",
@@ -816,7 +1180,14 @@
     "groupDisplay": "single-caption",
     "types": [
       "drawing"
-    ]
+    ],
+    "resolution": {
+      "width": 4204,
+      "height": 5946,
+      "megapixels": 25,
+      "tier": "high",
+      "repo": "drawing"
+    }
   },
   {
     "id": "drawing-03",
@@ -831,7 +1202,14 @@
     "group": "tree-studies",
     "types": [
       "drawing"
-    ]
+    ],
+    "resolution": {
+      "width": 4204,
+      "height": 5946,
+      "megapixels": 25,
+      "tier": "high",
+      "repo": "drawing"
+    }
   },
   {
     "id": "drawing-04",
@@ -846,7 +1224,14 @@
     "group": "tree-studies",
     "types": [
       "drawing"
-    ]
+    ],
+    "resolution": {
+      "width": 4204,
+      "height": 5946,
+      "megapixels": 25,
+      "tier": "high",
+      "repo": "drawing"
+    }
   },
   {
     "id": "drawing-05",
@@ -861,7 +1246,14 @@
     "group": "tree-studies",
     "types": [
       "drawing"
-    ]
+    ],
+    "resolution": {
+      "width": 4204,
+      "height": 5946,
+      "megapixels": 25,
+      "tier": "high",
+      "repo": "drawing"
+    }
   },
   {
     "id": "photography-04",
@@ -876,7 +1268,14 @@
     "group": "strange-people",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 548,
+      "height": 415,
+      "megapixels": 0.23,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-05",
@@ -891,7 +1290,14 @@
     "group": "strange-people",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 554,
+      "height": 414,
+      "megapixels": 0.23,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-06",
@@ -907,7 +1313,14 @@
     "groupDisplay": "single-caption",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 185,
+      "height": 252,
+      "megapixels": 0.05,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-07",
@@ -922,7 +1335,14 @@
     "group": "strange-people-2",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 180,
+      "height": 255,
+      "megapixels": 0.05,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-08",
@@ -937,7 +1357,14 @@
     "group": "strange-people-2",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 186,
+      "height": 252,
+      "megapixels": 0.05,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-09",
@@ -952,7 +1379,14 @@
     "group": "strange-people-2",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 187,
+      "height": 254,
+      "megapixels": 0.05,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-10",
@@ -967,7 +1401,14 @@
     "group": "strange-people-2",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 187,
+      "height": 252,
+      "megapixels": 0.05,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-11",
@@ -982,7 +1423,14 @@
     "group": null,
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 670,
+      "height": 504,
+      "megapixels": 0.34,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-12",
@@ -997,7 +1445,14 @@
     "group": "strange-landscape",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 418,
+      "height": 560,
+      "megapixels": 0.23,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-13",
@@ -1012,7 +1467,14 @@
     "group": "strange-landscape",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 414,
+      "height": 555,
+      "megapixels": 0.23,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-14",
@@ -1027,7 +1489,14 @@
     "group": "strange-landscape-2",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 454,
+      "height": 345,
+      "megapixels": 0.16,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-15",
@@ -1042,7 +1511,14 @@
     "group": "strange-landscape-2",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 399,
+      "height": 340,
+      "megapixels": 0.14,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-16",
@@ -1057,7 +1533,14 @@
     "group": "strange-landscape-1",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 449,
+      "height": 340,
+      "megapixels": 0.15,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-17",
@@ -1072,7 +1555,14 @@
     "group": "strange-landscape-1",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 445,
+      "height": 333,
+      "megapixels": 0.15,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-18",
@@ -1088,7 +1578,14 @@
     "groupDisplay": "single-caption",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 203,
+      "height": 273,
+      "megapixels": 0.06,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-19",
@@ -1104,7 +1601,14 @@
     "groupDisplay": "single-caption",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 199,
+      "height": 271,
+      "megapixels": 0.05,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-20",
@@ -1120,7 +1624,14 @@
     "groupDisplay": "single-caption",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 200,
+      "height": 270,
+      "megapixels": 0.05,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-21",
@@ -1136,7 +1647,14 @@
     "groupDisplay": "single-caption",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 202,
+      "height": 268,
+      "megapixels": 0.05,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-22",
@@ -1152,7 +1670,14 @@
     "groupDisplay": "single-caption",
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 197,
+      "height": 271,
+      "megapixels": 0.05,
+      "tier": "low",
+      "repo": "photography"
+    }
   },
   {
     "id": "photography-23",
@@ -1167,6 +1692,13 @@
     "group": null,
     "types": [
       "photography"
-    ]
+    ],
+    "resolution": {
+      "width": 584,
+      "height": 442,
+      "megapixels": 0.26,
+      "tier": "low",
+      "repo": "photography"
+    }
   }
 ]
