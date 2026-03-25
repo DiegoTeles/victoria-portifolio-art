@@ -466,66 +466,6 @@
     ]
   },
   {
-    "id": "painting-35",
-    "order": 84,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-35.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ]
-  },
-  {
-    "id": "painting-36",
-    "order": 85,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-36.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ]
-  },
-  {
-    "id": "painting-37",
-    "order": 86,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-37.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ]
-  },
-  {
-    "id": "painting-38",
-    "order": 87,
-    "title": "Sem título",
-    "description": {
-      "pt-Br": "",
-      "en": ""
-    },
-    "image": "/images/painting/painting-38.jpg",
-    "orientation": "square",
-    "group": null,
-    "types": [
-      "painting"
-    ]
-  },
-  {
     "id": "painting-39",
     "order": 88,
     "title": "Sem título",
@@ -870,7 +810,7 @@
       "pt-Br": "Exercícios práticos para o desenvolvimento da imaginação com a temática \"árvore\". A poética escolhida foi relações interpessoais, dando um aspecto antropomórfico às figuras que remetem árvores. A representação é como uma \"dança de envolvimento\". Todos os desenhos foram feitos com nanquim sobre papel no tamanho 21 x 29,7 cm.",
       "en": "Practical exercises for the development of imagination with the theme \"tree\". The chosen poetics was interpersonal relationships, giving an anthropomorphic aspect to the figures that evoke trees. The representation is like a \"dance of involvement\". All drawings were made with ink on 21 x 29,7 cm paper."
     },
-    "image": "/images/drawing/drawing-02.png",
+    "image": "/images/drawing/drawing-02.jpg",
     "orientation": "vertical",
     "group": "tree-studies",
     "groupDisplay": "single-caption",
@@ -886,7 +826,7 @@
       "pt-Br": "",
       "en": ""
     },
-    "image": "/images/drawing/drawing-03.png",
+    "image": "/images/drawing/drawing-03.jpg",
     "orientation": "vertical",
     "group": "tree-studies",
     "types": [
@@ -901,7 +841,22 @@
       "pt-Br": "",
       "en": ""
     },
-    "image": "/images/drawing/drawing-04.png",
+    "image": "/images/drawing/drawing-04.jpg",
+    "orientation": "vertical",
+    "group": "tree-studies",
+    "types": [
+      "drawing"
+    ]
+  },
+  {
+    "id": "drawing-05",
+    "order": 52,
+    "title": "Sem título",
+    "description": {
+      "pt-Br": "",
+      "en": ""
+    },
+    "image": "/images/drawing/drawing-05.jpg",
     "orientation": "vertical",
     "group": "tree-studies",
     "types": [
