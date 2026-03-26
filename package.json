@@ -16,6 +16,7 @@
     "react-country-flags-lazyload": "^1.0.9",
     "react-dom": "^19.2.4",
     "react-image-zooom": "^1.7.0",
+    "react-pdf": "^10.4.1",
     "react-router-dom": "^7.13.1",
     "react-tooltip": "^5.30.0"
   },

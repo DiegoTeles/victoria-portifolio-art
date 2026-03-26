@@ -29,6 +29,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   margin: 0;
   font-family: var(--font);
@@ -925,6 +929,7 @@ body {
 }
 
 .about-page {
+  width: 100%;
   max-width: 960px;
   display: flex;
   flex-direction: column;
@@ -937,6 +942,13 @@ body {
   flex: 1;
   min-height: 0;
   align-items: stretch;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.about-page--tcc .about-layout {
+  grid-template-columns: 1fr;
 }
 
 .about-sticky-column {
@@ -949,8 +961,10 @@ body {
 .about-tabs {
   display: flex;
   gap: 0;
+  flex-shrink: 0;
   margin-bottom: 1.5rem;
   border-bottom: 1px solid var(--border);
+  background: var(--bg);
 }
 
 .about-tab {
@@ -1020,14 +1034,12 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .about-bio .about-curriculum {
   flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
+  min-width: 0;
 }
 
 .about-bio .page-text {
@@ -1102,6 +1114,88 @@ body {
   margin-bottom: 0;
 }
 
+.about-tcc-wrap {
+  width: 100%;
+}
+
+.about-pdf-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  min-height: 0;
+}
+
+.about-pdf-zoom-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  padding: 0 0 0.25rem;
+  width: 100%;
+}
+
+.about-pdf-zoom-btn {
+  font: inherit;
+  font-size: 0.95rem;
+  min-width: 2.5rem;
+  min-height: 2.25rem;
+  padding: 0.35rem 0.65rem;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+
+.about-pdf-zoom-btn--text {
+  min-width: auto;
+  font-size: 0.85rem;
+}
+
+.about-pdf-zoom-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.about-pdf-zoom-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.about-pdf-zoom-pct {
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  min-width: 3.5rem;
+  text-align: center;
+}
+
+.about-pdf-document {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.about-pdf-page {
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="dark"] .about-pdf-page {
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+}
+
+.about-pdf-error {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
 @media (max-width: 639px) {
   .about-page {
     height: auto;
@@ -1109,12 +1203,26 @@ body {
     overflow: visible;
   }
 
-  .about-layout {
-    grid-template-columns: 1fr;
+  .about-page .about-layout {
+    overflow-y: visible;
   }
 
-  .about-bio .about-curriculum {
-    overflow-y: visible;
+  .about-tabs {
+    position: sticky;
+    top: calc(var(--header-height, 4rem) + 0.25rem);
+    z-index: 10;
+    padding-top: 0.35rem;
+    margin-top: -0.35rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .about-tab {
+    flex-shrink: 0;
+  }
+
+  .about-layout {
+    grid-template-columns: 1fr;
   }
 }
 
