@@ -753,27 +753,56 @@ body {
 
 .nav-submenu--categories {
   min-width: 12.5rem;
+  padding: 0.35rem 0;
 }
 
-.nav-submenu-group {
+.nav-category-flyout {
+  position: relative;
+}
+
+.nav-category-flyout:hover,
+.nav-category-flyout:focus-within {
+  z-index: 2;
+}
+
+.nav-submenu-link--category-row {
   display: flex;
-  flex-direction: column;
-  padding: 0.25rem 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.nav-submenu-group:last-child {
-  border-bottom: none;
-}
-
-.nav-submenu-link--parent {
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
   font-weight: 500;
   color: var(--text);
 }
 
-.nav-submenu-link--sub {
-  padding-left: 1.25rem;
-  font-size: 0.85rem;
+.nav-category-flyout-icon {
+  flex-shrink: 0;
+  opacity: 0.55;
+}
+
+.nav-submenu-flyout {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: 0;
+  margin-left: -1px;
+  min-width: 11rem;
+  max-width: min(17rem, 42vw);
+  padding: 0.35rem 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-shadow: 4px 4px 18px rgba(0, 0, 0, 0.12);
+  flex-direction: column;
+  z-index: 102;
+}
+
+.nav-category-flyout:hover .nav-submenu-flyout,
+.nav-category-flyout:focus-within .nav-submenu-flyout {
+  display: flex;
+}
+
+.nav-submenu-flyout-link {
+  font-size: 0.9rem;
   color: var(--text-muted);
 }
 
@@ -1984,6 +2013,12 @@ body {
   margin-top: 0;
 }
 
+.tiptap.admin-rich-text-prose .ProseMirror h1 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0.75em 0 0.4em;
+}
+
 .tiptap.admin-rich-text-prose .ProseMirror h2 {
   font-size: 1.15rem;
   font-weight: 600;
@@ -2029,6 +2064,12 @@ body {
 
 .about-cms-html p:first-child {
   margin-top: 0;
+}
+
+.about-cms-html h1 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0.9em 0 0.45em;
 }
 
 .about-cms-html h2 {

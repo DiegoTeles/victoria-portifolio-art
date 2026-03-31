@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { AdminLocaleTabs, ADMIN_LOCALES, getAdminLocalePanelProps } from '@/components/admin/AdminLocaleTabs'
 import { AdminRichTextEditor } from '@/components/admin/AdminRichTextEditor'
 import { Button } from '@/components/ui/button'
@@ -14,7 +15,6 @@ type Entry = {
 export function AdminBioPage() {
   const [tab, setTab] = useState<Locale>('pt-Br')
   const [entries, setEntries] = useState<Record<Locale, Entry>>({} as Record<Locale, Entry>)
-  const [message, setMessage] = useState('')
   const [saving, setSaving] = useState(false)
   const [loadVersion, setLoadVersion] = useState(0)
 
@@ -43,7 +43,6 @@ export function AdminBioPage() {
 
   const save = async () => {
     setSaving(true)
-    setMessage('')
     try {
       const r = await fetch('/api/admin/bio', {
         method: 'PUT',
@@ -57,10 +56,10 @@ export function AdminBioPage() {
       })
       if (!r.ok) {
         const err = await r.json().catch(() => ({}))
-        setMessage((err as { error?: string }).error || 'Erro')
+        toast.error((err as { error?: string }).error || 'Erro ao guardar.')
         return
       }
-      setMessage('Guardado.')
+      toast.success('Guardado.')
       void load()
     } finally {
       setSaving(false)
@@ -72,7 +71,6 @@ export function AdminBioPage() {
       <div className="admin-toolbar admin-toolbar--table">
         <h1 className="page-title admin-page-heading">Bio</h1>
       </div>
-      {message ? <p className="text-muted-foreground mb-3 text-sm">{message}</p> : null}
       <AdminLocaleTabs idPrefix="admin-bio" value={tab} onChange={setTab} />
       <div
         className="grid max-w-3xl gap-4 pt-2"

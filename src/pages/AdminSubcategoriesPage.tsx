@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -76,7 +77,6 @@ function categoryLabelPt(c: CatRow) {
 export function AdminSubcategoriesPage() {
   const [categories, setCategories] = useState<CatRow[]>([])
   const [rows, setRows] = useState<SubAdminRow[]>([])
-  const [message, setMessage] = useState('')
   const [subDialog, setSubDialog] = useState<'new' | 'edit' | null>(null)
   const [editingSub, setEditingSub] = useState<SubAdminRow | null>(null)
   const [modalCategoryId, setModalCategoryId] = useState('')
@@ -127,18 +127,18 @@ export function AdminSubcategoriesPage() {
 
   const saveSub = async () => {
     if (!modalCategoryId.trim()) {
-      setMessage('Selecione uma categoria.')
+      toast.warning('Selecione uma categoria.')
       return
     }
     const missing = firstMissingLocaleLabel(subNames)
     if (missing) {
-      setMessage(`Preencha o nome (${missing}).`)
+      toast.warning(`Preencha o nome (${missing}).`)
       return
     }
     const slugToSend =
       subDialog === 'new' ? slugifyFromPtName(subNames['pt-Br'] ?? '') : subSlug
     if (!slugToSend) {
-      setMessage('Indique o nome em Português para gerar o identificador da subcategoria.')
+      toast.warning('Indique o nome em Português para gerar o identificador da subcategoria.')
       return
     }
     const translations = ADMIN_LOCALES.map((locale) => ({
@@ -165,10 +165,10 @@ export function AdminSubcategoriesPage() {
     })
     if (!r.ok) {
       const err = await r.json().catch(() => ({}))
-      setMessage((err as { error?: string }).error || 'Erro')
+      toast.error((err as { error?: string }).error || 'Erro ao guardar.')
       return
     }
-    setMessage(subDialog === 'edit' ? 'Subcategoria atualizada.' : 'Subcategoria criada.')
+    toast.success(subDialog === 'edit' ? 'Subcategoria atualizada.' : 'Subcategoria criada.')
     setSubDialog(null)
     void loadSubs()
   }
@@ -180,8 +180,10 @@ export function AdminSubcategoriesPage() {
       credentials: 'include',
     })
     if (r.ok) {
-      setMessage('Eliminada.')
+      toast.success('Eliminada.')
       void loadSubs()
+    } else {
+      toast.error('Não foi possível eliminar.')
     }
   }
 
@@ -198,7 +200,6 @@ export function AdminSubcategoriesPage() {
           Crie primeiro pelo menos uma categoria em Lista → Categorias.
         </p>
       ) : null}
-      {message ? <p className="text-muted-foreground mb-3 text-sm">{message}</p> : null}
       <div className="admin-table-wrap border-border bg-card rounded-lg border">
         <Table>
           <TableHeader>

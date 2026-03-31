@@ -6,7 +6,6 @@ CREATE TABLE IF NOT EXISTS artworks (
   description JSONB NOT NULL DEFAULT '{}'::jsonb,
   image_url TEXT,
   video_url TEXT,
-  orientation TEXT NOT NULL CHECK (orientation IN ('square', 'horizontal', 'vertical')),
   group_key TEXT,
   group_display TEXT,
   types JSONB NOT NULL DEFAULT '[]'::jsonb,

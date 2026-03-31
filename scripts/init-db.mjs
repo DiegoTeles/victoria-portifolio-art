@@ -13,16 +13,29 @@ if (!url) {
 }
 
 const sql = neon(url)
-const schema = readFileSync(path.join(root, 'db/schema.sql'), 'utf8')
-const statements = schema
-  .replace(/\r\n/g, '\n')
-  .trim()
-  .split(/;\s*(?=\n|$)/)
-  .map((s) => s.trim())
-  .filter(Boolean)
 
-for (const st of statements) {
-  await sql`${sql.unsafe(st + ';')}`
+function splitSqlStatements(source) {
+  return source
+    .replace(/\r\n/g, '\n')
+    .trim()
+    .split(/;\s*(?=\n|$)/)
+    .map((s) => s.trim())
+    .filter(Boolean)
 }
 
-console.log('Schema aplicado: tabela artworks e índices.')
+async function applySqlFile(relativePath, label) {
+  const full = path.join(root, relativePath)
+  const raw = readFileSync(full, 'utf8')
+  const statements = splitSqlStatements(raw)
+  for (const st of statements) {
+    await sql`${sql.unsafe(st + ';')}`
+  }
+  console.log(label)
+}
+
+await applySqlFile('db/schema.sql', 'Schema base: artworks e índices.')
+await applySqlFile(
+  'db/migration-cms-relational.sql',
+  'Migração CMS: categorias, subcategorias, artwork_categories, bio, currículo, redes.'
+)
+console.log('Concluído.')

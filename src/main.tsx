@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { LocaleProvider } from './i18n/LocaleContext.tsx'
 import { ThemeProvider } from './theme/ThemeContext.tsx'
 import { Routes } from './routes/index.tsx'
+import { ToastHost } from './components/ToastHost.tsx'
 import './index.css'
 
 createRoot(document.getElementById('root')!).render(
@@ -10,6 +11,7 @@ createRoot(document.getElementById('root')!).render(
     <ThemeProvider>
       <LocaleProvider>
         <Routes />
+        <ToastHost />
       </LocaleProvider>
     </ThemeProvider>
   </StrictMode>,

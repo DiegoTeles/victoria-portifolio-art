@@ -22,7 +22,6 @@ Cada objeto do array tem:
 | **title** | Objeto com `"pt-Br"` e `"en"` (título em cada idioma). Use `*texto*` para exibir parte em itálico (ex.: `"No *clube*, 2022."`). |
 | **description** | Objeto com `"pt-Br"` e `"en"` (descrição em cada idioma). Use `*texto*` para itálico. |
 | **image** | Caminho da imagem a partir da raiz do site (ex.: `"/images/painting/painting-01.png"`). |
-| **orientation** | `"square"`, `"horizontal"` ou `"vertical"`. |
 | **group** | Se **2 a 5** obras devem aparecer juntas, use o **mesmo valor** em todas (ex.: `"serie-1"`). Obra sozinha: `null`. As obras do grupo devem estar **em sequência** no array. |
 | **types** | Array de strings (sempre em inglês): `"drawing"`, `"painting"`, `"photography"`, `"digital-art"`. Pode combinar. |
 
@@ -35,7 +34,6 @@ Cada objeto do array tem:
   "title": { "pt-Br": "Meu título", "en": "My title" },
   "description": { "pt-Br": "Descrição.", "en": "Description." },
   "image": "/images/painting/painting-01.png",
-  "orientation": "square",
   "group": null,
   "types": ["painting"]
 }
@@ -46,9 +44,9 @@ Cada objeto do array tem:
 Para exibir várias obras juntas, use o **mesmo `group`** em todas e coloque-as **em sequência** no array. O grupo exibe **uma única legenda** para todas as imagens: use o **título e a descrição do primeiro item** do grupo como legenda do grupo (os demais podem ter título/descrição vazios).
 
 ```json
-{"id": "painting-01", "title": {"pt-Br": "Painel 1", "en": "Panel 1"}, "description": {"pt-Br": "", "en": ""}, "image": "/images/painting/painting-01.png", "orientation": "square", "group": "triptico-1", "types": ["painting"]},
-{"id": "painting-02", "title": {"pt-Br": "Painel 2", "en": "Panel 2"}, "description": {"pt-Br": "", "en": ""}, "image": "/images/painting/painting-02.png", "orientation": "square", "group": "triptico-1", "types": ["painting"]},
-{"id": "painting-03", "title": {"pt-Br": "Painel 3", "en": "Panel 3"}, "description": {"pt-Br": "", "en": ""}, "image": "/images/painting/painting-03.png", "orientation": "square", "group": "triptico-1", "types": ["painting"]}
+{"id": "painting-01", "title": {"pt-Br": "Painel 1", "en": "Panel 1"}, "description": {"pt-Br": "", "en": ""}, "image": "/images/painting/painting-01.png", "group": "triptico-1", "types": ["painting"]},
+{"id": "painting-02", "title": {"pt-Br": "Painel 2", "en": "Panel 2"}, "description": {"pt-Br": "", "en": ""}, "image": "/images/painting/painting-02.png", "group": "triptico-1", "types": ["painting"]},
+{"id": "painting-03", "title": {"pt-Br": "Painel 3", "en": "Panel 3"}, "description": {"pt-Br": "", "en": ""}, "image": "/images/painting/painting-03.png", "group": "triptico-1", "types": ["painting"]}
 ```
 
 ### Resumo rápido

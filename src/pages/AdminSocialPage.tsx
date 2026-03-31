@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -29,7 +30,6 @@ type LinkRow = {
 
 export function AdminSocialPage() {
   const [list, setList] = useState<LinkRow[]>([])
-  const [message, setMessage] = useState('')
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editing, setEditing] = useState<LinkRow | null>(null)
   const [network, setNetwork] = useState('')
@@ -88,10 +88,10 @@ export function AdminSocialPage() {
     )
     if (!r.ok) {
       const err = await r.json().catch(() => ({}))
-      setMessage((err as { error?: string }).error || 'Erro')
+      toast.error((err as { error?: string }).error || 'Erro ao guardar.')
       return
     }
-    setMessage('Guardado.')
+    toast.success('Guardado.')
     setDialogOpen(false)
     void load()
   }
@@ -103,8 +103,10 @@ export function AdminSocialPage() {
       credentials: 'include',
     })
     if (r.ok) {
-      setMessage('Removido.')
+      toast.success('Removido.')
       void load()
+    } else {
+      toast.error('Não foi possível remover.')
     }
   }
 
@@ -116,7 +118,6 @@ export function AdminSocialPage() {
           Novo link
         </Button>
       </div>
-      {message ? <p className="text-muted-foreground mb-3 text-sm">{message}</p> : null}
       <div className="admin-table-wrap border-border bg-card rounded-lg border">
         <Table>
           <TableHeader>

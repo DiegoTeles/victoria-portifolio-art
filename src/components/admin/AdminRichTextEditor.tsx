@@ -9,6 +9,7 @@ import {
   Italic,
   List,
   ListOrdered,
+  Heading1,
   Heading2,
   Heading3,
   Quote,
@@ -27,6 +28,17 @@ type AdminRichTextEditorProps = {
   placeholder?: string
 }
 
+function cleanPastedHtml(html: string): string {
+  return html
+    .replace(/<o:p>\s*<\/o:p>/gi, '')
+    .replace(/<w:[^>]*>/gi, '')
+    .replace(/<\/w:[^>]*>/gi, '')
+    .replace(/<!--\[if gte mso [\s\S]*?endif]-->/gi, '')
+    .replace(/<!--\[if !mso [\s\S]*?endif]-->/gi, '')
+    .replace(/<!--\[if mso [\s\S]*?endif]-->/gi, '')
+    .replace(/\s*mso-[^:]+:[^;"']+;?/gi, '')
+}
+
 export function AdminRichTextEditor({
   initialContent,
   onChange,
@@ -37,7 +49,7 @@ export function AdminRichTextEditor({
     immediatelyRender: false,
     extensions: [
       StarterKit.configure({
-        heading: { levels: [2, 3] },
+        heading: { levels: [1, 2, 3] },
       }),
       Underline,
       Link.configure({
@@ -57,6 +69,9 @@ export function AdminRichTextEditor({
       attributes: {
         class: 'tiptap admin-rich-text-prose min-h-[240px] max-w-none px-3 py-2 focus:outline-none',
         ...(id ? { id } : {}),
+      },
+      transformPastedHTML(html) {
+        return cleanPastedHtml(html)
       },
     },
     onUpdate: ({ editor: ed }) => onChange(ed.getHTML()),
@@ -132,6 +147,13 @@ export function AdminRichTextEditor({
           <span className="text-xs font-semibold underline">U</span>
         </ToolBtn>
         <div className="bg-border mx-0.5 h-5 w-px" aria-hidden />
+        <ToolBtn
+          label="Título 1"
+          pressed={editor.isActive('heading', { level: 1 })}
+          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+        >
+          <Heading1 className="size-4" />
+        </ToolBtn>
         <ToolBtn
           label="Título 2"
           pressed={editor.isActive('heading', { level: 2 })}

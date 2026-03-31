@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -55,7 +56,6 @@ function namesForLocales(translations: { locale: string; name: string }[]): {
 
 export function AdminCategoriesPage() {
   const [categories, setCategories] = useState<CatRow[]>([])
-  const [message, setMessage] = useState('')
   const [catDialog, setCatDialog] = useState<'new' | 'edit' | null>(null)
   const [editingCat, setEditingCat] = useState<CatRow | null>(null)
   const [catSlug, setCatSlug] = useState('')
@@ -96,13 +96,13 @@ export function AdminCategoriesPage() {
   const saveCat = async () => {
     const missing = firstMissingLocaleLabel(catNames)
     if (missing) {
-      setMessage(`Preencha o nome (${missing}).`)
+      toast.warning(`Preencha o nome (${missing}).`)
       return
     }
     const slugToSend =
       catDialog === 'new' ? slugifyFromPtName(catNames['pt-Br'] ?? '') : catSlug
     if (!slugToSend) {
-      setMessage('Indique o nome em Português para gerar o identificador da categoria.')
+      toast.warning('Indique o nome em Português para gerar o identificador da categoria.')
       return
     }
     const translations = ADMIN_LOCALES.map((locale) => ({
@@ -128,10 +128,10 @@ export function AdminCategoriesPage() {
     })
     if (!r.ok) {
       const err = await r.json().catch(() => ({}))
-      setMessage((err as { error?: string }).error || 'Erro')
+      toast.error((err as { error?: string }).error || 'Erro ao guardar.')
       return
     }
-    setMessage(catDialog === 'edit' ? 'Categoria atualizada.' : 'Categoria criada.')
+    toast.success(catDialog === 'edit' ? 'Categoria atualizada.' : 'Categoria criada.')
     setCatDialog(null)
     void loadCats()
   }
@@ -143,8 +143,10 @@ export function AdminCategoriesPage() {
       credentials: 'include',
     })
     if (r.ok) {
-      setMessage('Eliminada.')
+      toast.success('Eliminada.')
       void loadCats()
+    } else {
+      toast.error('Não foi possível eliminar.')
     }
   }
 
@@ -156,7 +158,6 @@ export function AdminCategoriesPage() {
           Nova categoria
         </Button>
       </div>
-      {message ? <p className="text-muted-foreground mb-3 text-sm">{message}</p> : null}
       <div className="admin-table-wrap border-border bg-card rounded-lg border">
         <Table>
           <TableHeader>

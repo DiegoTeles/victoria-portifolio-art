@@ -29,7 +29,6 @@ for (const item of items) {
   const description = item.description && typeof item.description === 'object' ? item.description : {}
   const image_url = item.image || null
   const video_url = item.video || null
-  const orientation = item.orientation || 'square'
   const group_key = item.group ?? null
   const group_display = item.groupDisplay ?? null
   const types = Array.isArray(item.types) ? item.types : []
@@ -40,7 +39,7 @@ for (const item of items) {
   await sql`
     INSERT INTO artworks (
       id, order_index, title, artwork_date, description, image_url, video_url,
-      orientation, group_key, group_display, types, info, resolution, extra_images
+      group_key, group_display, types, info, resolution, extra_images
     ) VALUES (
       ${id},
       ${order_index},
@@ -49,7 +48,6 @@ for (const item of items) {
       ${JSON.stringify(description)}::jsonb,
       ${image_url},
       ${video_url},
-      ${orientation},
       ${group_key},
       ${group_display},
       ${JSON.stringify(types)}::jsonb,
@@ -64,7 +62,6 @@ for (const item of items) {
       description = EXCLUDED.description,
       image_url = EXCLUDED.image_url,
       video_url = EXCLUDED.video_url,
-      orientation = EXCLUDED.orientation,
       group_key = EXCLUDED.group_key,
       group_display = EXCLUDED.group_display,
       types = EXCLUDED.types,

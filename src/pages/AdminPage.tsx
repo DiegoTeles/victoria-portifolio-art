@@ -6,6 +6,7 @@ import {
   type ChangeEvent,
   type FormEvent,
 } from 'react'
+import { toast } from 'react-toastify'
 import { upload } from '@vercel/blob/client'
 import { Button } from '@/components/ui/button'
 import {
@@ -59,6 +60,64 @@ const TYPE_LABELS: Record<ArtworkType, string> = {
 const selectTriggerClass =
   'border-input bg-background flex h-9 w-full rounded-md border px-3 py-1 text-base shadow-xs outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm'
 
+const LOCALE_FLAGS: Record<Locale, string> = {
+  'pt-Br': '🇧🇷',
+  en: '🇬🇧',
+  fr: '🇫🇷',
+  it: '🇮🇹',
+  de: '🇩🇪',
+}
+
+type GroupDisplayChoice = {
+  value: GroupDisplayType
+  title: string
+  hint: string
+}
+
+const GROUP_DISPLAY_CHOICES: GroupDisplayChoice[] = [
+  {
+    value: 'single-caption',
+    title: 'Fileira com legenda única',
+    hint: 'Imagens em linha; uma legenda comum abaixo de todas.',
+  },
+  {
+    value: 'per-image-caption',
+    title: 'Legenda por imagem',
+    hint: 'Cada imagem com a sua própria legenda.',
+  },
+  {
+    value: 'caption-in-grid',
+    title: 'Grelha com célula de texto',
+    hint: 'Para 5 ou 6 imagens; o texto fica numa célula da grelha.',
+  },
+  {
+    value: 'asymmetric-5',
+    title: 'Mosaico assimétrico',
+    hint: 'Apenas com 5 imagens; layout em blocos desalinhados.',
+  },
+]
+
+function groupDisplayAllowedForCount(n: number, value: GroupDisplayType): boolean {
+  if (n < 2 || n > 6) return false
+  if (value === 'asymmetric-5') return n === 5
+  if (value === 'caption-in-grid') return n === 5 || n === 6
+  return true
+}
+
+function groupDisplayChoicesForCount(n: number): GroupDisplayChoice[] {
+  return GROUP_DISPLAY_CHOICES.filter((c) => groupDisplayAllowedForCount(n, c.value))
+}
+
+function resolveGroupDisplay(
+  n: number,
+  current: GroupDisplayType | undefined
+): GroupDisplayType | undefined {
+  const opts = groupDisplayChoicesForCount(n)
+  if (!opts.length) return undefined
+  if (current && opts.some((o) => o.value === current)) return current
+  return opts[0].value
+}
+
 function slugId(title: string) {
   const base = title
     .trim()
@@ -78,7 +137,6 @@ const emptyForm = (): Partial<Artwork> & { order_index: number } => ({
   description: { 'pt-Br': '', en: '', fr: '', it: '', de: '' },
   image: '',
   video: '',
-  orientation: 'square',
   group: null,
   groupDisplay: undefined,
   types: ['painting'],
@@ -93,6 +151,7 @@ type CreateDraft = {
   primaryType: ArtworkType
   hasGroup: boolean
   group: string
+  groupDisplay: GroupDisplayType | undefined
   extra_images: string[]
 }
 
@@ -104,6 +163,7 @@ const emptyCreate = (): CreateDraft => ({
   primaryType: 'painting',
   hasGroup: false,
   group: '',
+  groupDisplay: undefined,
   extra_images: [],
 })
 
@@ -152,13 +212,13 @@ export function AdminArtworksPage() {
   const [list, setList] = useState<Artwork[]>([])
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
-  const [message, setMessage] = useState('')
   const [createOpen, setCreateOpen] = useState(false)
   const [createDraft, setCreateDraft] = useState<CreateDraft>(emptyCreate())
   const [editOpen, setEditOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [form, setForm] = useState(emptyForm())
   const [editHasGroup, setEditHasGroup] = useState(false)
+  const [editCaptionLocale, setEditCaptionLocale] = useState<Locale>('pt-Br')
   const [createPendingExtras, setCreatePendingExtras] = useState<PendingExtra[]>([])
   const [editPendingExtras, setEditPendingExtras] = useState<PendingExtra[]>([])
   const [createMainUploading, setCreateMainUploading] = useState(false)
@@ -216,7 +276,6 @@ export function AdminArtworksPage() {
     setCreateDraft(emptyCreate())
     setCreateCategoryAssignments([])
     setCreateCarouselIndex(0)
-    setMessage('')
     setCreateOpen(true)
   }
 
@@ -230,7 +289,7 @@ export function AdminArtworksPage() {
   }
 
   const uploadFile = async (file: File, target: 'create' | 'edit') => {
-    setMessage('Enviando…')
+    const tid = toast.loading('A enviar…')
     if (target === 'create') setCreateMainUploading(true)
     else setEditMainUploading(true)
     const pathname = `portfolio/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`
@@ -245,10 +304,15 @@ export function AdminArtworksPage() {
       } else {
         setForm((f) => ({ ...f, image: blob.url }))
       }
-      setMessage('Imagem enviada.')
+      toast.update(tid, {
+        render: 'Imagem enviada.',
+        type: 'success',
+        isLoading: false,
+        autoClose: 3500,
+      })
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Falha no upload'
-      setMessage(msg)
+      toast.update(tid, { render: msg, type: 'error', isLoading: false, autoClose: 6000 })
       throw e
     } finally {
       if (target === 'create') setCreateMainUploading(false)
@@ -267,7 +331,7 @@ export function AdminArtworksPage() {
       return blob.url
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Falha no upload'
-      setMessage(msg)
+      toast.error(msg)
       throw e
     }
   }
@@ -281,12 +345,11 @@ export function AdminArtworksPage() {
       setCreatePendingExtras((prev) => [...prev, { id, preview, name: file.name }])
       void (async () => {
         try {
-          setMessage('A enviar imagens…')
           const url = await uploadToBlob(file)
           setCreateDraft((d) => ({ ...d, extra_images: [...d.extra_images, url] }))
-          setMessage('Imagens enviadas.')
+          toast.success('Imagem adicionada ao grupo.')
         } catch {
-          setMessage('Falha ao enviar uma imagem.')
+          toast.error('Falha ao enviar uma imagem.')
         } finally {
           URL.revokeObjectURL(preview)
           setCreatePendingExtras((prev) => prev.filter((x) => x.id !== id))
@@ -305,12 +368,11 @@ export function AdminArtworksPage() {
       setEditPendingExtras((prev) => [...prev, { id, preview, name: file.name }])
       void (async () => {
         try {
-          setMessage('A enviar imagens…')
           const url = await uploadToBlob(file)
           setForm((f) => ({ ...f, extra_images: [...(f.extra_images ?? []), url] }))
-          setMessage('Imagens enviadas.')
+          toast.success('Imagem adicionada ao grupo.')
         } catch {
-          setMessage('Falha ao enviar uma imagem.')
+          toast.error('Falha ao enviar uma imagem.')
         } finally {
           URL.revokeObjectURL(preview)
           setEditPendingExtras((prev) => prev.filter((x) => x.id !== id))
@@ -323,11 +385,11 @@ export function AdminArtworksPage() {
   const saveCreate = async (e: FormEvent) => {
     e.preventDefault()
     if (!createDraft.date) {
-      setMessage('Indique a data.')
+      toast.warning('Indique a data.')
       return
     }
     if (!createDraft.image) {
-      setMessage('Envie a imagem principal antes de salvar.')
+      toast.warning('Envie a imagem principal antes de salvar.')
       return
     }
     const id = slugId(createDraft.title)
@@ -335,8 +397,15 @@ export function AdminArtworksPage() {
       list.length === 0
         ? 1
         : Math.max(...list.map((x) => x.order_index ?? 0), 0) + 1
+    const createGroupImageCount =
+      (createDraft.image ? 1 : 0) +
+      createDraft.extra_images.length +
+      createPendingExtras.length
+    const resolvedCreateGroupDisplay =
+      createDraft.hasGroup && createGroupImageCount >= 2
+        ? resolveGroupDisplay(createGroupImageCount, createDraft.groupDisplay)
+        : undefined
     setSaving(true)
-    setMessage('')
     try {
       const payload = {
         id,
@@ -351,8 +420,8 @@ export function AdminArtworksPage() {
           de: '',
         },
         image: createDraft.image || undefined,
-        orientation: 'square' as const,
         group: createDraft.hasGroup ? createDraft.group.trim() || null : null,
+        groupDisplay: resolvedCreateGroupDisplay,
         types: [createDraft.primaryType],
         extra_images: createDraft.hasGroup ? createDraft.extra_images : [],
         categoryAssignments: createCategoryAssignments.filter((x) => x.categoryId.trim()),
@@ -365,14 +434,14 @@ export function AdminArtworksPage() {
       })
       if (!r.ok) {
         const err = await r.json().catch(() => ({}))
-        setMessage((err as { error?: string }).error || 'Erro ao salvar')
+        toast.error((err as { error?: string }).error || 'Erro ao salvar')
         return
       }
       const created = (await r.json().catch(() => null)) as Artwork | null
       if (created?.id) {
         setList((prev) => [...prev.filter((x) => x.id !== created.id), created])
       }
-      setMessage('Obra criada.')
+      toast.success('Obra criada.')
       closeCreate()
       setCreateDraft(emptyCreate())
       void refreshList()
@@ -398,7 +467,6 @@ export function AdminArtworksPage() {
       },
       image: a.image ?? '',
       video: a.video ?? '',
-      orientation: a.orientation,
       group: a.group,
       groupDisplay: a.groupDisplay,
       types: [...a.types],
@@ -415,9 +483,9 @@ export function AdminArtworksPage() {
       if (as.categoryId) void ensureSubs(as.categoryId)
     }
     setEditHasGroup(Boolean(a.group) || (a.extra_images?.length ?? 0) > 0)
+    setEditCaptionLocale('pt-Br')
     setEditCarouselIndex(0)
     setEditPendingExtras([])
-    setMessage('')
     setEditOpen(true)
   }
 
@@ -434,11 +502,10 @@ export function AdminArtworksPage() {
   const saveEdit = async (e: FormEvent) => {
     e.preventDefault()
     if (!form.id?.trim() || !form.date) {
-      setMessage('Preencha id e data.')
+      toast.warning('Preencha a data.')
       return
     }
     setSaving(true)
-    setMessage('')
     try {
       const payload = {
         id: form.id.trim(),
@@ -448,9 +515,11 @@ export function AdminArtworksPage() {
         description: form.description,
         image: form.image || undefined,
         video: form.video || undefined,
-        orientation: form.orientation,
         group: editHasGroup ? (form.group?.trim() || null) : null,
-        groupDisplay: editHasGroup ? form.groupDisplay : undefined,
+        groupDisplay:
+          editHasGroup && editGroupImageCount >= 2
+            ? resolveGroupDisplay(editGroupImageCount, form.groupDisplay)
+            : undefined,
         types: form.types,
         info: form.info,
         resolution: form.resolution,
@@ -465,14 +534,14 @@ export function AdminArtworksPage() {
       })
       if (!r.ok) {
         const err = await r.json().catch(() => ({}))
-        setMessage((err as { error?: string }).error || 'Erro ao salvar')
+        toast.error((err as { error?: string }).error || 'Erro ao salvar')
         return
       }
       const updated = (await r.json().catch(() => null)) as Artwork | null
       if (updated?.id) {
         setList((prev) => prev.map((x) => (x.id === updated.id ? updated : x)))
       }
-      setMessage('Guardado.')
+      toast.success('Guardado.')
       closeEdit()
       void refreshList()
     } finally {
@@ -488,11 +557,12 @@ export function AdminArtworksPage() {
     })
     if (r.ok) {
       setList((prev) => prev.filter((x) => x.id !== id))
-      setMessage('Removido.')
+      toast.success('Removido.')
       if (editingId === id) closeEdit()
       void refreshList()
     } else {
-      setMessage('Erro ao apagar')
+      const err = await r.json().catch(() => ({}))
+      toast.error((err as { error?: string }).error || 'Erro ao apagar')
     }
   }
 
@@ -514,6 +584,20 @@ export function AdminArtworksPage() {
   }, [editCarouselIndex, editMedia.length])
 
   const swipeThreshold = 40
+  const createGroupImageCount =
+    (createDraft.image ? 1 : 0) +
+    createDraft.extra_images.length +
+    createPendingExtras.length
+  const editGroupImageCount =
+    (form.image ? 1 : 0) + (form.extra_images?.length ?? 0) + editPendingExtras.length
+  const createGroupDisplayChoices =
+    createDraft.hasGroup && createGroupImageCount >= 2
+      ? groupDisplayChoicesForCount(createGroupImageCount)
+      : []
+  const editGroupDisplayChoices =
+    editHasGroup && editGroupImageCount >= 2
+      ? groupDisplayChoicesForCount(editGroupImageCount)
+      : []
   const prevCreateMedia = () =>
     setCreateCarouselIndex((i) => (i === 0 ? createMedia.length - 1 : i - 1))
   const nextCreateMedia = () =>
@@ -535,7 +619,6 @@ export function AdminArtworksPage() {
           </Button>
         </div>
       </div>
-      {message ? <p className="text-muted-foreground mb-3 text-sm">{message}</p> : null}
       <div className="admin-table-wrap border-border bg-card rounded-lg border">
         {loading ? (
           <p className="text-muted-foreground p-6 text-center text-sm">A carregar…</p>
@@ -827,6 +910,7 @@ export function AdminArtworksPage() {
                     hasGroup: checked,
                     group: checked ? d.group : '',
                     extra_images: checked ? d.extra_images : [],
+                    groupDisplay: checked ? d.groupDisplay : undefined,
                   }))
                 }}
                 className="size-4 rounded border"
@@ -913,6 +997,39 @@ export function AdminArtworksPage() {
                     ))}
                   </div>
                 ) : null}
+                {createGroupDisplayChoices.length > 0 ? (
+                  <fieldset className="grid gap-3 pt-1">
+                    <legend className="text-sm font-medium">Tipo de exibição do grupo</legend>
+                    <div className="grid gap-2" role="radiogroup" aria-label="Tipo de exibição do grupo">
+                      {createGroupDisplayChoices.map((opt) => {
+                        const resolved = resolveGroupDisplay(
+                          createGroupImageCount,
+                          createDraft.groupDisplay
+                        )
+                        return (
+                          <label
+                            key={opt.value}
+                            className="border-input has-[:checked]:border-primary flex cursor-pointer gap-3 rounded-md border p-3 has-[:checked]:bg-accent/40"
+                          >
+                            <input
+                              type="radio"
+                              name="create-group-display"
+                              className="mt-1 size-4 shrink-0"
+                              checked={resolved === opt.value}
+                              onChange={() =>
+                                setCreateDraft((d) => ({ ...d, groupDisplay: opt.value }))
+                              }
+                            />
+                            <span className="min-w-0">
+                              <span className="block text-sm font-medium">{opt.title}</span>
+                              <span className="text-muted-foreground block text-xs">{opt.hint}</span>
+                            </span>
+                          </label>
+                        )
+                      })}
+                    </div>
+                  </fieldset>
+                ) : null}
                 </div>
               </div>
             ) : null}
@@ -993,27 +1110,49 @@ export function AdminArtworksPage() {
             </div>
             <form onSubmit={saveEdit} className="grid max-h-[78vh] gap-4 overflow-y-auto pr-1">
             <div className="grid gap-2">
-              <Label htmlFor="edit-id">ID (slug único)</Label>
-              <Input id="edit-id" value={form.id} readOnly disabled className="opacity-70" />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="edit-order">Ordem</Label>
-              <Input
-                id="edit-order"
-                type="number"
-                min={1}
-                value={form.order_index}
-                onChange={(e) =>
-                  setForm((f) => ({ ...f, order_index: Number(e.target.value) || 1 }))
-                }
-              />
-            </div>
-            <div className="grid gap-2">
               <Label htmlFor="edit-title">Título</Label>
               <Input
                 id="edit-title"
                 value={form.title}
                 onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
+              />
+            </div>
+            <div className="grid gap-2">
+              <span className="text-sm leading-none font-medium">Legenda</span>
+              <div
+                role="tablist"
+                aria-label="Idioma da legenda"
+                className="flex flex-wrap gap-1"
+              >
+                {LOCALES.map((loc) => (
+                  <button
+                    key={loc}
+                    type="button"
+                    role="tab"
+                    aria-selected={editCaptionLocale === loc}
+                    aria-label={loc}
+                    onClick={() => setEditCaptionLocale(loc)}
+                    className={cn(
+                      'inline-flex min-h-9 min-w-9 items-center justify-center rounded-md border text-lg leading-none transition-colors',
+                      editCaptionLocale === loc
+                        ? 'border-primary bg-accent'
+                        : 'border-transparent hover:bg-muted/80'
+                    )}
+                  >
+                    {LOCALE_FLAGS[loc]}
+                  </button>
+                ))}
+              </div>
+              <Textarea
+                id={`edit-desc-${editCaptionLocale}`}
+                rows={4}
+                value={form.description?.[editCaptionLocale] ?? ''}
+                onChange={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    description: { ...f.description, [editCaptionLocale]: e.target.value },
+                  }))
+                }
               />
             </div>
             <div className="grid gap-2">
@@ -1025,141 +1164,18 @@ export function AdminArtworksPage() {
                 required
               />
             </div>
-            {LOCALES.map((loc) => (
-              <div key={loc} className="grid gap-2">
-                <Label htmlFor={`edit-desc-${loc}`}>Legenda ({loc})</Label>
-                <Textarea
-                  id={`edit-desc-${loc}`}
-                  rows={3}
-                  value={form.description?.[loc] ?? ''}
-                  onChange={(e) =>
-                    setForm((f) => ({
-                      ...f,
-                      description: { ...f.description, [loc]: e.target.value },
-                    }))
-                  }
-                />
-              </div>
-            ))}
-            <fieldset className="grid gap-2">
-              <legend className="text-sm font-medium">Tipos</legend>
-              <div className="flex flex-wrap gap-3">
-                {TYPE_OPTIONS.map((t) => (
-                  <label key={t} className="flex items-center gap-2 text-sm">
-                    <input
-                      type="checkbox"
-                      className="size-4 rounded border"
-                      checked={form.types?.includes(t) ?? false}
-                      onChange={() =>
-                        setForm((f) => {
-                          const cur = new Set(f.types ?? [])
-                          if (cur.has(t)) cur.delete(t)
-                          else cur.add(t)
-                          return { ...f, types: [...cur] as ArtworkType[] }
-                        })
-                      }
-                    />
-                    {t}
-                  </label>
-                ))}
-              </div>
-            </fieldset>
             <div className="grid gap-2">
-              <span className="text-sm font-medium">Categorias</span>
-              {editCategoryAssignments.map((row, idx) => (
-                <div key={idx} className="flex flex-wrap items-end gap-2">
-                  <div className="grid min-w-[140px] flex-1 gap-1">
-                    <Label>Categoria</Label>
-                    <select
-                      className={selectTriggerClass}
-                      value={row.categoryId}
-                      onChange={(e) => {
-                        const categoryId = e.target.value
-                        if (categoryId) void ensureSubs(categoryId)
-                        setEditCategoryAssignments((prev) =>
-                          prev.map((r, i) =>
-                            i === idx ? { categoryId, subcategoryId: null } : r
-                          )
-                        )
-                      }}
-                    >
-                      <option value="">—</option>
-                      {adminCategories.map((c) => (
-                        <option key={c.id} value={c.id}>
-                          {catLabel(c)}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="grid min-w-[140px] flex-1 gap-1">
-                    <Label>Subcategoria</Label>
-                    <select
-                      className={selectTriggerClass}
-                      value={row.subcategoryId ?? ''}
-                      disabled={!row.categoryId}
-                      onChange={(e) => {
-                        const v = e.target.value
-                        setEditCategoryAssignments((prev) =>
-                          prev.map((r, i) =>
-                            i === idx ? { ...r, subcategoryId: v || null } : r
-                          )
-                        )
-                      }}
-                    >
-                      <option value="">—</option>
-                      {(row.categoryId ? subsCache[row.categoryId] ?? [] : []).map((s) => (
-                        <option key={s.id} value={s.id}>
-                          {subLabel(s)}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() =>
-                      setEditCategoryAssignments((prev) => prev.filter((_, i) => i !== idx))
-                    }
-                  >
-                    Remover
-                  </Button>
-                </div>
-              ))}
-              <Button
-                type="button"
-                variant="secondary"
-                size="sm"
-                className="w-fit"
-                onClick={() => {
-                  const first = adminCategories[0]?.id ?? ''
-                  if (first) void ensureSubs(first)
-                  setEditCategoryAssignments((prev) => [
-                    ...prev,
-                    { categoryId: first, subcategoryId: null },
-                  ])
+              <Label htmlFor="edit-file">Arte (imagem ou vídeo)</Label>
+              <Input
+                id="edit-file"
+                type="file"
+                accept="image/*,video/*"
+                onChange={(e) => {
+                  const f = e.target.files?.[0]
+                  if (f) void uploadFile(f, 'edit')
                 }}
-              >
-                Adicionar categoria
-              </Button>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="edit-orientation">Orientação</Label>
-              <select
-                id="edit-orientation"
-                className={selectTriggerClass}
-                value={form.orientation}
-                onChange={(e) =>
-                  setForm((f) => ({
-                    ...f,
-                    orientation: e.target.value as Artwork['orientation'],
-                  }))
-                }
-              >
-                <option value="square">square</option>
-                <option value="horizontal">horizontal</option>
-                <option value="vertical">vertical</option>
-              </select>
+                className="h-auto min-h-9 cursor-pointer py-1.5 file:cursor-pointer"
+              />
             </div>
             <label className="flex cursor-pointer items-center gap-2 text-sm">
               <input
@@ -1270,49 +1286,157 @@ export function AdminArtworksPage() {
                     ))}
                   </div>
                 ) : null}
+                {editGroupDisplayChoices.length > 0 ? (
+                  <fieldset className="grid gap-3 pt-1">
+                    <legend className="text-sm font-medium">Tipo de exibição do grupo</legend>
+                    <div className="grid gap-2" role="radiogroup" aria-label="Tipo de exibição do grupo">
+                      {editGroupDisplayChoices.map((opt) => {
+                        const resolved = resolveGroupDisplay(
+                          editGroupImageCount,
+                          form.groupDisplay
+                        )
+                        return (
+                          <label
+                            key={opt.value}
+                            className="border-input has-[:checked]:border-primary flex cursor-pointer gap-3 rounded-md border p-3 has-[:checked]:bg-accent/40"
+                          >
+                            <input
+                              type="radio"
+                              name="edit-group-display"
+                              className="mt-1 size-4 shrink-0"
+                              checked={resolved === opt.value}
+                              onChange={() =>
+                                setForm((f) => ({
+                                  ...f,
+                                  groupDisplay: opt.value,
+                                }))
+                              }
+                            />
+                            <span className="min-w-0">
+                              <span className="block text-sm font-medium">{opt.title}</span>
+                              <span className="text-muted-foreground block text-xs">{opt.hint}</span>
+                            </span>
+                          </label>
+                        )
+                      })}
+                    </div>
+                  </fieldset>
+                ) : null}
                 </div>
               </div>
             ) : null}
+            <fieldset className="grid gap-2">
+              <legend className="text-sm font-medium">Tipos</legend>
+              <div className="flex flex-wrap gap-3">
+                {TYPE_OPTIONS.map((t) => (
+                  <label key={t} className="flex items-center gap-2 text-sm">
+                    <input
+                      type="checkbox"
+                      className="size-4 rounded border"
+                      checked={form.types?.includes(t) ?? false}
+                      onChange={() =>
+                        setForm((f) => {
+                          const cur = new Set(f.types ?? [])
+                          if (cur.has(t)) cur.delete(t)
+                          else cur.add(t)
+                          return { ...f, types: [...cur] as ArtworkType[] }
+                        })
+                      }
+                    />
+                    {t}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
             <div className="grid gap-2">
-              <Label htmlFor="edit-group-display">Group display (opcional)</Label>
-              <Input
-                id="edit-group-display"
-                value={form.groupDisplay ?? ''}
-                onChange={(e) =>
-                  setForm((f) => ({
-                    ...f,
-                    groupDisplay: (e.target.value || undefined) as GroupDisplayType | undefined,
-                  }))
-                }
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="edit-image-url">URL da imagem</Label>
-              <Input
-                id="edit-image-url"
-                value={form.image ?? ''}
-                onChange={(e) => setForm((f) => ({ ...f, image: e.target.value }))}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="edit-file">Enviar ficheiro</Label>
-              <Input
-                id="edit-file"
-                type="file"
-                accept="image/*,video/*"
-                onChange={(e) => {
-                  const f = e.target.files?.[0]
-                  if (f) void uploadFile(f, 'edit')
+              <span className="text-sm font-medium">Categorias</span>
+              {editCategoryAssignments.map((row, idx) => (
+                <div key={idx} className="flex flex-wrap items-end gap-2">
+                  <div className="grid min-w-[140px] flex-1 gap-1">
+                    <Label>Categoria</Label>
+                    <select
+                      className={selectTriggerClass}
+                      value={row.categoryId}
+                      onChange={(e) => {
+                        const categoryId = e.target.value
+                        if (categoryId) void ensureSubs(categoryId)
+                        setEditCategoryAssignments((prev) =>
+                          prev.map((r, i) =>
+                            i === idx ? { categoryId, subcategoryId: null } : r
+                          )
+                        )
+                      }}
+                    >
+                      <option value="">—</option>
+                      {adminCategories.map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {catLabel(c)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="grid min-w-[140px] flex-1 gap-1">
+                    <Label>Subcategoria</Label>
+                    <select
+                      className={selectTriggerClass}
+                      value={row.subcategoryId ?? ''}
+                      disabled={!row.categoryId}
+                      onChange={(e) => {
+                        const v = e.target.value
+                        setEditCategoryAssignments((prev) =>
+                          prev.map((r, i) =>
+                            i === idx ? { ...r, subcategoryId: v || null } : r
+                          )
+                        )
+                      }}
+                    >
+                      <option value="">—</option>
+                      {(row.categoryId ? subsCache[row.categoryId] ?? [] : []).map((s) => (
+                        <option key={s.id} value={s.id}>
+                          {subLabel(s)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      setEditCategoryAssignments((prev) => prev.filter((_, i) => i !== idx))
+                    }
+                  >
+                    Remover
+                  </Button>
+                </div>
+              ))}
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                className="w-fit"
+                onClick={() => {
+                  const first = adminCategories[0]?.id ?? ''
+                  if (first) void ensureSubs(first)
+                  setEditCategoryAssignments((prev) => [
+                    ...prev,
+                    { categoryId: first, subcategoryId: null },
+                  ])
                 }}
-                className="h-auto min-h-9 cursor-pointer py-1.5 file:cursor-pointer"
-              />
+              >
+                Adicionar categoria
+              </Button>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="edit-video">URL do vídeo (opcional)</Label>
+              <Label htmlFor="edit-order">Ordem</Label>
               <Input
-                id="edit-video"
-                value={form.video ?? ''}
-                onChange={(e) => setForm((f) => ({ ...f, video: e.target.value }))}
+                id="edit-order"
+                type="number"
+                min={1}
+                value={form.order_index}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, order_index: Number(e.target.value) || 1 }))
+                }
               />
             </div>
               <DialogFooter>

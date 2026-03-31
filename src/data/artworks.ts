@@ -42,7 +42,6 @@ export interface Artwork {
   image?: string
   video?: string
   resolution?: ArtworkResolution
-  orientation: 'square' | 'horizontal' | 'vertical'
   group: string | null
   groupDisplay?: GroupDisplayType
   types: ArtworkType[]

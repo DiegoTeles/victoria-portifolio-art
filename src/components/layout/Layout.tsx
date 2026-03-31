@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Outlet, Link, NavLink, useLocation } from 'react-router-dom'
+import { ChevronRight } from 'lucide-react'
 import { useLocale } from '../../i18n/LocaleContext'
 import { LocaleSelector } from '../LocaleSelector'
 import { ThemeToggle } from '../ThemeToggle'
@@ -94,24 +95,31 @@ export function Layout() {
               <span className="nav-link nav-dropdown-label">{t('navCategories')}</span>
               <div className="nav-submenu nav-submenu--categories" role="menu">
                 {cmsCategories.map((c) => (
-                  <div key={c.id} className="nav-submenu-group">
+                  <div key={c.id} className="nav-category-flyout">
                     <Link
                       to={`/?category=${encodeURIComponent(c.slug)}`}
-                      className="nav-submenu-link nav-submenu-link--parent"
+                      className="nav-submenu-link nav-submenu-link--parent nav-submenu-link--category-row"
                       role="menuitem"
                     >
-                      {c.name}
+                      <span>{c.name}</span>
+                      {c.subcategories.length > 0 ? (
+                        <ChevronRight className="nav-category-flyout-icon" aria-hidden size={16} />
+                      ) : null}
                     </Link>
-                    {c.subcategories.map((s) => (
-                      <Link
-                        key={s.id}
-                        to={`/?category=${encodeURIComponent(c.slug)}&sub=${encodeURIComponent(s.slug)}`}
-                        className="nav-submenu-link nav-submenu-link--sub"
-                        role="menuitem"
-                      >
-                        {s.name}
-                      </Link>
-                    ))}
+                    {c.subcategories.length > 0 ? (
+                      <div className="nav-submenu-flyout" role="menu" aria-label={c.name}>
+                        {c.subcategories.map((s) => (
+                          <Link
+                            key={s.id}
+                            to={`/?category=${encodeURIComponent(c.slug)}&sub=${encodeURIComponent(s.slug)}`}
+                            className="nav-submenu-link nav-submenu-flyout-link"
+                            role="menuitem"
+                          >
+                            {s.name}
+                          </Link>
+                        ))}
+                      </div>
+                    ) : null}
                   </div>
                 ))}
               </div>

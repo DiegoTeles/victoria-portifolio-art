@@ -36,7 +36,6 @@ export default async function handler(req, res) {
           description = ${JSON.stringify(p.description)}::jsonb,
           image_url = ${p.image_url},
           video_url = ${p.video_url},
-          orientation = ${p.orientation},
           group_key = ${p.group_key},
           group_display = ${p.group_display},
           types = ${JSON.stringify(p.types)}::jsonb,
@@ -56,7 +55,7 @@ export default async function handler(req, res) {
       }
       const rows = await sql`
         SELECT id, order_index, title, artwork_date, description, image_url, video_url,
-               orientation, group_key, group_display, types, info, resolution, extra_images
+               group_key, group_display, types, info, resolution, extra_images
         FROM artworks WHERE id = ${id}
       `
       let cats = []

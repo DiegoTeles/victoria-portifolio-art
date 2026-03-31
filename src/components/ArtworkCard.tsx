@@ -26,7 +26,7 @@ export function ArtworkCard({ artwork, locale, onSelect }: Props) {
 
   return (
     <figure
-      className={`artwork-card ${artwork.orientation}`}
+      className="artwork-card"
       style={{ margin: 0 }}
     >
       <button
