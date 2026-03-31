@@ -28,7 +28,12 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { ArtworkDateField } from '@/components/admin/ArtworkDateField'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import type { Artwork, ArtworkType, GroupDisplayType } from '../data/artworks'
+import type {
+  Artwork,
+  ArtworkCategoryAssignment,
+  ArtworkType,
+  GroupDisplayType,
+} from '../data/artworks'
 import type { Locale } from '../data/artworks'
 import { getLocalized } from '../data/artworks'
 import { cn } from '@/lib/utils'
@@ -121,11 +126,29 @@ function captionPreview(a: Artwork): string {
   return t.trim() || '—'
 }
 
-export function AdminPage() {
+type AdminCategoryRow = {
+  id: string
+  slug: string
+  translations: { locale: string; name: string }[]
+}
+
+type AdminSubRow = {
+  id: string
+  categoryId: string
+  slug: string
+  translations: { locale: string; name: string }[]
+}
+
+function catLabel(c: AdminCategoryRow) {
+  return c.translations.find((t) => t.locale === 'pt-Br')?.name || c.slug
+}
+
+function subLabel(s: AdminSubRow) {
+  return s.translations.find((t) => t.locale === 'pt-Br')?.name || s.slug
+}
+
+export function AdminArtworksPage() {
   const titleId = useId()
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [password, setPassword] = useState('')
-  const [loginError, setLoginError] = useState('')
   const [list, setList] = useState<Artwork[]>([])
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -144,6 +167,10 @@ export function AdminPage() {
   const [editCarouselIndex, setEditCarouselIndex] = useState(0)
   const [createTouchX, setCreateTouchX] = useState<number | null>(null)
   const [editTouchX, setEditTouchX] = useState<number | null>(null)
+  const [adminCategories, setAdminCategories] = useState<AdminCategoryRow[]>([])
+  const [subsCache, setSubsCache] = useState<Record<string, AdminSubRow[]>>({})
+  const [createCategoryAssignments, setCreateCategoryAssignments] = useState<ArtworkCategoryAssignment[]>([])
+  const [editCategoryAssignments, setEditCategoryAssignments] = useState<ArtworkCategoryAssignment[]>([])
 
   const refreshList = useCallback(async () => {
     setLoading(true)
@@ -159,48 +186,27 @@ export function AdminPage() {
   }, [])
 
   useEffect(() => {
-    void fetch('/api/admin/me', { credentials: 'include' }).then(async (r) => {
-      try {
-        if (!r.headers.get('content-type')?.includes('application/json')) return
-        const j = (await r.json()) as { ok?: boolean }
-        if (r.ok && j?.ok === true) setLoggedIn(true)
-      } catch {
-        setLoggedIn(false)
-      }
-    })
-  }, [])
-
-  useEffect(() => {
     void refreshList()
   }, [refreshList])
 
-  const login = async (e: FormEvent) => {
-    e.preventDefault()
-    setLoginError('')
-    const r = await fetch('/api/admin/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ password }),
+  useEffect(() => {
+    void fetch('/api/admin/categories', { credentials: 'include' }).then(async (r) => {
+      if (!r.ok) return
+      const data = (await r.json()) as AdminCategoryRow[]
+      setAdminCategories(Array.isArray(data) ? data : [])
     })
-    if (!r.headers.get('content-type')?.includes('application/json')) {
-      setLoginError('API indisponível neste modo.')
-      return
-    }
-    const j = (await r.json().catch(() => ({}))) as { ok?: boolean; error?: string }
-    if (r.ok && j.ok === true) {
-      setLoggedIn(true)
-      setPassword('')
-      void refreshList()
-    } else {
-      setLoginError(j.error || 'Falha no login')
-    }
-  }
+  }, [])
 
-  const logout = async () => {
-    await fetch('/api/admin/logout', { method: 'POST', credentials: 'include' })
-    setLoggedIn(false)
-  }
+  const ensureSubs = useCallback(async (categoryId: string) => {
+    if (subsCache[categoryId] !== undefined) return
+    const r = await fetch(
+      `/api/admin/subcategories?categoryId=${encodeURIComponent(categoryId)}`,
+      { credentials: 'include' }
+    )
+    if (!r.ok) return
+    const data = (await r.json()) as AdminSubRow[]
+    setSubsCache((prev) => ({ ...prev, [categoryId]: Array.isArray(data) ? data : [] }))
+  }, [subsCache])
 
   const openCreate = () => {
     setCreatePendingExtras((prev) => {
@@ -208,6 +214,7 @@ export function AdminPage() {
       return []
     })
     setCreateDraft(emptyCreate())
+    setCreateCategoryAssignments([])
     setCreateCarouselIndex(0)
     setMessage('')
     setCreateOpen(true)
@@ -348,6 +355,7 @@ export function AdminPage() {
         group: createDraft.hasGroup ? createDraft.group.trim() || null : null,
         types: [createDraft.primaryType],
         extra_images: createDraft.hasGroup ? createDraft.extra_images : [],
+        categoryAssignments: createCategoryAssignments.filter((x) => x.categoryId.trim()),
       }
       const r = await fetch('/api/admin/artworks', {
         method: 'POST',
@@ -398,6 +406,14 @@ export function AdminPage() {
       resolution: a.resolution,
       extra_images: [...(a.extra_images ?? [])],
     })
+    const assigns = (a.categoryAssignments ?? []).map((x) => ({
+      categoryId: x.categoryId,
+      subcategoryId: x.subcategoryId,
+    }))
+    setEditCategoryAssignments(assigns)
+    for (const as of assigns) {
+      if (as.categoryId) void ensureSubs(as.categoryId)
+    }
     setEditHasGroup(Boolean(a.group) || (a.extra_images?.length ?? 0) > 0)
     setEditCarouselIndex(0)
     setEditPendingExtras([])
@@ -439,6 +455,7 @@ export function AdminPage() {
         info: form.info,
         resolution: form.resolution,
         extra_images: editHasGroup ? (form.extra_images ?? []) : [],
+        categoryAssignments: editCategoryAssignments.filter((x) => x.categoryId.trim()),
       }
       const r = await fetch(`/api/admin/artworks/${encodeURIComponent(form.id.trim())}`, {
         method: 'PUT',
@@ -506,40 +523,15 @@ export function AdminPage() {
   const nextEditMedia = () =>
     setEditCarouselIndex((i) => (i === editMedia.length - 1 ? 0 : i + 1))
 
-  if (!loggedIn) {
-    return (
-      <section className="page-content admin-page">
-        <h1 className="page-title" id={titleId}>
-          Admin
-        </h1>
-        <form className="admin-login-form flex max-w-sm flex-col gap-4" onSubmit={login} aria-labelledby={titleId}>
-          <div className="grid gap-2">
-            <Label htmlFor="admin-password">Palavra-passe</Label>
-            <Input
-              id="admin-password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete="current-password"
-            />
-          </div>
-          {loginError ? <p className="text-destructive text-sm">{loginError}</p> : null}
-          <Button type="submit">Entrar</Button>
-        </form>
-      </section>
-    )
-  }
-
   return (
-    <section className="page-content admin-page">
+    <section className="page-content admin-page" aria-labelledby={titleId}>
       <div className="admin-toolbar admin-toolbar--table">
-        <h1 className="page-title admin-page-heading">Obras</h1>
+        <h1 className="page-title admin-page-heading" id={titleId}>
+          Obras
+        </h1>
         <div className="admin-toolbar-actions">
           <Button type="button" onClick={openCreate}>
             Adicionar nova
-          </Button>
-          <Button type="button" variant="outline" onClick={() => void logout()}>
-            Sair
           </Button>
         </div>
       </div>
@@ -722,6 +714,85 @@ export function AdminPage() {
                   </option>
                 ))}
               </select>
+            </div>
+            <div className="grid gap-2">
+              <span className="text-sm font-medium">Categorias</span>
+              {createCategoryAssignments.map((row, idx) => (
+                <div key={idx} className="flex flex-wrap items-end gap-2">
+                  <div className="grid min-w-[140px] flex-1 gap-1">
+                    <Label>Categoria</Label>
+                    <select
+                      className={selectTriggerClass}
+                      value={row.categoryId}
+                      onChange={(e) => {
+                        const categoryId = e.target.value
+                        if (categoryId) void ensureSubs(categoryId)
+                        setCreateCategoryAssignments((prev) =>
+                          prev.map((r, i) =>
+                            i === idx ? { categoryId, subcategoryId: null } : r
+                          )
+                        )
+                      }}
+                    >
+                      <option value="">—</option>
+                      {adminCategories.map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {catLabel(c)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="grid min-w-[140px] flex-1 gap-1">
+                    <Label>Subcategoria</Label>
+                    <select
+                      className={selectTriggerClass}
+                      value={row.subcategoryId ?? ''}
+                      disabled={!row.categoryId}
+                      onChange={(e) => {
+                        const v = e.target.value
+                        setCreateCategoryAssignments((prev) =>
+                          prev.map((r, i) =>
+                            i === idx ? { ...r, subcategoryId: v || null } : r
+                          )
+                        )
+                      }}
+                    >
+                      <option value="">—</option>
+                      {(row.categoryId ? subsCache[row.categoryId] ?? [] : []).map((s) => (
+                        <option key={s.id} value={s.id}>
+                          {subLabel(s)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      setCreateCategoryAssignments((prev) => prev.filter((_, i) => i !== idx))
+                    }
+                  >
+                    Remover
+                  </Button>
+                </div>
+              ))}
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                className="w-fit"
+                onClick={() => {
+                  const first = adminCategories[0]?.id ?? ''
+                  if (first) void ensureSubs(first)
+                  setCreateCategoryAssignments((prev) => [
+                    ...prev,
+                    { categoryId: first, subcategoryId: null },
+                  ])
+                }}
+              >
+                Adicionar categoria
+              </Button>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="create-file">Imagem principal</Label>
@@ -993,6 +1064,85 @@ export function AdminPage() {
                 ))}
               </div>
             </fieldset>
+            <div className="grid gap-2">
+              <span className="text-sm font-medium">Categorias</span>
+              {editCategoryAssignments.map((row, idx) => (
+                <div key={idx} className="flex flex-wrap items-end gap-2">
+                  <div className="grid min-w-[140px] flex-1 gap-1">
+                    <Label>Categoria</Label>
+                    <select
+                      className={selectTriggerClass}
+                      value={row.categoryId}
+                      onChange={(e) => {
+                        const categoryId = e.target.value
+                        if (categoryId) void ensureSubs(categoryId)
+                        setEditCategoryAssignments((prev) =>
+                          prev.map((r, i) =>
+                            i === idx ? { categoryId, subcategoryId: null } : r
+                          )
+                        )
+                      }}
+                    >
+                      <option value="">—</option>
+                      {adminCategories.map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {catLabel(c)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="grid min-w-[140px] flex-1 gap-1">
+                    <Label>Subcategoria</Label>
+                    <select
+                      className={selectTriggerClass}
+                      value={row.subcategoryId ?? ''}
+                      disabled={!row.categoryId}
+                      onChange={(e) => {
+                        const v = e.target.value
+                        setEditCategoryAssignments((prev) =>
+                          prev.map((r, i) =>
+                            i === idx ? { ...r, subcategoryId: v || null } : r
+                          )
+                        )
+                      }}
+                    >
+                      <option value="">—</option>
+                      {(row.categoryId ? subsCache[row.categoryId] ?? [] : []).map((s) => (
+                        <option key={s.id} value={s.id}>
+                          {subLabel(s)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      setEditCategoryAssignments((prev) => prev.filter((_, i) => i !== idx))
+                    }
+                  >
+                    Remover
+                  </Button>
+                </div>
+              ))}
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                className="w-fit"
+                onClick={() => {
+                  const first = adminCategories[0]?.id ?? ''
+                  if (first) void ensureSubs(first)
+                  setEditCategoryAssignments((prev) => [
+                    ...prev,
+                    { categoryId: first, subcategoryId: null },
+                  ])
+                }}
+              >
+                Adicionar categoria
+              </Button>
+            </div>
             <div className="grid gap-2">
               <Label htmlFor="edit-orientation">Orientação</Label>
               <select

@@ -110,9 +110,51 @@ function findArtworkPageAndIndex(
   return null
 }
 
-type GalleryProps = { viewMode: ViewMode; typeFilter?: GalleryFilterType }
+type CategoryTreeItem = {
+  id: string
+  slug: string
+  name: string
+  subcategories: { id: string; slug: string; name: string }[]
+}
 
-export function Gallery({ viewMode, typeFilter }: GalleryProps) {
+function artworkMatchesCategorySlugs(
+  artwork: Artwork,
+  tree: CategoryTreeItem[] | null,
+  catSlug: string | undefined,
+  subSlug: string | undefined
+) {
+  if (!catSlug && !subSlug) return true
+  if (!tree?.length) return true
+  const assigns = artwork.categoryAssignments ?? []
+  if (!assigns.length) return false
+  if (catSlug) {
+    const cat = tree.find((c) => c.slug === catSlug)
+    if (!cat) return false
+    if (!subSlug) {
+      return assigns.some((a) => a.categoryId === cat.id)
+    }
+    const sub = cat.subcategories.find((s) => s.slug === subSlug)
+    if (!sub) return false
+    return assigns.some((a) => a.subcategoryId === sub.id)
+  }
+  if (subSlug) {
+    for (const c of tree) {
+      const sub = c.subcategories.find((s) => s.slug === subSlug)
+      if (sub) return assigns.some((a) => a.subcategoryId === sub.id)
+    }
+    return false
+  }
+  return true
+}
+
+type GalleryProps = {
+  viewMode: ViewMode
+  typeFilter?: GalleryFilterType
+  categorySlug?: string
+  subcategorySlug?: string
+}
+
+export function Gallery({ viewMode, typeFilter, categorySlug, subcategorySlug }: GalleryProps) {
   const { locale, t } = useLocale()
   const [searchParams, setSearchParams] = useSearchParams()
   const params = useParams()
@@ -120,6 +162,7 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
   const location = useLocation()
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const [artworksList, setArtworksList] = useState<Artwork[] | null>(null)
+  const [categoryTree, setCategoryTree] = useState<CategoryTreeItem[] | null>(null)
   const imageIdFromRoute = params.imageId ?? null
 
   useEffect(() => {
@@ -132,14 +175,39 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
     }
   }, [])
 
+  useEffect(() => {
+    let cancelled = false
+    void fetch(`/api/categories?locale=${encodeURIComponent(locale)}`, { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data: unknown) => {
+        if (cancelled) return
+        setCategoryTree(Array.isArray(data) ? (data as CategoryTreeItem[]) : [])
+      })
+      .catch(() => {
+        if (!cancelled) setCategoryTree([])
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [locale])
+
   const filteredArtworks = useMemo(() => {
     const list = artworksList ?? []
-    if (!typeFilter) return list
-    if (typeFilter === 'drawing-painting') {
-      return list.filter((a) => a.types.includes('drawing') || a.types.includes('painting'))
+    let next = list
+    if (typeFilter) {
+      if (typeFilter === 'drawing-painting') {
+        next = next.filter((a) => a.types.includes('drawing') || a.types.includes('painting'))
+      } else {
+        next = next.filter((a) => a.types.includes(typeFilter))
+      }
     }
-    return list.filter((a) => a.types.includes(typeFilter))
-  }, [typeFilter, artworksList])
+    if (categorySlug || subcategorySlug) {
+      next = next.filter((a) =>
+        artworkMatchesCategorySlugs(a, categoryTree, categorySlug, subcategorySlug)
+      )
+    }
+    return next
+  }, [typeFilter, artworksList, categoryTree, categorySlug, subcategorySlug])
 
   const allCells = useMemo(() => buildCells(filteredArtworks), [filteredArtworks])
   const totalPages = Math.max(1, Math.ceil(allCells.length / PAGE_SIZE))
@@ -174,6 +242,23 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
       })
     }
   }, [typeFilter, setSearchParams])
+
+  const prevCatKey = useRef<string | null>(null)
+  useEffect(() => {
+    const key = `${categorySlug ?? ''}|${subcategorySlug ?? ''}`
+    if (prevCatKey.current === null) {
+      prevCatKey.current = key
+      return
+    }
+    if (prevCatKey.current === key) return
+    prevCatKey.current = key
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev)
+      next.set('page', '1')
+      next.delete('image')
+      return next
+    })
+  }, [categorySlug, subcategorySlug, setSearchParams])
 
   const imageParam = searchParams.get('image') || imageIdFromRoute
   const imageTarget = useMemo(

@@ -6,10 +6,34 @@ import { ThemeToggle } from '../ThemeToggle'
 
 const GALLERY_TYPES = ['drawing-painting', 'photography', 'digital-art', 'movies'] as const
 
+type PublicCategory = {
+  id: string
+  slug: string
+  name: string
+  subcategories: { id: string; slug: string; name: string }[]
+}
+
 export function Layout() {
   const { locale, t } = useLocale()
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [cmsCategories, setCmsCategories] = useState<PublicCategory[]>([])
   const location = useLocation()
+
+  useEffect(() => {
+    let cancelled = false
+    void fetch(`/api/categories?locale=${encodeURIComponent(locale)}`, { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data: unknown) => {
+        if (cancelled) return
+        setCmsCategories(Array.isArray(data) ? (data as PublicCategory[]) : [])
+      })
+      .catch(() => {
+        if (!cancelled) setCmsCategories([])
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [locale])
 
   useEffect(() => {
     document.title = t('siteTitle')
@@ -65,6 +89,34 @@ export function Layout() {
               ))}
             </div>
           </div>
+          {cmsCategories.length > 0 ? (
+            <div className="nav-item-with-dropdown">
+              <span className="nav-link nav-dropdown-label">{t('navCategories')}</span>
+              <div className="nav-submenu nav-submenu--categories" role="menu">
+                {cmsCategories.map((c) => (
+                  <div key={c.id} className="nav-submenu-group">
+                    <Link
+                      to={`/?category=${encodeURIComponent(c.slug)}`}
+                      className="nav-submenu-link nav-submenu-link--parent"
+                      role="menuitem"
+                    >
+                      {c.name}
+                    </Link>
+                    {c.subcategories.map((s) => (
+                      <Link
+                        key={s.id}
+                        to={`/?category=${encodeURIComponent(c.slug)}&sub=${encodeURIComponent(s.slug)}`}
+                        className="nav-submenu-link nav-submenu-link--sub"
+                        role="menuitem"
+                      >
+                        {s.name}
+                      </Link>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
           <NavLink to="/sobre" className="nav-link">
             {t('navAbout')}
           </NavLink>
@@ -128,6 +180,34 @@ export function Layout() {
                   ))}
                 </div>
               </div>
+              {cmsCategories.length > 0 ? (
+                <div className="drawer-gallery-block">
+                  <p className="drawer-subsection-title">{t('navCategories')}</p>
+                  <div className="drawer-submenu">
+                    {cmsCategories.map((c) => (
+                      <div key={c.id} className="drawer-submenu-group">
+                        <Link
+                          to={`/?category=${encodeURIComponent(c.slug)}`}
+                          className="drawer-submenu-link drawer-submenu-link--parent"
+                          onClick={() => setDrawerOpen(false)}
+                        >
+                          {c.name}
+                        </Link>
+                        {c.subcategories.map((s) => (
+                          <Link
+                            key={s.id}
+                            to={`/?category=${encodeURIComponent(c.slug)}&sub=${encodeURIComponent(s.slug)}`}
+                            className="drawer-submenu-link drawer-submenu-link--sub"
+                            onClick={() => setDrawerOpen(false)}
+                          >
+                            {s.name}
+                          </Link>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
               <NavLink to="/sobre" className="drawer-link" onClick={() => setDrawerOpen(false)}>
                 {t('navAbout')}
               </NavLink>

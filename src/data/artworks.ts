@@ -28,6 +28,11 @@ export function getLocalized(obj: LocalizedText | null | undefined, locale: Loca
   return obj?.[locale] ?? obj?.['en'] ?? obj?.['pt-Br'] ?? ''
 }
 
+export type ArtworkCategoryAssignment = {
+  categoryId: string
+  subcategoryId: string | null
+}
+
 export interface Artwork {
   id: string
   date: string
@@ -43,6 +48,7 @@ export interface Artwork {
   types: ArtworkType[]
   info?: LocalizedText | null
   extra_images?: string[]
+  categoryAssignments?: ArtworkCategoryAssignment[]
 }
 
 type ArtworkWithOrder = Artwork & { order: number }

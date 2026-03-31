@@ -1,5 +1,6 @@
 import { getSql, hasDatabase } from '../_lib/db.mjs'
 import { rowToArtwork } from '../_lib/artwork-map.mjs'
+import { loadCategoriesForArtwork } from '../_lib/artwork-categories.mjs'
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -29,7 +30,13 @@ export default async function handler(req, res) {
       res.status(404).json({ error: 'Not found' })
       return
     }
-    const artwork = rowToArtwork(row)
+    let cats = []
+    try {
+      cats = await loadCategoriesForArtwork(sql, id)
+    } catch (e) {
+      console.error(e)
+    }
+    const artwork = rowToArtwork(row, cats)
     res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300')
     res.status(200).json(artwork)
   } catch (e) {

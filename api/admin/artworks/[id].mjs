@@ -1,6 +1,10 @@
 import { getSql, hasDatabase } from '../../_lib/db.mjs'
 import { requireAdmin } from '../../_lib/require-admin.mjs'
 import { bodyToInsertPayload, rowToArtwork } from '../../_lib/artwork-map.mjs'
+import {
+  validateAndSyncArtworkCategories,
+  loadCategoriesForArtwork,
+} from '../../_lib/artwork-categories.mjs'
 
 export default async function handler(req, res) {
   if (!hasDatabase()) {
@@ -42,12 +46,26 @@ export default async function handler(req, res) {
           updated_at = NOW()
         WHERE id = ${id}
       `
+      if (body.categoryAssignments !== undefined || body.categories !== undefined) {
+        try {
+          await validateAndSyncArtworkCategories(sql, id, body)
+        } catch (err) {
+          res.status(400).json({ error: err instanceof Error ? err.message : 'Invalid categories' })
+          return
+        }
+      }
       const rows = await sql`
         SELECT id, order_index, title, artwork_date, description, image_url, video_url,
                orientation, group_key, group_display, types, info, resolution, extra_images
         FROM artworks WHERE id = ${id}
       `
-      const artwork = rowToArtwork(rows[0])
+      let cats = []
+      try {
+        cats = await loadCategoriesForArtwork(sql, id)
+      } catch (e) {
+        console.error(e)
+      }
+      const artwork = rowToArtwork(rows[0], cats)
       res.status(200).json(artwork)
     } catch (e) {
       console.error(e)

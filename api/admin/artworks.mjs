@@ -2,6 +2,10 @@ import { getSql, hasDatabase } from '../_lib/db.mjs'
 import { requireAdmin } from '../_lib/require-admin.mjs'
 import { bodyToInsertPayload } from '../_lib/artwork-map.mjs'
 import { rowToArtwork } from '../_lib/artwork-map.mjs'
+import {
+  validateAndSyncArtworkCategories,
+  loadCategoriesForArtwork,
+} from '../_lib/artwork-categories.mjs'
 
 export default async function handler(req, res) {
   if (!hasDatabase()) {
@@ -39,12 +43,27 @@ export default async function handler(req, res) {
           ${JSON.stringify(p.extra_images)}::jsonb
         )
       `
+      if (body.categoryAssignments !== undefined || body.categories !== undefined) {
+        try {
+          await validateAndSyncArtworkCategories(sql, p.id, body)
+        } catch (err) {
+          await sql`DELETE FROM artworks WHERE id = ${p.id}`
+          res.status(400).json({ error: err instanceof Error ? err.message : 'Invalid categories' })
+          return
+        }
+      }
       const rows = await sql`
         SELECT id, order_index, title, artwork_date, description, image_url, video_url,
                orientation, group_key, group_display, types, info, resolution, extra_images
         FROM artworks WHERE id = ${p.id}
       `
-      const artwork = rowToArtwork(rows[0])
+      let cats = []
+      try {
+        cats = await loadCategoriesForArtwork(sql, p.id)
+      } catch (e) {
+        console.error(e)
+      }
+      const artwork = rowToArtwork(rows[0], cats)
       res.status(201).json(artwork)
     } catch (e) {
       if (e.code === '23505') {

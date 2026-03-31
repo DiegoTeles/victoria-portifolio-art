@@ -11,6 +11,9 @@ type GalleryType = (typeof GALLERY_TYPES)[number]
 export function HomePage() {
   const location = useLocation()
   const [searchParams] = useSearchParams()
+  const categorySlug = searchParams.get('category') ?? undefined
+  const subcategorySlug = searchParams.get('sub') ?? undefined
+
   const validFilter = useMemo((): GalleryType | undefined => {
     if (location.pathname === '/movies') return 'movies'
     const q = searchParams.get('gallery')
@@ -43,7 +46,12 @@ export function HomePage() {
       <div className="view-toggle-bar">
         <ViewToggle viewMode={viewMode} onViewModeChange={setViewMode} />
       </div>
-      <Gallery viewMode={viewMode} typeFilter={validFilter} />
+      <Gallery
+        viewMode={viewMode}
+        typeFilter={validFilter}
+        categorySlug={categorySlug}
+        subcategorySlug={subcategorySlug}
+      />
       <BackToTop />
     </>
   )

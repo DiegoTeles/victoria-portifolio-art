@@ -129,6 +129,72 @@ export function viteApiDevPlugin(): Plugin {
             await (await loadHandler('api/admin/artworks/[id].mjs'))(req, vres as never)
             return
           }
+          if (pathname === '/api/categories' && method === 'GET') {
+            await (await loadHandler('api/categories.mjs'))(req, vres as never)
+            return
+          }
+          if (pathname === '/api/about/bio' && method === 'GET') {
+            await (await loadHandler('api/about/bio.mjs'))(req, vres as never)
+            return
+          }
+          if (pathname === '/api/about/curriculum' && method === 'GET') {
+            await (await loadHandler('api/about/curriculum.mjs'))(req, vres as never)
+            return
+          }
+          if (pathname === '/api/social-links' && method === 'GET') {
+            await (await loadHandler('api/social-links.mjs'))(req, vres as never)
+            return
+          }
+          if (pathname === '/api/admin/categories' && (method === 'GET' || method === 'POST')) {
+            await (await loadHandler('api/admin/categories.mjs'))(req, vres as never)
+            return
+          }
+          if (pathname.startsWith('/api/admin/categories/') && (method === 'PUT' || method === 'DELETE')) {
+            const id = decodeURIComponent(pathname.slice('/api/admin/categories/'.length))
+            if (!id || id.includes('/')) {
+              next()
+              return
+            }
+            augmentReq(req, { id })
+            await (await loadHandler('api/admin/categories/[id].mjs'))(req, vres as never)
+            return
+          }
+          if (pathname === '/api/admin/subcategories' && (method === 'GET' || method === 'POST')) {
+            await (await loadHandler('api/admin/subcategories.mjs'))(req, vres as never)
+            return
+          }
+          if (pathname.startsWith('/api/admin/subcategories/') && (method === 'PUT' || method === 'DELETE')) {
+            const id = decodeURIComponent(pathname.slice('/api/admin/subcategories/'.length))
+            if (!id || id.includes('/')) {
+              next()
+              return
+            }
+            augmentReq(req, { id })
+            await (await loadHandler('api/admin/subcategories/[id].mjs'))(req, vres as never)
+            return
+          }
+          if (pathname === '/api/admin/bio' && (method === 'GET' || method === 'PUT')) {
+            await (await loadHandler('api/admin/bio.mjs'))(req, vres as never)
+            return
+          }
+          if (pathname === '/api/admin/curriculum' && (method === 'GET' || method === 'PUT')) {
+            await (await loadHandler('api/admin/curriculum.mjs'))(req, vres as never)
+            return
+          }
+          if (pathname === '/api/admin/social-links' && (method === 'GET' || method === 'POST')) {
+            await (await loadHandler('api/admin/social-links.mjs'))(req, vres as never)
+            return
+          }
+          if (pathname.startsWith('/api/admin/social-links/') && (method === 'PUT' || method === 'DELETE')) {
+            const id = decodeURIComponent(pathname.slice('/api/admin/social-links/'.length))
+            if (!id || id.includes('/')) {
+              next()
+              return
+            }
+            augmentReq(req, { id })
+            await (await loadHandler('api/admin/social-links/[id].mjs'))(req, vres as never)
+            return
+          }
         } catch (e) {
           console.error(e)
           if (!res.writableEnded) {

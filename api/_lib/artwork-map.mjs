@@ -9,7 +9,7 @@ function normalizeExtraImages(raw) {
   return raw.map((x) => String(x || '').trim()).filter(Boolean)
 }
 
-export function rowToArtwork(row) {
+export function rowToArtwork(row, categoryAssignments) {
   const d = row.artwork_date
   const dateStr =
     d instanceof Date
@@ -18,7 +18,7 @@ export function rowToArtwork(row) {
         ? d.slice(0, 10)
         : ''
 
-  return {
+  const base = {
     id: row.id,
     order_index: row.order_index,
     date: dateStr,
@@ -34,6 +34,10 @@ export function rowToArtwork(row) {
     info: row.info ?? undefined,
     extra_images: normalizeExtraImages(row.extra_images),
   }
+  if (categoryAssignments !== undefined) {
+    base.categoryAssignments = categoryAssignments
+  }
+  return base
 }
 
 export function bodyToInsertPayload(body) {

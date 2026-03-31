@@ -1,5 +1,6 @@
 import { getSql, hasDatabase } from './_lib/db.mjs'
 import { rowToArtwork } from './_lib/artwork-map.mjs'
+import { loadCategoriesForArtworks } from './_lib/artwork-categories.mjs'
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -18,7 +19,17 @@ export default async function handler(req, res) {
       FROM artworks
       ORDER BY order_index ASC
     `
-    const list = rows.map(rowToArtwork)
+    const ids = rows.map((r) => r.id)
+    let catMap
+    try {
+      catMap = await loadCategoriesForArtworks(sql, ids)
+    } catch (e) {
+      console.error(e)
+      catMap = new Map()
+    }
+    const list = rows.map((row) =>
+      rowToArtwork(row, catMap.get(row.id) ?? [])
+    )
     res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300')
     res.status(200).json(list)
   } catch (e) {
