@@ -35,11 +35,12 @@ for (const item of items) {
   const info = item.info && typeof item.info === 'object' ? item.info : null
   const resolution = item.resolution && typeof item.resolution === 'object' ? item.resolution : null
   const extra_images = Array.isArray(item.extra_images) ? item.extra_images : []
+  const extra_descriptions = Array.isArray(item.extra_descriptions) ? item.extra_descriptions : []
 
   await sql`
     INSERT INTO artworks (
       id, order_index, title, artwork_date, description, image_url, video_url,
-      group_key, group_display, types, info, resolution, extra_images
+      group_key, group_display, types, info, resolution, extra_images, extra_descriptions
     ) VALUES (
       ${id},
       ${order_index},
@@ -53,7 +54,8 @@ for (const item of items) {
       ${JSON.stringify(types)}::jsonb,
       ${info == null ? null : JSON.stringify(info)}::jsonb,
       ${resolution == null ? null : JSON.stringify(resolution)}::jsonb,
-      ${JSON.stringify(extra_images)}::jsonb
+      ${JSON.stringify(extra_images)}::jsonb,
+      ${JSON.stringify(extra_descriptions)}::jsonb
     )
     ON CONFLICT (id) DO UPDATE SET
       order_index = EXCLUDED.order_index,
@@ -68,6 +70,7 @@ for (const item of items) {
       info = EXCLUDED.info,
       resolution = EXCLUDED.resolution,
       extra_images = EXCLUDED.extra_images,
+      extra_descriptions = EXCLUDED.extra_descriptions,
       updated_at = NOW()
   `
   console.log('ok', id)

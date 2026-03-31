@@ -9,6 +9,20 @@ function normalizeExtraImages(raw) {
   return raw.map((x) => String(x || '').trim()).filter(Boolean)
 }
 
+function normalizeExtraDescriptions(raw, extraImagesCount) {
+  const arr = Array.isArray(raw) ? raw : []
+  const out = []
+  for (let i = 0; i < extraImagesCount; i++) {
+    const o = arr[i]
+    out.push(
+      o && typeof o === 'object' && !Array.isArray(o)
+        ? { ...o }
+        : {}
+    )
+  }
+  return out
+}
+
 export function rowToArtwork(row, categoryAssignments) {
   const d = row.artwork_date
   const dateStr =
@@ -18,6 +32,8 @@ export function rowToArtwork(row, categoryAssignments) {
         ? d.slice(0, 10)
         : ''
 
+  const extra_images = normalizeExtraImages(row.extra_images)
+  const extra_descriptions = normalizeExtraDescriptions(row.extra_descriptions, extra_images.length)
   const base = {
     id: row.id,
     order_index: row.order_index,
@@ -31,7 +47,8 @@ export function rowToArtwork(row, categoryAssignments) {
     groupDisplay: row.group_display ?? undefined,
     types: normalizeTypes(row.types),
     info: row.info ?? undefined,
-    extra_images: normalizeExtraImages(row.extra_images),
+    extra_images,
+    extra_descriptions,
   }
   if (categoryAssignments !== undefined) {
     base.categoryAssignments = categoryAssignments
@@ -56,6 +73,7 @@ export function bodyToInsertPayload(body) {
         ? body.resolution
         : null
   const extra_images = normalizeExtraImages(body.extra_images)
+  const extra_descriptions = normalizeExtraDescriptions(body.extra_descriptions, extra_images.length)
 
   return {
     id: String(body.id || '').trim(),
@@ -73,5 +91,6 @@ export function bodyToInsertPayload(body) {
     info,
     resolution,
     extra_images,
+    extra_descriptions,
   }
 }

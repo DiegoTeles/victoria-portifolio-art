@@ -36,12 +36,11 @@ export function LocaleSelector() {
           onClick={() => setOpen((v) => !v)}
           aria-haspopup="listbox"
           aria-expanded={open}
-          aria-label="Idioma / Language"
+          aria-label={current.label}
         >
           <span className="locale-flag">
             <CountryFlag countryCode={current.countryCode} />
           </span>
-          <span className="locale-label">{current.label}</span>
         </button>
         {open && (
           <ul className="locale-dropdown" role="listbox">
@@ -54,6 +53,7 @@ export function LocaleSelector() {
               >
                 <button
                   type="button"
+                  aria-label={opt.label}
                   onClick={() => {
                     setLocale(opt.value)
                     setOpen(false)
@@ -62,7 +62,6 @@ export function LocaleSelector() {
                   <span className="locale-flag">
                     <CountryFlag countryCode={opt.countryCode} />
                   </span>
-                  <span>{opt.label}</span>
                 </button>
               </li>
             ))}

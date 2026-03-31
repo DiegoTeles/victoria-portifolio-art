@@ -25,11 +25,15 @@ async function findArtworkFromDb(imageId) {
   const url = process.env.DATABASE_URL
   if (!url) return null
   const sql = neon(url)
+  const baseId =
+    typeof imageId === 'string' && imageId.includes('__extra_')
+      ? imageId.replace(/__extra_\d+$/, '')
+      : imageId
   const rows = await sql`
     SELECT id, order_index, title, artwork_date, description, image_url, video_url,
-           group_key, group_display, types, info, resolution, extra_images
+           group_key, group_display, types, info, resolution, extra_images, extra_descriptions
     FROM artworks
-    WHERE id = ${imageId}
+    WHERE id = ${baseId}
     LIMIT 1
   `
   const row = rows[0]
@@ -50,7 +54,11 @@ export default async function handler(req, res) {
       const raw = fs.readFileSync(jsonPath, 'utf-8')
       const data = JSON.parse(raw)
       const list = Array.isArray(data) ? data : []
-      const legacy = list.find((a) => a.id === imageId)
+      const baseLegacy =
+        typeof imageId === 'string' && imageId.includes('__extra_')
+          ? imageId.replace(/__extra_\d+$/, '')
+          : imageId
+      const legacy = list.find((a) => a.id === imageId) ?? list.find((a) => a.id === baseLegacy)
       if (legacy) {
         artwork = {
           id: legacy.id,

@@ -62,6 +62,31 @@ type Cell =
   | { type: 'single'; artwork: Artwork }
   | { type: 'group'; artworks: Artwork[] }
 
+function expandArtworksWithExtras(artworks: Artwork[]): Artwork[] {
+  const out: Artwork[] = []
+  for (const a of artworks) {
+    const extras = a.extra_images ?? []
+    if (!a.group || extras.length === 0) {
+      out.push(a)
+      continue
+    }
+    const ed = a.extra_descriptions ?? []
+    out.push({ ...a, extra_images: undefined })
+    for (let i = 0; i < extras.length; i++) {
+      out.push({
+        ...a,
+        id: `${a.id}__extra_${i}`,
+        image: extras[i]!,
+        description: ed[i] ?? {},
+        extra_images: undefined,
+        extra_descriptions: undefined,
+        video: undefined,
+      })
+    }
+  }
+  return out
+}
+
 function buildCells(artworks: Artwork[]): Cell[] {
   const cells: Cell[] = []
   let i = 0
@@ -70,7 +95,7 @@ function buildCells(artworks: Artwork[]): Cell[] {
     if (a.group) {
       const group: Artwork[] = [a]
       let j = i + 1
-      while (j < artworks.length && artworks[j].group === a.group && group.length < 5) {
+      while (j < artworks.length && artworks[j].group === a.group && group.length < 48) {
         group.push(artworks[j])
         j += 1
       }
@@ -209,7 +234,12 @@ export function Gallery({ viewMode, typeFilter, categorySlug, subcategorySlug }:
     return next
   }, [typeFilter, artworksList, categoryTree, categorySlug, subcategorySlug])
 
-  const allCells = useMemo(() => buildCells(filteredArtworks), [filteredArtworks])
+  const displayArtworks = useMemo(
+    () => expandArtworksWithExtras(filteredArtworks),
+    [filteredArtworks]
+  )
+
+  const allCells = useMemo(() => buildCells(displayArtworks), [displayArtworks])
   const totalPages = Math.max(1, Math.ceil(allCells.length / PAGE_SIZE))
   const pageParam = searchParams.get('page')
   const currentPage = Math.min(
@@ -287,7 +317,11 @@ export function Gallery({ viewMode, typeFilter, categorySlug, subcategorySlug }:
     const siteDesc = t('siteDescription')
     const defaultImg = DEFAULT_ARTWORK_IMAGE
     if (imageParam) {
-      const artwork = (artworksList ?? []).find((a) => a.id === imageParam)
+      const baseId =
+        imageParam.includes('__extra_') ? imageParam.replace(/__extra_\d+$/, '') : imageParam
+      const artwork =
+        (artworksList ?? []).find((a) => a.id === imageParam) ??
+        (baseId ? (artworksList ?? []).find((a) => a.id === baseId) : undefined)
       if (artwork) setArtworkMeta(artwork, locale, siteTitle, siteDesc)
       else resetMeta(siteTitle, siteDesc, defaultImg)
     } else {

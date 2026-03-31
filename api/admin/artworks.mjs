@@ -25,7 +25,7 @@ export default async function handler(req, res) {
       await sql`
         INSERT INTO artworks (
           id, order_index, title, artwork_date, description, image_url, video_url,
-          group_key, group_display, types, info, resolution, extra_images
+          group_key, group_display, types, info, resolution, extra_images, extra_descriptions
         ) VALUES (
           ${p.id},
           ${p.order_index},
@@ -39,7 +39,8 @@ export default async function handler(req, res) {
           ${JSON.stringify(p.types)}::jsonb,
           ${p.info == null ? null : JSON.stringify(p.info)}::jsonb,
           ${p.resolution == null ? null : JSON.stringify(p.resolution)}::jsonb,
-          ${JSON.stringify(p.extra_images)}::jsonb
+          ${JSON.stringify(p.extra_images)}::jsonb,
+          ${JSON.stringify(p.extra_descriptions)}::jsonb
         )
       `
       if (body.categoryAssignments !== undefined || body.categories !== undefined) {
@@ -53,7 +54,7 @@ export default async function handler(req, res) {
       }
       const rows = await sql`
         SELECT id, order_index, title, artwork_date, description, image_url, video_url,
-               group_key, group_display, types, info, resolution, extra_images
+               group_key, group_display, types, info, resolution, extra_images, extra_descriptions
         FROM artworks WHERE id = ${p.id}
       `
       let cats = []

@@ -162,7 +162,14 @@ export function AdminCategoriesPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Nome (pt-BR)</TableHead>
+              <TableHead>
+                <span className="inline-flex items-center gap-2">
+                  <span className="locale-flag shrink-0" aria-hidden>
+                    <CountryFlag countryCode="BR" />
+                  </span>
+                  Nome
+                </span>
+              </TableHead>
               <TableHead>Ordem</TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
@@ -207,7 +214,8 @@ export function AdminCategoriesPage() {
                   <span className="locale-flag shrink-0" aria-hidden>
                     <CountryFlag countryCode={opt.countryCode} />
                   </span>
-                  Nome ({opt.label})
+                  <span className="sr-only">{opt.label}</span>
+                  Nome
                 </Label>
                 <Input
                   id={`cat-name-${opt.locale}`}

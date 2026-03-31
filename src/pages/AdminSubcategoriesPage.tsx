@@ -204,7 +204,14 @@ export function AdminSubcategoriesPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Nome (pt-BR)</TableHead>
+              <TableHead>
+                <span className="inline-flex items-center gap-2">
+                  <span className="locale-flag shrink-0" aria-hidden>
+                    <CountryFlag countryCode="BR" />
+                  </span>
+                  Nome
+                </span>
+              </TableHead>
               <TableHead>Categoria vinculada</TableHead>
               <TableHead>Ordem</TableHead>
               <TableHead className="text-right">Ações</TableHead>
@@ -276,7 +283,8 @@ export function AdminSubcategoriesPage() {
                   <span className="locale-flag shrink-0" aria-hidden>
                     <CountryFlag countryCode={opt.countryCode} />
                   </span>
-                  Nome ({opt.label})
+                  <span className="sr-only">{opt.label}</span>
+                  Nome
                 </Label>
                 <Input
                   id={`sub-modal-name-${opt.locale}`}

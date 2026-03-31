@@ -337,6 +337,14 @@ body {
   grid-template-columns: repeat(3, 1fr);
 }
 
+.artwork-group-7 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.artwork-group-8 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
 .artwork-group--caption-in-grid.artwork-group-6 {
   grid-template-columns: repeat(3, 1fr);
 }
@@ -442,7 +450,9 @@ body {
   .artwork-group-3,
   .artwork-group-4,
   .artwork-group-5,
-  .artwork-group-6 {
+  .artwork-group-6,
+  .artwork-group-7,
+  .artwork-group-8 {
     grid-template-columns: 1fr;
   }
   .artwork-group--asymmetric-5 {
@@ -532,7 +542,9 @@ body {
   .artwork-group-3,
   .artwork-group-4,
   .artwork-group-5,
-  .artwork-group-6 {
+  .artwork-group-6,
+  .artwork-group-7,
+  .artwork-group-8 {
     grid-template-columns: 1fr;
   }
   .header {
@@ -577,7 +589,9 @@ body {
   }
   .artwork-group-4,
   .artwork-group-5,
-  .artwork-group-6 {
+  .artwork-group-6,
+  .artwork-group-7,
+  .artwork-group-8 {
     grid-template-columns: repeat(2, 1fr);
   }
   .header {

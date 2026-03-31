@@ -54,8 +54,9 @@ export function AdminLocaleTabs({
               aria-controls={panelId}
               tabIndex={selected ? 0 : -1}
               onClick={() => onChange(opt.locale)}
+              aria-label={opt.label}
               className={cn(
-                'inline-flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium transition-colors',
+                'inline-flex cursor-pointer items-center justify-center rounded-md border px-3 py-2 text-sm font-medium transition-colors',
                 'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
                 selected
                   ? 'border-foreground bg-muted text-foreground shadow-sm'
@@ -65,7 +66,6 @@ export function AdminLocaleTabs({
               <span className="locale-flag shrink-0" aria-hidden>
                 <CountryFlag countryCode={opt.countryCode} />
               </span>
-              <span>{opt.label}</span>
             </button>
           )
         })}

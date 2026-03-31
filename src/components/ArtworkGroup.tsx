@@ -16,7 +16,7 @@ const CAPTION_CELL_INDEX = 3
 const ASYMMETRIC_5_CAPTION_SLOT = 2
 
 export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props) {
-  const count = Math.min(Math.max(artworks.length, 2), 6)
+  const count = Math.max(artworks.length, 2)
   const slice = artworks.slice(0, count)
   const descriptions = slice.map((a) => getLocalized(a.description, locale))
   const nonEmptyCount = descriptions.filter(Boolean).length

@@ -47,6 +47,7 @@ export interface Artwork {
   types: ArtworkType[]
   info?: LocalizedText | null
   extra_images?: string[]
+  extra_descriptions?: LocalizedText[]
   categoryAssignments?: ArtworkCategoryAssignment[]
 }
 
