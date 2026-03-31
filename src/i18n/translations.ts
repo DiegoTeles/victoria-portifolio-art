@@ -17,7 +17,7 @@ export const translations = {
     aboutIntro: 'Texto sobre a artista e o trabalho.',
     aboutTabAbout: 'Sobre',
     aboutTabCurriculum: 'Currículo',
-    aboutTabTcc: 'Trabalho de conclusão de curso',
+    aboutTabTcc: 'Trabalho de Conclusão de Curso',
     aboutPdfLoadError: 'Não foi possível carregar o PDF.',
     aboutPdfPagination: 'Navegação do documento',
     aboutBio1: 'Victória Maria nasceu em 25 de fevereiro de 1999, no interior de São Paulo, numa cidade chamada Matão.',
