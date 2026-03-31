@@ -2,6 +2,7 @@ import { useMemo, useState, useEffect, useRef } from 'react'
 import { useSearchParams, useParams, useNavigate, useLocation } from 'react-router-dom'
 import { type Artwork, type ArtworkType, getLocalized } from '../data/artworks'
 import { loadArtworks } from '../data/fetchArtworks'
+import { getAbsoluteArtworkImageUrl, DEFAULT_ARTWORK_IMAGE } from '@/lib/artworkImageUrl'
 import { useLocale } from '../i18n/LocaleContext'
 
 function plainMetaText(str: string): string {
@@ -16,9 +17,7 @@ function setArtworkMeta(
 ) {
   const title = plainMetaText(artwork.title)
   const desc = plainMetaText(getLocalized(artwork.description, locale))
-  const img = artwork.image || '/images/digital-art/digital-art-01.png'
-  const base = window.location.origin
-  const imageUrl = img.startsWith('http') ? img : base + img
+  const imageUrl = getAbsoluteArtworkImageUrl(artwork)
   const pageTitle = title ? `${title} — ${siteTitle}` : siteTitle
   const metaDesc = desc || defaultDesc
   document.title = pageTitle
@@ -201,7 +200,7 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
   useEffect(() => {
     const siteTitle = t('siteTitle')
     const siteDesc = t('siteDescription')
-    const defaultImg = '/images/digital-art/digital-art-01.png'
+    const defaultImg = DEFAULT_ARTWORK_IMAGE
     if (imageParam) {
       const artwork = (artworksList ?? []).find((a) => a.id === imageParam)
       if (artwork) setArtworkMeta(artwork, locale, siteTitle, siteDesc)

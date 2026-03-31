@@ -1537,7 +1537,7 @@ body {
 }
 
 .form-input {
-  height: 120px;
+  min-height: 2.75rem;
 }
 
 .form-input:focus,
@@ -1579,9 +1579,6 @@ body {
 }
 
 @media (max-width: 599px) {
-  .form-input {
-    height: 100px;
-  }
   .form-textarea {
     min-height: 180px;
     height: 180px;

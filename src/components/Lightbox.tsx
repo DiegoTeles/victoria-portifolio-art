@@ -3,6 +3,7 @@ import ImageZoom from 'react-image-zooom'
 import type { Artwork } from '../data/artworks'
 import type { Locale } from '../data/artworks'
 import { getLocalized } from '../data/artworks'
+import { getArtworkImageSrc } from '@/lib/artworkImageUrl'
 import { useLocale } from '../i18n/LocaleContext'
 import { formatArtworkTypes } from '../i18n/formatArtworkTypes'
 import { formatCaptionText, plainCaptionText } from '../utils/formatCaptionText'
@@ -97,14 +98,14 @@ export function Lightbox({
                 if (el && !current.image) el.addEventListener('loadeddata', () => captureVideoPoster(el), { once: true })
               }}
               src={current.video}
-              poster={current.image ?? undefined}
+              poster={current.image ? getArtworkImageSrc(current) : undefined}
               controls
               preload="auto"
               style={{ maxWidth: '100%', maxHeight: '85vh' }}
             />
           ) : (
             <ImageZoom
-              src={current.image!}
+              src={getArtworkImageSrc(current)}
               alt={alt}
               zoom={250}
               theme={{ root: 'lightbox-zoom-root', image: 'lightbox-zoom-image' }}

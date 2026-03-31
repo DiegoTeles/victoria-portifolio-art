@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       await sql`
         INSERT INTO artworks (
           id, order_index, title, artwork_date, description, image_url, video_url,
-          orientation, group_key, group_display, types, info, resolution
+          orientation, group_key, group_display, types, info, resolution, extra_images
         ) VALUES (
           ${p.id},
           ${p.order_index},
@@ -35,12 +35,13 @@ export default async function handler(req, res) {
           ${p.group_display},
           ${JSON.stringify(p.types)}::jsonb,
           ${p.info == null ? null : JSON.stringify(p.info)}::jsonb,
-          ${p.resolution == null ? null : JSON.stringify(p.resolution)}::jsonb
+          ${p.resolution == null ? null : JSON.stringify(p.resolution)}::jsonb,
+          ${JSON.stringify(p.extra_images)}::jsonb
         )
       `
       const rows = await sql`
         SELECT id, order_index, title, artwork_date, description, image_url, video_url,
-               orientation, group_key, group_display, types, info, resolution
+               orientation, group_key, group_display, types, info, resolution, extra_images
         FROM artworks WHERE id = ${p.id}
       `
       const artwork = rowToArtwork(rows[0])

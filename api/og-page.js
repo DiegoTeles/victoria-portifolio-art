@@ -27,7 +27,7 @@ async function findArtworkFromDb(imageId) {
   const sql = neon(url)
   const rows = await sql`
     SELECT id, order_index, title, artwork_date, description, image_url, video_url,
-           orientation, group_key, group_display, types, info, resolution
+           orientation, group_key, group_display, types, info, resolution, extra_images
     FROM artworks
     WHERE id = ${imageId}
     LIMIT 1

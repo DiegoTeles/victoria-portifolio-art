@@ -128,4 +128,16 @@
   html {
     @apply font-sans;
     }
+  button:enabled,
+  input[type='button']:enabled,
+  input[type='submit']:enabled,
+  input[type='reset']:enabled {
+    cursor: pointer;
+  }
+  button:disabled,
+  input[type='button']:disabled,
+  input[type='submit']:disabled,
+  input[type='reset']:disabled {
+    cursor: not-allowed;
+  }
 }

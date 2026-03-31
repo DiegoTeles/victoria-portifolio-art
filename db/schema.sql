@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS artworks (
   types JSONB NOT NULL DEFAULT '[]'::jsonb,
   info JSONB,
   resolution JSONB,
+  extra_images JSONB NOT NULL DEFAULT '[]'::jsonb,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );

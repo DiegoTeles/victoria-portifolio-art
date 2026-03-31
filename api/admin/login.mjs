@@ -19,8 +19,9 @@ export default async function handler(req, res) {
     return
   }
   const body = typeof req.body === 'object' && req.body !== null ? req.body : {}
-  const password = body.password
-  if (!safeEqual(password ?? '', expected)) {
+  const password = String(body.password ?? '').trim()
+  const expectedTrim = String(expected).trim()
+  if (!safeEqual(password, expectedTrim)) {
     res.status(401).json({ error: 'Invalid password' })
     return
   }

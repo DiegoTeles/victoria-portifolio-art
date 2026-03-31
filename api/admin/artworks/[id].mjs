@@ -38,12 +38,13 @@ export default async function handler(req, res) {
           types = ${JSON.stringify(p.types)}::jsonb,
           info = ${p.info == null ? null : JSON.stringify(p.info)}::jsonb,
           resolution = ${p.resolution == null ? null : JSON.stringify(p.resolution)}::jsonb,
+          extra_images = ${JSON.stringify(p.extra_images)}::jsonb,
           updated_at = NOW()
         WHERE id = ${id}
       `
       const rows = await sql`
         SELECT id, order_index, title, artwork_date, description, image_url, video_url,
-               orientation, group_key, group_display, types, info, resolution
+               orientation, group_key, group_display, types, info, resolution, extra_images
         FROM artworks WHERE id = ${id}
       `
       const artwork = rowToArtwork(rows[0])

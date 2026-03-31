@@ -4,6 +4,11 @@ function normalizeTypes(raw) {
   return []
 }
 
+function normalizeExtraImages(raw) {
+  if (!Array.isArray(raw)) return []
+  return raw.map((x) => String(x || '').trim()).filter(Boolean)
+}
+
 export function rowToArtwork(row) {
   const d = row.artwork_date
   const dateStr =
@@ -27,6 +32,7 @@ export function rowToArtwork(row) {
     groupDisplay: row.group_display ?? undefined,
     types: normalizeTypes(row.types),
     info: row.info ?? undefined,
+    extra_images: normalizeExtraImages(row.extra_images),
   }
 }
 
@@ -46,6 +52,7 @@ export function bodyToInsertPayload(body) {
       : typeof body.resolution === 'object'
         ? body.resolution
         : null
+  const extra_images = normalizeExtraImages(body.extra_images)
 
   return {
     id: String(body.id || '').trim(),
@@ -63,5 +70,6 @@ export function bodyToInsertPayload(body) {
     types,
     info,
     resolution,
+    extra_images,
   }
 }

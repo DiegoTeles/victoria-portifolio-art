@@ -1,6 +1,7 @@
 import type { Artwork } from '../data/artworks'
 import type { Locale } from '../data/artworks'
 import { getLocalized } from '../data/artworks'
+import { getArtworkImageSrc } from '@/lib/artworkImageUrl'
 import { useLocale } from '../i18n/LocaleContext'
 import { formatArtworkTypes } from '../i18n/formatArtworkTypes'
 
@@ -41,7 +42,7 @@ export function ArtworkPair({
         aria-label={aTitle || aDesc}
       >
         <img
-          src={a.image}
+          src={getArtworkImageSrc(a)}
           alt={aTitle || aDesc}
           loading="lazy"
           width={800}
@@ -61,7 +62,7 @@ export function ArtworkPair({
         aria-label={bTitle || bDesc}
       >
         <img
-          src={b.image}
+          src={getArtworkImageSrc(b)}
           alt={bTitle || bDesc}
           loading="lazy"
           width={800}

@@ -1,6 +1,7 @@
 import type { Artwork, GroupDisplayType } from '../data/artworks'
 import type { Locale } from '../data/artworks'
 import { getLocalized } from '../data/artworks'
+import { getArtworkImageSrc } from '@/lib/artworkImageUrl'
 import { formatCaptionText } from '../utils/formatCaptionText'
 import { ArtworkInfoIcon } from './ArtworkInfoIcon'
 
@@ -75,7 +76,7 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
               <span className="artwork-image-wrap">
                 <span className="artwork-image-inner">
                   <img
-                    src={artwork.image}
+                    src={getArtworkImageSrc(artwork)}
                     alt={alt}
                     loading="lazy"
                     width={800}
@@ -134,7 +135,7 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
               <span className="artwork-image-wrap">
                 <span className="artwork-image-inner">
                   <img
-                    src={artwork.image}
+                    src={getArtworkImageSrc(artwork)}
                     alt={alt}
                     loading="lazy"
                     width={800}
@@ -176,7 +177,7 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
               <span className="artwork-image-wrap">
                 <span className="artwork-image-inner">
                   <img
-                    src={artwork.image}
+                    src={getArtworkImageSrc(artwork)}
                     alt={alt}
                     loading="lazy"
                     width={800}
@@ -224,7 +225,7 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
               <span className="artwork-image-wrap">
                 <span className="artwork-image-inner">
                   <img
-                    src={artwork.image}
+                    src={getArtworkImageSrc(artwork)}
                     alt={alt}
                     loading="lazy"
                     width={800}
