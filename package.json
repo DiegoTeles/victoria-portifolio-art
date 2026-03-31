@@ -9,9 +9,11 @@
     "lint": "eslint .",
     "measure-resolution": "node scripts/measure-resolution.mjs",
     "sort-by-resolution": "node scripts/sort-by-resolution.mjs",
+    "inject-artwork-dates": "node scripts/inject-artwork-dates.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
+    "date-fns": "^4.1.0",
     "react": "^19.2.4",
     "react-country-flags-lazyload": "^1.0.9",
     "react-dom": "^19.2.4",
