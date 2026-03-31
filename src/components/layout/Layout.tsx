@@ -56,7 +56,7 @@ export function Layout() {
               {GALLERY_TYPES.map((type) => (
                 <Link
                   key={type}
-                  to={{ pathname: '/', hash: type }}
+                  to={type === 'movies' ? '/movies' : `/?gallery=${encodeURIComponent(type)}`}
                   className="nav-submenu-link"
                   role="menuitem"
                 >
@@ -119,7 +119,7 @@ export function Layout() {
                   {GALLERY_TYPES.map((type) => (
                     <Link
                       key={type}
-                      to={{ pathname: '/', hash: type }}
+                      to={type === 'movies' ? '/movies' : `/?gallery=${encodeURIComponent(type)}`}
                       className="drawer-submenu-link"
                       onClick={() => setDrawerOpen(false)}
                     >

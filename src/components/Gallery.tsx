@@ -241,14 +241,24 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
     const id = pageArtworks[index]?.id
     setLightboxIndex(index)
     if (id) {
-      navigate('/s/' + encodeURIComponent(id), { replace: true })
+      navigate(
+        { pathname: '/s/' + encodeURIComponent(id), search: location.search },
+        { replace: true }
+      )
     }
   }
   const closeLightbox = () => {
     setLightboxIndex(null)
     if (location.pathname.startsWith('/s/')) {
       const base = typeFilter === 'movies' ? '/movies' : '/'
-      navigate(base + '?page=' + String(currentPage), { replace: true })
+      const next = new URLSearchParams(searchParams)
+      next.delete('image')
+      next.set('page', String(currentPage))
+      if (typeFilter === 'movies') {
+        next.delete('gallery')
+      }
+      const s = next.toString()
+      navigate({ pathname: base, search: s ? `?${s}` : '' }, { replace: true })
     } else {
       setSearchParams((prev) => {
         const next = new URLSearchParams(prev)

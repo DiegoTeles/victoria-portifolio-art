@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useState, useEffect, useMemo } from 'react'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import { ViewToggle, type ViewMode } from '../components/ViewToggle'
 import { Gallery } from '../components/Gallery'
 import { BackToTop } from '../components/BackToTop'
@@ -10,14 +10,17 @@ type GalleryType = (typeof GALLERY_TYPES)[number]
 
 export function HomePage() {
   const location = useLocation()
-  const typeFilter =
-    location.pathname === '/movies'
-      ? 'movies'
-      : location.pathname === '/' && location.hash
-        ? (location.hash.slice(1) as GalleryType)
-        : undefined
-  const validFilter =
-    typeFilter && GALLERY_TYPES.includes(typeFilter) ? typeFilter : undefined
+  const [searchParams] = useSearchParams()
+  const validFilter = useMemo((): GalleryType | undefined => {
+    if (location.pathname === '/movies') return 'movies'
+    const q = searchParams.get('gallery')
+    if (q && GALLERY_TYPES.includes(q as GalleryType)) return q as GalleryType
+    if (location.pathname === '/' && location.hash) {
+      const h = location.hash.slice(1)
+      if (GALLERY_TYPES.includes(h as GalleryType)) return h as GalleryType
+    }
+    return undefined
+  }, [location.pathname, location.hash, searchParams])
 
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
     if (typeof window === 'undefined') return 'list'
