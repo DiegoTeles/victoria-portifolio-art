@@ -32,6 +32,7 @@ export interface Artwork {
   id: string
   date: string
   title: string
+  order_index?: number
   description: LocalizedText
   image?: string
   video?: string

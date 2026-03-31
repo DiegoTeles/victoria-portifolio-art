@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect, useRef } from 'react'
 import { useSearchParams, useParams, useNavigate, useLocation } from 'react-router-dom'
-import { artworks as artworksList, type Artwork, type ArtworkType, getLocalized } from '../data/artworks'
+import { type Artwork, type ArtworkType, getLocalized } from '../data/artworks'
+import { loadArtworks } from '../data/fetchArtworks'
 import { useLocale } from '../i18n/LocaleContext'
 
 function plainMetaText(str: string): string {
@@ -119,15 +120,27 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
   const navigate = useNavigate()
   const location = useLocation()
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const [artworksList, setArtworksList] = useState<Artwork[] | null>(null)
   const imageIdFromRoute = params.imageId ?? null
 
-  const filteredArtworks = useMemo(() => {
-    if (!typeFilter) return artworksList
-    if (typeFilter === 'drawing-painting') {
-      return artworksList.filter((a) => a.types.includes('drawing') || a.types.includes('painting'))
+  useEffect(() => {
+    let cancelled = false
+    void loadArtworks().then((data) => {
+      if (!cancelled) setArtworksList(data)
+    })
+    return () => {
+      cancelled = true
     }
-    return artworksList.filter((a) => a.types.includes(typeFilter))
-  }, [typeFilter])
+  }, [])
+
+  const filteredArtworks = useMemo(() => {
+    const list = artworksList ?? []
+    if (!typeFilter) return list
+    if (typeFilter === 'drawing-painting') {
+      return list.filter((a) => a.types.includes('drawing') || a.types.includes('painting'))
+    }
+    return list.filter((a) => a.types.includes(typeFilter))
+  }, [typeFilter, artworksList])
 
   const allCells = useMemo(() => buildCells(filteredArtworks), [filteredArtworks])
   const totalPages = Math.max(1, Math.ceil(allCells.length / PAGE_SIZE))
@@ -190,13 +203,13 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
     const siteDesc = t('siteDescription')
     const defaultImg = '/images/digital-art/digital-art-01.png'
     if (imageParam) {
-      const artwork = artworksList.find((a) => a.id === imageParam)
+      const artwork = (artworksList ?? []).find((a) => a.id === imageParam)
       if (artwork) setArtworkMeta(artwork, locale, siteTitle, siteDesc)
       else resetMeta(siteTitle, siteDesc, defaultImg)
     } else {
       resetMeta(siteTitle, siteDesc, defaultImg)
     }
-  }, [imageParam, locale, t])
+  }, [imageParam, locale, t, artworksList])
 
   const cells = useMemo(
     () =>
@@ -244,6 +257,14 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
         return next
       })
     }
+  }
+
+  if (artworksList === null) {
+    return (
+      <section id="gallery" className="gallery" aria-label="Galeria">
+        <p className="page-text gallery-loading">A carregar…</p>
+      </section>
+    )
   }
 
   return (

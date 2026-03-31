@@ -3,6 +3,7 @@ import { Layout } from '../components/layout/Layout'
 import { HomePage } from '../pages/HomePage'
 import { AboutPage } from '../pages/AboutPage'
 import { ContactPage } from '../pages/ContactPage'
+import { AdminPage } from '../pages/AdminPage'
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
       { path: 'movies', element: <HomePage /> },
       { path: 'sobre', element: <AboutPage /> },
       { path: 'contato', element: <ContactPage /> },
+      { path: 'admin', element: <AdminPage /> },
     ],
   },
 ])

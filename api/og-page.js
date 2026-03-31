@@ -1,6 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { neon } from '@neondatabase/serverless'
+import { rowToArtwork } from './_lib/artwork-map.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -19,25 +21,56 @@ function plainText(str) {
     .trim()
 }
 
-export default function handler(req, res) {
+async function findArtworkFromDb(imageId) {
+  const url = process.env.DATABASE_URL
+  if (!url) return null
+  const sql = neon(url)
+  const rows = await sql`
+    SELECT id, order_index, title, artwork_date, description, image_url, video_url,
+           orientation, group_key, group_display, types, info, resolution
+    FROM artworks
+    WHERE id = ${imageId}
+    LIMIT 1
+  `
+  const row = rows[0]
+  return row ? rowToArtwork(row) : null
+}
+
+export default async function handler(req, res) {
   const imageId = req.query?.image
   if (!imageId || typeof imageId !== 'string') {
     res.status(307).setHeader('Location', '/').end()
     return
   }
 
-  let artworks
-  try {
-    const jsonPath = path.join(process.cwd(), 'src', 'data', 'artworks.json')
-    const raw = fs.readFileSync(jsonPath, 'utf-8')
-    const data = JSON.parse(raw)
-    artworks = Array.isArray(data) ? data : []
-  } catch {
-    res.status(307).setHeader('Location', '/').end()
-    return
+  let artwork = await findArtworkFromDb(imageId)
+  if (!artwork) {
+    try {
+      const jsonPath = path.join(process.cwd(), 'src', 'data', 'artworks.json')
+      const raw = fs.readFileSync(jsonPath, 'utf-8')
+      const data = JSON.parse(raw)
+      const list = Array.isArray(data) ? data : []
+      const legacy = list.find((a) => a.id === imageId)
+      if (legacy) {
+        artwork = {
+          id: legacy.id,
+          date: legacy.date,
+          title: legacy.title,
+          description: legacy.description,
+          image: legacy.image,
+          video: legacy.video,
+          resolution: legacy.resolution,
+          orientation: legacy.orientation,
+          group: legacy.group,
+          groupDisplay: legacy.groupDisplay,
+          types: legacy.types,
+          info: legacy.info,
+        }
+      }
+    } catch {
+      artwork = null
+    }
   }
-
-  const artwork = artworks.find((a) => a.id === imageId)
   if (!artwork) {
     res.status(307).setHeader('Location', '/').end()
     return
