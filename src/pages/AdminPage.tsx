@@ -27,6 +27,7 @@ import {
 } from '@/components/ui/table'
 import { Textarea } from '@/components/ui/textarea'
 import { ArtworkDateField } from '@/components/admin/ArtworkDateField'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { Artwork, ArtworkType, GroupDisplayType } from '../data/artworks'
 import type { Locale } from '../data/artworks'
 import { getLocalized } from '../data/artworks'
@@ -139,6 +140,10 @@ export function AdminPage() {
   const [editPendingExtras, setEditPendingExtras] = useState<PendingExtra[]>([])
   const [createMainUploading, setCreateMainUploading] = useState(false)
   const [editMainUploading, setEditMainUploading] = useState(false)
+  const [createCarouselIndex, setCreateCarouselIndex] = useState(0)
+  const [editCarouselIndex, setEditCarouselIndex] = useState(0)
+  const [createTouchX, setCreateTouchX] = useState<number | null>(null)
+  const [editTouchX, setEditTouchX] = useState<number | null>(null)
 
   const refreshList = useCallback(async () => {
     setLoading(true)
@@ -203,6 +208,7 @@ export function AdminPage() {
       return []
     })
     setCreateDraft(emptyCreate())
+    setCreateCarouselIndex(0)
     setMessage('')
     setCreateOpen(true)
   }
@@ -213,6 +219,7 @@ export function AdminPage() {
       return []
     })
     setCreateOpen(false)
+    setCreateCarouselIndex(0)
   }
 
   const uploadFile = async (file: File, target: 'create' | 'edit') => {
@@ -392,6 +399,7 @@ export function AdminPage() {
       extra_images: [...(a.extra_images ?? [])],
     })
     setEditHasGroup(Boolean(a.group) || (a.extra_images?.length ?? 0) > 0)
+    setEditCarouselIndex(0)
     setEditPendingExtras([])
     setMessage('')
     setEditOpen(true)
@@ -404,6 +412,7 @@ export function AdminPage() {
     })
     setEditOpen(false)
     setEditingId(null)
+    setEditCarouselIndex(0)
   }
 
   const saveEdit = async (e: FormEvent) => {
@@ -469,6 +478,33 @@ export function AdminPage() {
       setMessage('Erro ao apagar')
     }
   }
+
+  const createMedia = [
+    ...(createDraft.image ? [createDraft.image] : []),
+    ...(createDraft.extra_images ?? []),
+  ]
+  const editMedia = [
+    ...(form.image ? [form.image] : []),
+    ...(form.extra_images ?? []),
+  ]
+
+  useEffect(() => {
+    if (createCarouselIndex >= createMedia.length) setCreateCarouselIndex(0)
+  }, [createCarouselIndex, createMedia.length])
+
+  useEffect(() => {
+    if (editCarouselIndex >= editMedia.length) setEditCarouselIndex(0)
+  }, [editCarouselIndex, editMedia.length])
+
+  const swipeThreshold = 40
+  const prevCreateMedia = () =>
+    setCreateCarouselIndex((i) => (i === 0 ? createMedia.length - 1 : i - 1))
+  const nextCreateMedia = () =>
+    setCreateCarouselIndex((i) => (i === createMedia.length - 1 ? 0 : i + 1))
+  const prevEditMedia = () =>
+    setEditCarouselIndex((i) => (i === 0 ? editMedia.length - 1 : i - 1))
+  const nextEditMedia = () =>
+    setEditCarouselIndex((i) => (i === editMedia.length - 1 ? 0 : i + 1))
 
   if (!loggedIn) {
     return (
@@ -583,11 +619,63 @@ export function AdminPage() {
           if (!open) closeCreate()
         }}
       >
-        <DialogContent className="sm:max-w-lg" showCloseButton>
+        <DialogContent className="sm:max-w-[92vw] lg:max-w-6xl" showCloseButton>
           <DialogHeader>
             <DialogTitle>Nova obra</DialogTitle>
           </DialogHeader>
-          <form onSubmit={saveCreate} className="grid gap-4">
+          <div className="grid gap-4 lg:grid-cols-[minmax(320px,46%)_1fr]">
+            <div
+              className="bg-muted/40 border-border relative overflow-hidden rounded-lg border lg:sticky lg:top-0 lg:h-[78vh]"
+              onTouchStart={(e) => setCreateTouchX(e.touches[0]?.clientX ?? null)}
+              onTouchEnd={(e) => {
+                const endX = e.changedTouches[0]?.clientX ?? null
+                if (createMedia.length < 2 || createTouchX == null || endX == null) return
+                const delta = endX - createTouchX
+                if (delta > swipeThreshold) prevCreateMedia()
+                if (delta < -swipeThreshold) nextCreateMedia()
+                setCreateTouchX(null)
+              }}
+            >
+              {createMedia.length > 0 ? (
+                <>
+                  <img
+                    src={getArtworkImageSrc({ image: createMedia[createCarouselIndex] })}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                  {createMedia.length > 1 ? (
+                    <>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        className="absolute top-1/2 left-3 -translate-y-1/2"
+                        onClick={prevCreateMedia}
+                      >
+                        <ChevronLeft className="size-4" />
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        className="absolute top-1/2 right-3 -translate-y-1/2"
+                        onClick={nextCreateMedia}
+                      >
+                        <ChevronRight className="size-4" />
+                      </Button>
+                      <div className="absolute right-2 bottom-2 rounded bg-black/60 px-2 py-1 text-xs text-white">
+                        {createCarouselIndex + 1}/{createMedia.length}
+                      </div>
+                    </>
+                  ) : null}
+                </>
+              ) : (
+                <div className="text-muted-foreground flex h-full items-center justify-center text-sm">
+                  Sem imagem
+                </div>
+              )}
+            </div>
+            <form onSubmit={saveCreate} className="grid max-h-[78vh] gap-4 overflow-y-auto pr-1">
             <div className="grid gap-2">
               <Label htmlFor="create-title">Título</Label>
               <Input
@@ -757,15 +845,16 @@ export function AdminPage() {
                 </div>
               </div>
             ) : null}
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={closeCreate}>
-                Cancelar
-              </Button>
-              <Button type="submit" disabled={saving || createPendingExtras.length > 0 || createMainUploading}>
-                {saving ? 'A guardar…' : 'Salvar'}
-              </Button>
-            </DialogFooter>
-          </form>
+              <DialogFooter>
+                <Button type="button" variant="outline" onClick={closeCreate}>
+                  Cancelar
+                </Button>
+                <Button type="submit" disabled={saving || createPendingExtras.length > 0 || createMainUploading}>
+                  {saving ? 'A guardar…' : 'Salvar'}
+                </Button>
+              </DialogFooter>
+            </form>
+          </div>
         </DialogContent>
       </Dialog>
 
@@ -775,14 +864,63 @@ export function AdminPage() {
           if (!open) closeEdit()
         }}
       >
-        <DialogContent
-          className={cn('max-h-[85vh] overflow-y-auto sm:max-w-xl')}
-          showCloseButton
-        >
+        <DialogContent className={cn('sm:max-w-[92vw] lg:max-w-6xl')} showCloseButton>
           <DialogHeader>
             <DialogTitle>Editar obra</DialogTitle>
           </DialogHeader>
-          <form onSubmit={saveEdit} className="grid gap-4">
+          <div className="grid gap-4 lg:grid-cols-[minmax(320px,46%)_1fr]">
+            <div
+              className="bg-muted/40 border-border relative overflow-hidden rounded-lg border lg:sticky lg:top-0 lg:h-[78vh]"
+              onTouchStart={(e) => setEditTouchX(e.touches[0]?.clientX ?? null)}
+              onTouchEnd={(e) => {
+                const endX = e.changedTouches[0]?.clientX ?? null
+                if (editMedia.length < 2 || editTouchX == null || endX == null) return
+                const delta = endX - editTouchX
+                if (delta > swipeThreshold) prevEditMedia()
+                if (delta < -swipeThreshold) nextEditMedia()
+                setEditTouchX(null)
+              }}
+            >
+              {editMedia.length > 0 ? (
+                <>
+                  <img
+                    src={getArtworkImageSrc({ image: editMedia[editCarouselIndex] })}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                  {editMedia.length > 1 ? (
+                    <>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        className="absolute top-1/2 left-3 -translate-y-1/2"
+                        onClick={prevEditMedia}
+                      >
+                        <ChevronLeft className="size-4" />
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        className="absolute top-1/2 right-3 -translate-y-1/2"
+                        onClick={nextEditMedia}
+                      >
+                        <ChevronRight className="size-4" />
+                      </Button>
+                      <div className="absolute right-2 bottom-2 rounded bg-black/60 px-2 py-1 text-xs text-white">
+                        {editCarouselIndex + 1}/{editMedia.length}
+                      </div>
+                    </>
+                  ) : null}
+                </>
+              ) : (
+                <div className="text-muted-foreground flex h-full items-center justify-center text-sm">
+                  Sem imagem
+                </div>
+              )}
+            </div>
+            <form onSubmit={saveEdit} className="grid max-h-[78vh] gap-4 overflow-y-auto pr-1">
             <div className="grid gap-2">
               <Label htmlFor="edit-id">ID (slug único)</Label>
               <Input id="edit-id" value={form.id} readOnly disabled className="opacity-70" />
@@ -1027,15 +1165,16 @@ export function AdminPage() {
                 onChange={(e) => setForm((f) => ({ ...f, video: e.target.value }))}
               />
             </div>
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={closeEdit}>
-                Cancelar
-              </Button>
-              <Button type="submit" disabled={saving || editPendingExtras.length > 0 || editMainUploading}>
-                {saving ? 'A guardar…' : 'Salvar'}
-              </Button>
-            </DialogFooter>
-          </form>
+              <DialogFooter>
+                <Button type="button" variant="outline" onClick={closeEdit}>
+                  Cancelar
+                </Button>
+                <Button type="submit" disabled={saving || editPendingExtras.length > 0 || editMainUploading}>
+                  {saving ? 'A guardar…' : 'Salvar'}
+                </Button>
+              </DialogFooter>
+            </form>
+          </div>
         </DialogContent>
       </Dialog>
     </section>
