@@ -49,6 +49,11 @@ export interface Artwork {
   info?: LocalizedText | null
   extra_images?: string[]
   extra_descriptions?: LocalizedText[]
+  captionMedium?: LocalizedText
+  physicalDimensions?: LocalizedText
+  extraTitles?: LocalizedText[]
+  extraCaptionMedia?: LocalizedText[]
+  extraPhysicalDimensions?: LocalizedText[]
   categoryAssignments?: ArtworkCategoryAssignment[]
 }
 

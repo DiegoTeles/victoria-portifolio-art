@@ -14,8 +14,9 @@ export default async function handler(req, res) {
   try {
     const sql = getSql()
     const rows = await sql`
-      SELECT id, order_index, title, artwork_date, description, image_url, video_url,
-             group_key, group_display, types, info, resolution, main_media_bytes, extra_images, extra_descriptions
+      SELECT id, order_index, title, artwork_date, description, caption_medium, physical_dimensions,
+             image_url, video_url, group_key, group_display, types, info, resolution, main_media_bytes,
+             extra_images, extra_descriptions, extra_titles, extra_caption_media, extra_physical_dimensions
       FROM artworks
       ORDER BY order_index ASC
     `

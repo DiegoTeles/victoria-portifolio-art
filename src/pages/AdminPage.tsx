@@ -133,6 +133,8 @@ const emptyForm = (): Partial<Artwork> & { order_index: number } => ({
   title: '',
   date: new Date().toISOString().slice(0, 10),
   description: { 'pt-Br': '', en: '', fr: '', it: '', de: '' },
+  captionMedium: { 'pt-Br': '', en: '', fr: '', it: '', de: '' },
+  physicalDimensions: { 'pt-Br': '', en: '', fr: '', it: '', de: '' },
   image: '',
   video: '',
   group: null,
@@ -140,12 +142,17 @@ const emptyForm = (): Partial<Artwork> & { order_index: number } => ({
   types: ['painting'],
   extra_images: [],
   extra_descriptions: [],
+  extraTitles: [],
+  extraCaptionMedia: [],
+  extraPhysicalDimensions: [],
 })
 
 type CreateDraft = {
   title: string
   date: string
   description: LocalizedText
+  captionMedium: LocalizedText
+  physicalDimensions: LocalizedText
   image: string
   resolution?: Artwork['resolution']
   mainMediaBytes?: number
@@ -154,12 +161,17 @@ type CreateDraft = {
   groupDisplay: GroupDisplayType | undefined
   extra_images: string[]
   extra_descriptions: LocalizedText[]
+  extraTitles: LocalizedText[]
+  extraCaptionMedia: LocalizedText[]
+  extraPhysicalDimensions: LocalizedText[]
 }
 
 const emptyCreate = (): CreateDraft => ({
   title: '',
   date: new Date().toISOString().slice(0, 10),
   description: { 'pt-Br': '', en: '', fr: '', it: '', de: '' },
+  captionMedium: { 'pt-Br': '', en: '', fr: '', it: '', de: '' },
+  physicalDimensions: { 'pt-Br': '', en: '', fr: '', it: '', de: '' },
   image: '',
   resolution: undefined,
   mainMediaBytes: undefined,
@@ -168,6 +180,9 @@ const emptyCreate = (): CreateDraft => ({
   groupDisplay: undefined,
   extra_images: [],
   extra_descriptions: [],
+  extraTitles: [],
+  extraCaptionMedia: [],
+  extraPhysicalDimensions: [],
 })
 
 type PendingExtra = { id: string; preview: string; name: string }
@@ -195,7 +210,7 @@ function formatMegabytes(bytes: number | null | undefined): string {
   return `${mb.toFixed(2).replace('.', ',')} MB`
 }
 
-const ADMIN_TABLE_COL_COUNT = 11
+const ADMIN_TABLE_COL_COUNT = 12
 
 function artworkHasMultipleImages(a: Artwork): boolean {
   return (a.extra_images?.length ?? 0) > 0
@@ -211,39 +226,62 @@ function groupColumnLabel(a: Artwork): string {
 type AdminGroupImageRow = {
   key: string
   role: string
-  url: string
+  imageUrl: string
   isVideo: boolean
   resolution: string
   sizeLabel: string
-  caption: string
+  imageTitle: string
+  year: string
+  medium: string
+  dimensions: string
+}
+
+function rowTitleForLocale(
+  mainTitle: string,
+  extraLocales: LocalizedText | undefined,
+  loc: Locale
+): string {
+  const fromExtra = getLocalized(extraLocales, loc).trim()
+  if (fromExtra) return fromExtra
+  const t = mainTitle.trim()
+  return t || '—'
 }
 
 function buildAdminGroupImageRows(a: Artwork): AdminGroupImageRow[] {
   const rows: AdminGroupImageRow[] = []
   const extras = a.extra_images ?? []
-  const eds = a.extra_descriptions ?? []
+  const loc: Locale = 'pt-Br'
+  const year = a.date.slice(0, 4)
+  const xt = a.extraTitles ?? []
+  const xcm = a.extraCaptionMedia ?? []
+  const xpd = a.extraPhysicalDimensions ?? []
   if (a.image || a.video) {
     rows.push({
       key: `${a.id}__main`,
       role: 'Principal',
-      url: (a.image || a.video) as string,
+      imageUrl: (a.image || a.video) as string,
       isVideo: Boolean(a.video && !a.image),
       resolution: formatResolution(a),
       sizeLabel: formatMegabytes(a.mainMediaBytes),
-      caption: captionPreview(a),
+      imageTitle: a.title.trim() || '—',
+      year,
+      medium: getLocalized(a.captionMedium, loc).trim() || '—',
+      dimensions: getLocalized(a.physicalDimensions, loc).trim() || '—',
     })
   }
   for (let i = 0; i < extras.length; i++) {
-    const url = extras[i]!
-    const cap = getLocalized(eds[i], 'pt-Br').trim() || '—'
+    const imageUrl = extras[i]!
     rows.push({
       key: `${a.id}__extra_${i}`,
       role: `Extra ${i + 1}`,
-      url,
+      imageUrl,
       isVideo: false,
       resolution: '—',
       sizeLabel: '—',
-      caption: cap,
+      imageTitle: rowTitleForLocale(a.title, xt[i], loc),
+      year,
+      medium: getLocalized(xcm[i], loc).trim() || '—',
+      dimensions: getLocalized(xpd[i], loc).trim() || '—',
     })
   }
   return rows
@@ -272,9 +310,15 @@ function formatCategorySubColumns(
   return { cat: catParts.join('; '), sub: subParts.join('; ') }
 }
 
-function captionPreview(a: Artwork): string {
-  const t = getLocalized(a.description, 'pt-Br')
-  return t.trim() || '—'
+function adminMediumColumn(a: Artwork): string {
+  const m = getLocalized(a.captionMedium, 'pt-Br').trim()
+  if (m) return m
+  return getLocalized(a.description, 'pt-Br').trim() || '—'
+}
+
+function adminDimensionsColumn(a: Artwork): string {
+  const d = getLocalized(a.physicalDimensions, 'pt-Br').trim()
+  return d || '—'
 }
 
 type AdminCategoryRow = {
@@ -528,6 +572,9 @@ export function AdminArtworksPage() {
             ...d,
             extra_images: [...d.extra_images, url],
             extra_descriptions: [...d.extra_descriptions, emptyLocales()],
+            extraTitles: [...d.extraTitles, emptyLocales()],
+            extraCaptionMedia: [...d.extraCaptionMedia, emptyLocales()],
+            extraPhysicalDimensions: [...d.extraPhysicalDimensions, emptyLocales()],
           }))
           toast.success('Imagem adicionada ao grupo.')
         } catch {
@@ -555,6 +602,9 @@ export function AdminArtworksPage() {
             ...f,
             extra_images: [...(f.extra_images ?? []), url],
             extra_descriptions: [...(f.extra_descriptions ?? []), emptyLocales()],
+            extraTitles: [...(f.extraTitles ?? []), emptyLocales()],
+            extraCaptionMedia: [...(f.extraCaptionMedia ?? []), emptyLocales()],
+            extraPhysicalDimensions: [...(f.extraPhysicalDimensions ?? []), emptyLocales()],
           }))
           toast.success('Imagem adicionada ao grupo.')
         } catch {
@@ -593,19 +643,29 @@ export function AdminArtworksPage() {
         : undefined
     setSaving(true)
     try {
+      const ex = createDraft.hasGroup ? createDraft.extra_images : []
       const payload = {
         id,
         order_index: nextOrder,
         title: createDraft.title,
         date: createDraft.date,
         description: createDraft.description,
+        captionMedium: createDraft.captionMedium,
+        physicalDimensions: createDraft.physicalDimensions,
         image: createDraft.image || undefined,
         group: createDraft.hasGroup ? createDraft.group.trim() || null : null,
         groupDisplay: resolvedCreateGroupDisplay,
         types: ['painting'],
-        extra_images: createDraft.hasGroup ? createDraft.extra_images : [],
+        extra_images: ex,
         extra_descriptions: createDraft.hasGroup
-          ? padExtraDescriptions(createDraft.extra_images, createDraft.extra_descriptions)
+          ? padExtraDescriptions(ex, createDraft.extra_descriptions)
+          : [],
+        extraTitles: createDraft.hasGroup ? padExtraDescriptions(ex, createDraft.extraTitles) : [],
+        extraCaptionMedia: createDraft.hasGroup
+          ? padExtraDescriptions(ex, createDraft.extraCaptionMedia)
+          : [],
+        extraPhysicalDimensions: createDraft.hasGroup
+          ? padExtraDescriptions(ex, createDraft.extraPhysicalDimensions)
           : [],
         categoryAssignments: createCategoryAssignments.filter((x) => x.categoryId.trim()),
         resolution: createDraft.resolution,
@@ -638,6 +698,7 @@ export function AdminArtworksPage() {
   const openEdit = (a: Artwork) => {
     setEditingId(a.id)
     const idx = list.findIndex((x) => x.id === a.id)
+    const ex = a.extra_images ?? []
     setForm({
       id: a.id,
       order_index: a.order_index ?? (idx >= 0 ? idx + 1 : 1),
@@ -650,6 +711,20 @@ export function AdminArtworksPage() {
         it: a.description?.it ?? '',
         de: a.description?.de ?? '',
       },
+      captionMedium: {
+        'pt-Br': a.captionMedium?.['pt-Br'] ?? '',
+        en: a.captionMedium?.en ?? '',
+        fr: a.captionMedium?.fr ?? '',
+        it: a.captionMedium?.it ?? '',
+        de: a.captionMedium?.de ?? '',
+      },
+      physicalDimensions: {
+        'pt-Br': a.physicalDimensions?.['pt-Br'] ?? '',
+        en: a.physicalDimensions?.en ?? '',
+        fr: a.physicalDimensions?.fr ?? '',
+        it: a.physicalDimensions?.it ?? '',
+        de: a.physicalDimensions?.de ?? '',
+      },
       image: a.image ?? '',
       video: a.video ?? '',
       group: a.group,
@@ -658,8 +733,11 @@ export function AdminArtworksPage() {
       info: a.info ?? undefined,
       resolution: a.resolution,
       mainMediaBytes: a.mainMediaBytes,
-      extra_images: [...(a.extra_images ?? [])],
-      extra_descriptions: padExtraDescriptions(a.extra_images ?? [], a.extra_descriptions ?? []),
+      extra_images: [...ex],
+      extra_descriptions: padExtraDescriptions(ex, a.extra_descriptions ?? []),
+      extraTitles: padExtraDescriptions(ex, a.extraTitles ?? []),
+      extraCaptionMedia: padExtraDescriptions(ex, a.extraCaptionMedia ?? []),
+      extraPhysicalDimensions: padExtraDescriptions(ex, a.extraPhysicalDimensions ?? []),
     })
     const assigns = (a.categoryAssignments ?? []).map((x) => ({
       categoryId: x.categoryId,
@@ -694,12 +772,15 @@ export function AdminArtworksPage() {
     }
     setSaving(true)
     try {
+      const ex = editHasGroup ? (form.extra_images ?? []) : []
       const payload = {
         id: form.id.trim(),
         order_index: form.order_index,
         title: form.title ?? '',
         date: form.date,
         description: form.description,
+        captionMedium: form.captionMedium,
+        physicalDimensions: form.physicalDimensions,
         image: form.image || undefined,
         video: form.video || undefined,
         group: editHasGroup ? (form.group?.trim() || null) : null,
@@ -711,9 +792,16 @@ export function AdminArtworksPage() {
         info: form.info,
         resolution: form.resolution,
         mainMediaBytes: form.mainMediaBytes,
-        extra_images: editHasGroup ? (form.extra_images ?? []) : [],
+        extra_images: ex,
         extra_descriptions: editHasGroup
-          ? padExtraDescriptions(form.extra_images ?? [], form.extra_descriptions ?? [])
+          ? padExtraDescriptions(ex, form.extra_descriptions ?? [])
+          : [],
+        extraTitles: editHasGroup ? padExtraDescriptions(ex, form.extraTitles ?? []) : [],
+        extraCaptionMedia: editHasGroup
+          ? padExtraDescriptions(ex, form.extraCaptionMedia ?? [])
+          : [],
+        extraPhysicalDimensions: editHasGroup
+          ? padExtraDescriptions(ex, form.extraPhysicalDimensions ?? [])
           : [],
         categoryAssignments: editCategoryAssignments.filter((x) => x.categoryId.trim()),
       }
@@ -845,6 +933,7 @@ export function AdminArtworksPage() {
                 <TableHead>Subcategoria</TableHead>
                 <TableHead>Ano</TableHead>
                 <TableHead className="max-w-[min(280px,28vw)]">Legenda</TableHead>
+                <TableHead className="max-w-[min(200px,22vw)]">Dimensões</TableHead>
                 <TableHead className="w-[1%] text-right whitespace-nowrap">Ações</TableHead>
               </TableRow>
             </TableHeader>
@@ -882,6 +971,9 @@ export function AdminArtworksPage() {
                     <Skeleton className="h-4 w-48 max-w-[min(280px,28vw)]" />
                   </TableCell>
                   <TableCell>
+                    <Skeleton className="h-4 w-24 max-w-[min(200px,22vw)]" />
+                  </TableCell>
+                  <TableCell>
                     <div className="flex flex-wrap justify-end gap-2">
                       <Skeleton className="h-8 w-16" />
                       <Skeleton className="h-8 w-16" />
@@ -906,6 +998,7 @@ export function AdminArtworksPage() {
                 <TableHead>Subcategoria</TableHead>
                 <TableHead>Ano</TableHead>
                 <TableHead className="max-w-[min(280px,28vw)]">Legenda</TableHead>
+                <TableHead className="max-w-[min(200px,22vw)]">Dimensões</TableHead>
                 <TableHead className="w-[1%] text-right whitespace-nowrap">Ações</TableHead>
               </TableRow>
             </TableHeader>
@@ -984,7 +1077,10 @@ export function AdminArtworksPage() {
                       </TableCell>
                       <TableCell>{a.date.slice(0, 4)}</TableCell>
                       <TableCell className="text-muted-foreground max-w-[min(280px,28vw)] truncate whitespace-nowrap">
-                        {captionPreview(a)}
+                        {adminMediumColumn(a)}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground max-w-[min(200px,22vw)] text-sm break-words">
+                        {adminDimensionsColumn(a)}
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex flex-wrap justify-end gap-2">
@@ -1018,8 +1114,10 @@ export function AdminArtworksPage() {
                                   <TableHead className="w-[72px]">Imagem</TableHead>
                                   <TableHead className="whitespace-nowrap">Resolução</TableHead>
                                   <TableHead className="whitespace-nowrap">Tamanho</TableHead>
-                                  <TableHead className="min-w-[200px]">Legenda (pt-BR)</TableHead>
-                                  <TableHead className="min-w-[180px]">URL</TableHead>
+                                  <TableHead className="min-w-[120px]">Título</TableHead>
+                                  <TableHead className="w-14">Ano</TableHead>
+                                  <TableHead className="min-w-[160px]">Legenda</TableHead>
+                                  <TableHead className="min-w-[120px]">Dimensões</TableHead>
                                 </TableRow>
                               </TableHeader>
                               <TableBody>
@@ -1036,7 +1134,7 @@ export function AdminArtworksPage() {
                                           <ArtworkLazyImage
                                             className="border-border size-12 rounded object-cover"
                                             skeletonClassName="pointer-events-none absolute inset-0 z-[1] size-full rounded-md"
-                                            src={getArtworkImageSrc({ image: row.url })}
+                                            src={getArtworkImageSrc({ image: row.imageUrl })}
                                             alt=""
                                             width={48}
                                             height={48}
@@ -1051,11 +1149,15 @@ export function AdminArtworksPage() {
                                     <TableCell className="text-sm tabular-nums whitespace-nowrap">
                                       {row.sizeLabel}
                                     </TableCell>
-                                    <TableCell className="text-muted-foreground max-w-[min(360px,40vw)] text-sm break-words">
-                                      {row.caption}
+                                    <TableCell className="max-w-[min(200px,24vw)] text-sm break-words">
+                                      {row.imageTitle}
                                     </TableCell>
-                                    <TableCell className="text-muted-foreground max-w-[min(280px,32vw)] font-mono text-xs break-all">
-                                      {row.url}
+                                    <TableCell className="text-sm tabular-nums">{row.year}</TableCell>
+                                    <TableCell className="text-muted-foreground max-w-[min(320px,36vw)] text-sm break-words">
+                                      {row.medium}
+                                    </TableCell>
+                                    <TableCell className="text-muted-foreground max-w-[min(200px,28vw)] text-sm break-words">
+                                      {row.dimensions}
                                     </TableCell>
                                   </TableRow>
                                 ))}
@@ -1202,6 +1304,38 @@ export function AdminArtworksPage() {
               />
             </div>
             <div className="grid gap-4">
+              <span className="text-sm leading-none font-medium">Meio / técnica</span>
+              <Textarea
+                rows={3}
+                value={createDraft.captionMedium?.[createCaptionLocale] ?? ''}
+                onChange={(e) =>
+                  setCreateDraft((d) => ({
+                    ...d,
+                    captionMedium: {
+                      ...d.captionMedium,
+                      [createCaptionLocale]: e.target.value,
+                    },
+                  }))
+                }
+              />
+            </div>
+            <div className="grid gap-4">
+              <span className="text-sm leading-none font-medium">Dimensões físicas</span>
+              <Textarea
+                rows={2}
+                value={createDraft.physicalDimensions?.[createCaptionLocale] ?? ''}
+                onChange={(e) =>
+                  setCreateDraft((d) => ({
+                    ...d,
+                    physicalDimensions: {
+                      ...d.physicalDimensions,
+                      [createCaptionLocale]: e.target.value,
+                    },
+                  }))
+                }
+              />
+            </div>
+            <div className="grid gap-4">
               <Label htmlFor="create-date">Data</Label>
               <ArtworkDateField
                 id="create-date"
@@ -1323,6 +1457,9 @@ export function AdminArtworksPage() {
                     group: checked ? d.group : '',
                     extra_images: checked ? d.extra_images : [],
                     extra_descriptions: checked ? d.extra_descriptions : [],
+                    extraTitles: checked ? d.extraTitles : [],
+                    extraCaptionMedia: checked ? d.extraCaptionMedia : [],
+                    extraPhysicalDimensions: checked ? d.extraPhysicalDimensions : [],
                     groupDisplay: checked ? d.groupDisplay : undefined,
                   }))
                 }}
@@ -1384,6 +1521,11 @@ export function AdminArtworksPage() {
                                   ...d,
                                   extra_images: d.extra_images.filter((_, i) => i !== idx),
                                   extra_descriptions: d.extra_descriptions.filter((_, i) => i !== idx),
+                                  extraTitles: d.extraTitles.filter((_, i) => i !== idx),
+                                  extraCaptionMedia: d.extraCaptionMedia.filter((_, i) => i !== idx),
+                                  extraPhysicalDimensions: d.extraPhysicalDimensions.filter(
+                                    (_, i) => i !== idx
+                                  ),
                                 }))
                               }
                             >
@@ -1392,20 +1534,74 @@ export function AdminArtworksPage() {
                           </div>
                         </div>
                         {createShowPerImageCaptions ? (
-                          <Textarea
-                            rows={3}
-                            className="min-h-0 text-sm"
-                            value={createDraft.extra_descriptions[idx]?.[createCaptionLocale] ?? ''}
-                            onChange={(e) =>
-                              setCreateDraft((d) => {
-                                const next = [...d.extra_descriptions]
-                                const cur = { ...(next[idx] ?? emptyLocales()) }
-                                cur[createCaptionLocale] = e.target.value
-                                next[idx] = cur
-                                return { ...d, extra_descriptions: next }
-                              })
-                            }
-                          />
+                          <div className="flex min-w-0 flex-col gap-2">
+                            <Input
+                              className="text-sm"
+                              placeholder="Título"
+                              value={createDraft.extraTitles[idx]?.[createCaptionLocale] ?? ''}
+                              onChange={(e) =>
+                                setCreateDraft((d) => {
+                                  const urls = d.extra_images
+                                  const next = padExtraDescriptions(urls, d.extraTitles)
+                                  const cur = { ...(next[idx] ?? emptyLocales()) }
+                                  cur[createCaptionLocale] = e.target.value
+                                  next[idx] = cur
+                                  return { ...d, extraTitles: next }
+                                })
+                              }
+                            />
+                            <Textarea
+                              rows={2}
+                              className="min-h-0 text-sm"
+                              placeholder="Meio / técnica"
+                              value={createDraft.extraCaptionMedia[idx]?.[createCaptionLocale] ?? ''}
+                              onChange={(e) =>
+                                setCreateDraft((d) => {
+                                  const urls = d.extra_images
+                                  const next = padExtraDescriptions(urls, d.extraCaptionMedia)
+                                  const cur = { ...(next[idx] ?? emptyLocales()) }
+                                  cur[createCaptionLocale] = e.target.value
+                                  next[idx] = cur
+                                  return { ...d, extraCaptionMedia: next }
+                                })
+                              }
+                            />
+                            <Textarea
+                              rows={2}
+                              className="min-h-0 text-sm"
+                              placeholder="Dimensões"
+                              value={
+                                createDraft.extraPhysicalDimensions[idx]?.[createCaptionLocale] ?? ''
+                              }
+                              onChange={(e) =>
+                                setCreateDraft((d) => {
+                                  const urls = d.extra_images
+                                  const next = padExtraDescriptions(
+                                    urls,
+                                    d.extraPhysicalDimensions
+                                  )
+                                  const cur = { ...(next[idx] ?? emptyLocales()) }
+                                  cur[createCaptionLocale] = e.target.value
+                                  next[idx] = cur
+                                  return { ...d, extraPhysicalDimensions: next }
+                                })
+                              }
+                            />
+                            <Textarea
+                              rows={3}
+                              className="min-h-0 text-sm"
+                              value={createDraft.extra_descriptions[idx]?.[createCaptionLocale] ?? ''}
+                              onChange={(e) =>
+                                setCreateDraft((d) => {
+                                  const next = [...d.extra_descriptions]
+                                  const cur = { ...(next[idx] ?? emptyLocales()) }
+                                  cur[createCaptionLocale] = e.target.value
+                                  next[idx] = cur
+                                  return { ...d, extra_descriptions: next }
+                                })
+                              }
+                            />
+                          </div>
                         ) : null}
                       </div>
                     ))}
@@ -1583,6 +1779,35 @@ export function AdminArtworksPage() {
                 }
               />
             </div>
+            <div className="grid gap-2">
+              <span className="text-sm leading-none font-medium">Meio / técnica</span>
+              <Textarea
+                rows={3}
+                value={form.captionMedium?.[editCaptionLocale] ?? ''}
+                onChange={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    captionMedium: { ...f.captionMedium, [editCaptionLocale]: e.target.value },
+                  }))
+                }
+              />
+            </div>
+            <div className="grid gap-2">
+              <span className="text-sm leading-none font-medium">Dimensões físicas</span>
+              <Textarea
+                rows={2}
+                value={form.physicalDimensions?.[editCaptionLocale] ?? ''}
+                onChange={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    physicalDimensions: {
+                      ...f.physicalDimensions,
+                      [editCaptionLocale]: e.target.value,
+                    },
+                  }))
+                }
+              />
+            </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="grid gap-4">
                 <Label htmlFor="edit-date">Data</Label>
@@ -1715,6 +1940,9 @@ export function AdminArtworksPage() {
                       group: null,
                       extra_images: [],
                       extra_descriptions: [],
+                      extraTitles: [],
+                      extraCaptionMedia: [],
+                      extraPhysicalDimensions: [],
                       groupDisplay: undefined,
                     }))
                   }
@@ -1784,6 +2012,13 @@ export function AdminArtworksPage() {
                                   extra_descriptions: (f.extra_descriptions ?? []).filter(
                                     (_, i) => i !== idx
                                   ),
+                                  extraTitles: (f.extraTitles ?? []).filter((_, i) => i !== idx),
+                                  extraCaptionMedia: (f.extraCaptionMedia ?? []).filter(
+                                    (_, i) => i !== idx
+                                  ),
+                                  extraPhysicalDimensions: (f.extraPhysicalDimensions ?? []).filter(
+                                    (_, i) => i !== idx
+                                  ),
                                 }))
                               }
                             >
@@ -1792,21 +2027,75 @@ export function AdminArtworksPage() {
                           </div>
                         </div>
                         {editShowPerImageCaptions ? (
-                          <Textarea
-                            rows={3}
-                            className="min-h-0 text-sm"
-                            value={(form.extra_descriptions ?? [])[idx]?.[editCaptionLocale] ?? ''}
-                            onChange={(e) =>
-                              setForm((f) => {
-                                const urls = f.extra_images ?? []
-                                const next = padExtraDescriptions(urls, f.extra_descriptions ?? [])
-                                const cur = { ...(next[idx] ?? emptyLocales()) }
-                                cur[editCaptionLocale] = e.target.value
-                                next[idx] = cur
-                                return { ...f, extra_descriptions: next }
-                              })
-                            }
-                          />
+                          <div className="flex min-w-0 flex-col gap-2">
+                            <Input
+                              className="text-sm"
+                              placeholder="Título"
+                              value={(form.extraTitles ?? [])[idx]?.[editCaptionLocale] ?? ''}
+                              onChange={(e) =>
+                                setForm((f) => {
+                                  const urls = f.extra_images ?? []
+                                  const next = padExtraDescriptions(urls, f.extraTitles ?? [])
+                                  const cur = { ...(next[idx] ?? emptyLocales()) }
+                                  cur[editCaptionLocale] = e.target.value
+                                  next[idx] = cur
+                                  return { ...f, extraTitles: next }
+                                })
+                              }
+                            />
+                            <Textarea
+                              rows={2}
+                              className="min-h-0 text-sm"
+                              placeholder="Meio / técnica"
+                              value={(form.extraCaptionMedia ?? [])[idx]?.[editCaptionLocale] ?? ''}
+                              onChange={(e) =>
+                                setForm((f) => {
+                                  const urls = f.extra_images ?? []
+                                  const next = padExtraDescriptions(urls, f.extraCaptionMedia ?? [])
+                                  const cur = { ...(next[idx] ?? emptyLocales()) }
+                                  cur[editCaptionLocale] = e.target.value
+                                  next[idx] = cur
+                                  return { ...f, extraCaptionMedia: next }
+                                })
+                              }
+                            />
+                            <Textarea
+                              rows={2}
+                              className="min-h-0 text-sm"
+                              placeholder="Dimensões"
+                              value={
+                                (form.extraPhysicalDimensions ?? [])[idx]?.[editCaptionLocale] ?? ''
+                              }
+                              onChange={(e) =>
+                                setForm((f) => {
+                                  const urls = f.extra_images ?? []
+                                  const next = padExtraDescriptions(
+                                    urls,
+                                    f.extraPhysicalDimensions ?? []
+                                  )
+                                  const cur = { ...(next[idx] ?? emptyLocales()) }
+                                  cur[editCaptionLocale] = e.target.value
+                                  next[idx] = cur
+                                  return { ...f, extraPhysicalDimensions: next }
+                                })
+                              }
+                            />
+                            <Textarea
+                              rows={3}
+                              className="min-h-0 text-sm"
+                              value={(form.extra_descriptions ?? [])[idx]?.[editCaptionLocale] ?? ''}
+                              onChange={(e) =>
+                                setForm((f) => {
+                                  const urls = f.extra_images ?? []
+                                  const next = padExtraDescriptions(urls, f.extra_descriptions ?? [])
+                                  const cur = { ...(next[idx] ?? emptyLocales()) }
+                                  cur[editCaptionLocale] = e.target.value
+                                  next[idx] = cur
+                                  return { ...f, extra_descriptions: next }
+                                })
+                              }
+                            />
+                          </div>
                         ) : null}
                       </div>
                     ))}

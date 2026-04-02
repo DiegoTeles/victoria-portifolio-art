@@ -24,14 +24,17 @@ export default async function handler(req, res) {
       const sql = getSql()
       await sql`
         INSERT INTO artworks (
-          id, order_index, title, artwork_date, description, image_url, video_url,
-          group_key, group_display, types, info, resolution, main_media_bytes, extra_images, extra_descriptions
+          id, order_index, title, artwork_date, description, caption_medium, physical_dimensions,
+          image_url, video_url, group_key, group_display, types, info, resolution, main_media_bytes,
+          extra_images, extra_descriptions, extra_titles, extra_caption_media, extra_physical_dimensions
         ) VALUES (
           ${p.id},
           ${p.order_index},
           ${p.title},
           ${p.artwork_date},
           ${JSON.stringify(p.description)}::jsonb,
+          ${JSON.stringify(p.caption_medium)}::jsonb,
+          ${JSON.stringify(p.physical_dimensions)}::jsonb,
           ${p.image_url},
           ${p.video_url},
           ${p.group_key},
@@ -41,7 +44,10 @@ export default async function handler(req, res) {
           ${p.resolution == null ? null : JSON.stringify(p.resolution)}::jsonb,
           ${p.main_media_bytes},
           ${JSON.stringify(p.extra_images)}::jsonb,
-          ${JSON.stringify(p.extra_descriptions)}::jsonb
+          ${JSON.stringify(p.extra_descriptions)}::jsonb,
+          ${JSON.stringify(p.extra_titles)}::jsonb,
+          ${JSON.stringify(p.extra_caption_media)}::jsonb,
+          ${JSON.stringify(p.extra_physical_dimensions)}::jsonb
         )
       `
       if (body.categoryAssignments !== undefined || body.categories !== undefined) {
@@ -54,8 +60,9 @@ export default async function handler(req, res) {
         }
       }
       const rows = await sql`
-        SELECT id, order_index, title, artwork_date, description, image_url, video_url,
-               group_key, group_display, types, info, resolution, main_media_bytes, extra_images, extra_descriptions
+        SELECT id, order_index, title, artwork_date, description, caption_medium, physical_dimensions,
+               image_url, video_url, group_key, group_display, types, info, resolution, main_media_bytes,
+               extra_images, extra_descriptions, extra_titles, extra_caption_media, extra_physical_dimensions
         FROM artworks WHERE id = ${p.id}
       `
       let cats = []

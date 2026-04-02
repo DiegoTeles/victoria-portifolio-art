@@ -23,6 +23,11 @@ function normalizeExtraDescriptions(raw, extraImagesCount) {
   return out
 }
 
+function normalizeLocalizedObject(raw) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {}
+  return { ...raw }
+}
+
 export function rowToArtwork(row, categoryAssignments) {
   const d = row.artwork_date
   const dateStr =
@@ -34,12 +39,20 @@ export function rowToArtwork(row, categoryAssignments) {
 
   const extra_images = normalizeExtraImages(row.extra_images)
   const extra_descriptions = normalizeExtraDescriptions(row.extra_descriptions, extra_images.length)
+  const extra_titles = normalizeExtraDescriptions(row.extra_titles, extra_images.length)
+  const extra_caption_media = normalizeExtraDescriptions(row.extra_caption_media, extra_images.length)
+  const extra_physical_dimensions = normalizeExtraDescriptions(
+    row.extra_physical_dimensions,
+    extra_images.length
+  )
   const base = {
     id: row.id,
     order_index: row.order_index,
     date: dateStr,
     title: row.title,
     description: row.description ?? {},
+    captionMedium: normalizeLocalizedObject(row.caption_medium),
+    physicalDimensions: normalizeLocalizedObject(row.physical_dimensions),
     image: row.image_url ?? undefined,
     video: row.video_url ?? undefined,
     resolution: row.resolution ?? undefined,
@@ -53,6 +66,9 @@ export function rowToArtwork(row, categoryAssignments) {
     info: row.info ?? undefined,
     extra_images,
     extra_descriptions,
+    extraTitles: extra_titles,
+    extraCaptionMedia: extra_caption_media,
+    extraPhysicalDimensions: extra_physical_dimensions,
   }
   if (categoryAssignments !== undefined) {
     base.categoryAssignments = categoryAssignments
@@ -85,6 +101,19 @@ export function bodyToInsertPayload(body) {
         : null
   const extra_images = normalizeExtraImages(body.extra_images)
   const extra_descriptions = normalizeExtraDescriptions(body.extra_descriptions, extra_images.length)
+  const caption_medium = normalizeLocalizedObject(body.captionMedium ?? body.caption_medium)
+  const physical_dimensions = normalizeLocalizedObject(
+    body.physicalDimensions ?? body.physical_dimensions
+  )
+  const extra_titles = normalizeExtraDescriptions(body.extraTitles ?? body.extra_titles, extra_images.length)
+  const extra_caption_media = normalizeExtraDescriptions(
+    body.extraCaptionMedia ?? body.extra_caption_media,
+    extra_images.length
+  )
+  const extra_physical_dimensions = normalizeExtraDescriptions(
+    body.extraPhysicalDimensions ?? body.extra_physical_dimensions,
+    extra_images.length
+  )
 
   return {
     id: String(body.id || '').trim(),
@@ -94,6 +123,8 @@ export function bodyToInsertPayload(body) {
     title: String(body.title ?? ''),
     artwork_date: String(body.date || body.artwork_date || '').slice(0, 10),
     description,
+    caption_medium,
+    physical_dimensions,
     image_url: body.image || body.image_url || null,
     video_url: body.video || body.video_url || null,
     group_key: body.group === undefined ? null : body.group,
@@ -104,5 +135,8 @@ export function bodyToInsertPayload(body) {
     main_media_bytes,
     extra_images,
     extra_descriptions,
+    extra_titles,
+    extra_caption_media,
+    extra_physical_dimensions,
   }
 }

@@ -34,6 +34,8 @@ export default async function handler(req, res) {
           title = ${p.title},
           artwork_date = ${p.artwork_date},
           description = ${JSON.stringify(p.description)}::jsonb,
+          caption_medium = ${JSON.stringify(p.caption_medium)}::jsonb,
+          physical_dimensions = ${JSON.stringify(p.physical_dimensions)}::jsonb,
           image_url = ${p.image_url},
           video_url = ${p.video_url},
           group_key = ${p.group_key},
@@ -44,6 +46,9 @@ export default async function handler(req, res) {
           main_media_bytes = ${p.main_media_bytes},
           extra_images = ${JSON.stringify(p.extra_images)}::jsonb,
           extra_descriptions = ${JSON.stringify(p.extra_descriptions)}::jsonb,
+          extra_titles = ${JSON.stringify(p.extra_titles)}::jsonb,
+          extra_caption_media = ${JSON.stringify(p.extra_caption_media)}::jsonb,
+          extra_physical_dimensions = ${JSON.stringify(p.extra_physical_dimensions)}::jsonb,
           updated_at = NOW()
         WHERE id = ${id}
       `
@@ -56,8 +61,9 @@ export default async function handler(req, res) {
         }
       }
       const rows = await sql`
-        SELECT id, order_index, title, artwork_date, description, image_url, video_url,
-               group_key, group_display, types, info, resolution, main_media_bytes, extra_images, extra_descriptions
+        SELECT id, order_index, title, artwork_date, description, caption_medium, physical_dimensions,
+               image_url, video_url, group_key, group_display, types, info, resolution, main_media_bytes,
+               extra_images, extra_descriptions, extra_titles, extra_caption_media, extra_physical_dimensions
         FROM artworks WHERE id = ${id}
       `
       let cats = []
