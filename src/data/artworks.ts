@@ -42,6 +42,7 @@ export interface Artwork {
   image?: string
   video?: string
   resolution?: ArtworkResolution
+  mainMediaBytes?: number
   group: string | null
   groupDisplay?: GroupDisplayType
   types: ArtworkType[]

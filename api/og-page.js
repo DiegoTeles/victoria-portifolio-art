@@ -31,7 +31,7 @@ async function findArtworkFromDb(imageId) {
       : imageId
   const rows = await sql`
     SELECT id, order_index, title, artwork_date, description, image_url, video_url,
-           group_key, group_display, types, info, resolution, extra_images, extra_descriptions
+           group_key, group_display, types, info, resolution, main_media_bytes, extra_images, extra_descriptions
     FROM artworks
     WHERE id = ${baseId}
     LIMIT 1

@@ -42,4 +42,5 @@ await applySqlFile(
   'db/migration-cms-relational.sql',
   'Migração CMS: categorias, subcategorias, artwork_categories, bio, currículo, redes.'
 )
+await applySqlFile('db/migration-main-media-bytes.sql', 'Coluna main_media_bytes em artworks.')
 console.log('Concluído.')

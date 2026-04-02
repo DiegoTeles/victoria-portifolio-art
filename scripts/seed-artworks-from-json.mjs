@@ -40,7 +40,7 @@ for (const item of items) {
   await sql`
     INSERT INTO artworks (
       id, order_index, title, artwork_date, description, image_url, video_url,
-      group_key, group_display, types, info, resolution, extra_images, extra_descriptions
+      group_key, group_display, types, info, resolution, main_media_bytes, extra_images, extra_descriptions
     ) VALUES (
       ${id},
       ${order_index},
@@ -54,6 +54,7 @@ for (const item of items) {
       ${JSON.stringify(types)}::jsonb,
       ${info == null ? null : JSON.stringify(info)}::jsonb,
       ${resolution == null ? null : JSON.stringify(resolution)}::jsonb,
+      null,
       ${JSON.stringify(extra_images)}::jsonb,
       ${JSON.stringify(extra_descriptions)}::jsonb
     )
@@ -69,6 +70,7 @@ for (const item of items) {
       types = EXCLUDED.types,
       info = EXCLUDED.info,
       resolution = EXCLUDED.resolution,
+      main_media_bytes = EXCLUDED.main_media_bytes,
       extra_images = EXCLUDED.extra_images,
       extra_descriptions = EXCLUDED.extra_descriptions,
       updated_at = NOW()

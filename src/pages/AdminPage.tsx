@@ -1,4 +1,5 @@
 import {
+  Fragment,
   useCallback,
   useEffect,
   useId,
@@ -32,7 +33,7 @@ import { ArtworkLazyImage } from '@/components/ArtworkLazyImage'
 import { ArtworkDateField } from '@/components/admin/ArtworkDateField'
 import { ADMIN_LOCALE_OPTIONS } from '@/components/admin/AdminLocaleTabs'
 import { CountryFlag } from 'react-country-flags-lazyload'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
 import type {
   Artwork,
   ArtworkCategoryAssignment,
@@ -43,6 +44,7 @@ import type { Locale } from '../data/artworks'
 import { getLocalized } from '../data/artworks'
 import { cn } from '@/lib/utils'
 import { getArtworkImageSrc } from '@/lib/artworkImageUrl'
+import { measureMainMediaFile } from '@/utils/measureMediaFile'
 
 const selectTriggerClass =
   'border-input bg-background flex h-9 w-full rounded-md border px-3 py-1 text-base shadow-xs outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm'
@@ -145,6 +147,8 @@ type CreateDraft = {
   date: string
   description: LocalizedText
   image: string
+  resolution?: Artwork['resolution']
+  mainMediaBytes?: number
   hasGroup: boolean
   group: string
   groupDisplay: GroupDisplayType | undefined
@@ -157,6 +161,8 @@ const emptyCreate = (): CreateDraft => ({
   date: new Date().toISOString().slice(0, 10),
   description: { 'pt-Br': '', en: '', fr: '', it: '', de: '' },
   image: '',
+  resolution: undefined,
+  mainMediaBytes: undefined,
   hasGroup: false,
   group: '',
   groupDisplay: undefined,
@@ -175,7 +181,95 @@ function revokePendingList(list: PendingExtra[]) {
 function formatResolution(a: Artwork): string {
   const r = a.resolution
   if (!r?.width || !r?.height) return '—'
-  return `${r.width}×${r.height}`
+  const mp =
+    r.megapixels != null && Number.isFinite(r.megapixels)
+      ? ` (${r.megapixels} MP)`
+      : ''
+  return `${r.width}×${r.height}${mp}`
+}
+
+function formatMegabytes(bytes: number | null | undefined): string {
+  if (bytes == null || !Number.isFinite(bytes) || bytes < 0) return '—'
+  const mb = bytes / (1024 * 1024)
+  if (mb < 0.01 && bytes > 0) return '<0,01 MB'
+  return `${mb.toFixed(2).replace('.', ',')} MB`
+}
+
+const ADMIN_TABLE_COL_COUNT = 11
+
+function artworkHasMultipleImages(a: Artwork): boolean {
+  return (a.extra_images?.length ?? 0) > 0
+}
+
+function groupColumnLabel(a: Artwork): string {
+  const n = 1 + (a.extra_images?.length ?? 0)
+  const g = a.group?.trim()
+  if ((a.extra_images?.length ?? 0) === 0) return g || '—'
+  return g || `${n} imagens`
+}
+
+type AdminGroupImageRow = {
+  key: string
+  role: string
+  url: string
+  isVideo: boolean
+  resolution: string
+  sizeLabel: string
+  caption: string
+}
+
+function buildAdminGroupImageRows(a: Artwork): AdminGroupImageRow[] {
+  const rows: AdminGroupImageRow[] = []
+  const extras = a.extra_images ?? []
+  const eds = a.extra_descriptions ?? []
+  if (a.image || a.video) {
+    rows.push({
+      key: `${a.id}__main`,
+      role: 'Principal',
+      url: (a.image || a.video) as string,
+      isVideo: Boolean(a.video && !a.image),
+      resolution: formatResolution(a),
+      sizeLabel: formatMegabytes(a.mainMediaBytes),
+      caption: captionPreview(a),
+    })
+  }
+  for (let i = 0; i < extras.length; i++) {
+    const url = extras[i]!
+    const cap = getLocalized(eds[i], 'pt-Br').trim() || '—'
+    rows.push({
+      key: `${a.id}__extra_${i}`,
+      role: `Extra ${i + 1}`,
+      url,
+      isVideo: false,
+      resolution: '—',
+      sizeLabel: '—',
+      caption: cap,
+    })
+  }
+  return rows
+}
+
+function formatCategorySubColumns(
+  a: Artwork,
+  categories: AdminCategoryRow[],
+  subsCache: Record<string, AdminSubRow[]>
+): { cat: string; sub: string } {
+  const assigns = a.categoryAssignments ?? []
+  if (!assigns.length) return { cat: '—', sub: '—' }
+  const catParts: string[] = []
+  const subParts: string[] = []
+  for (const as of assigns) {
+    const c = categories.find((x) => x.id === as.categoryId)
+    catParts.push(c ? catLabel(c) : as.categoryId || '—')
+    if (!as.subcategoryId) {
+      subParts.push('—')
+    } else {
+      const subs = subsCache[as.categoryId] ?? []
+      const s = subs.find((x) => x.id === as.subcategoryId)
+      subParts.push(s ? subLabel(s) : as.subcategoryId)
+    }
+  }
+  return { cat: catParts.join('; '), sub: subParts.join('; ') }
 }
 
 function captionPreview(a: Artwork): string {
@@ -286,6 +380,7 @@ export function AdminArtworksPage() {
   const [subsCache, setSubsCache] = useState<Record<string, AdminSubRow[]>>({})
   const [createCategoryAssignments, setCreateCategoryAssignments] = useState<ArtworkCategoryAssignment[]>([])
   const [editCategoryAssignments, setEditCategoryAssignments] = useState<ArtworkCategoryAssignment[]>([])
+  const [openGroupAccordions, setOpenGroupAccordions] = useState<Record<string, boolean>>({})
 
   const refreshList = useCallback(async () => {
     setLoading(true)
@@ -323,6 +418,16 @@ export function AdminArtworksPage() {
     setSubsCache((prev) => ({ ...prev, [categoryId]: Array.isArray(data) ? data : [] }))
   }, [subsCache])
 
+  useEffect(() => {
+    const ids = new Set<string>()
+    for (const art of list) {
+      for (const row of art.categoryAssignments ?? []) {
+        if (row.categoryId) ids.add(row.categoryId)
+      }
+    }
+    for (const cid of ids) void ensureSubs(cid)
+  }, [list, ensureSubs])
+
   const openCreate = () => {
     setCreatePendingExtras((prev) => {
       revokePendingList(prev)
@@ -349,6 +454,12 @@ export function AdminArtworksPage() {
     if (target === 'create') setCreateMainUploading(true)
     else setEditMainUploading(true)
     const pathname = `portfolio/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`
+    let measured: Awaited<ReturnType<typeof measureMainMediaFile>> = null
+    try {
+      measured = await measureMainMediaFile(file)
+    } catch {
+      measured = null
+    }
     try {
       const blob = await upload(pathname, file, {
         access: 'private',
@@ -356,9 +467,20 @@ export function AdminArtworksPage() {
         multipart: file.size > 4 * 1024 * 1024,
       })
       if (target === 'create') {
-        setCreateDraft((d) => ({ ...d, image: blob.url }))
+        setCreateDraft((d) => ({
+          ...d,
+          image: blob.url,
+          resolution: measured ?? undefined,
+          mainMediaBytes: file.size,
+        }))
       } else {
-        setForm((f) => ({ ...f, image: blob.url }))
+        setForm((f) => ({
+          ...f,
+          image: blob.url,
+          video: '',
+          resolution: measured ?? undefined,
+          mainMediaBytes: file.size,
+        }))
       }
       toast.update(tid, {
         render: 'Imagem enviada.',
@@ -486,6 +608,8 @@ export function AdminArtworksPage() {
           ? padExtraDescriptions(createDraft.extra_images, createDraft.extra_descriptions)
           : [],
         categoryAssignments: createCategoryAssignments.filter((x) => x.categoryId.trim()),
+        resolution: createDraft.resolution,
+        mainMediaBytes: createDraft.mainMediaBytes,
       }
       const r = await fetch('/api/admin/artworks', {
         method: 'POST',
@@ -533,6 +657,7 @@ export function AdminArtworksPage() {
       types: [...a.types],
       info: a.info ?? undefined,
       resolution: a.resolution,
+      mainMediaBytes: a.mainMediaBytes,
       extra_images: [...(a.extra_images ?? [])],
       extra_descriptions: padExtraDescriptions(a.extra_images ?? [], a.extra_descriptions ?? []),
     })
@@ -585,6 +710,7 @@ export function AdminArtworksPage() {
         types: form.types,
         info: form.info,
         resolution: form.resolution,
+        mainMediaBytes: form.mainMediaBytes,
         extra_images: editHasGroup ? (form.extra_images ?? []) : [],
         extra_descriptions: editHasGroup
           ? padExtraDescriptions(form.extra_images ?? [], form.extra_descriptions ?? [])
@@ -709,9 +835,14 @@ export function AdminArtworksPage() {
           <Table aria-busy="true">
             <TableHeader>
               <TableRow>
+                <TableHead className="w-10 px-1" aria-label="Expandir grupo" />
                 <TableHead className="w-[72px]">Imagem</TableHead>
                 <TableHead>Título</TableHead>
-                <TableHead>Resolução</TableHead>
+                <TableHead>Grupo</TableHead>
+                <TableHead className="whitespace-nowrap">Resolução</TableHead>
+                <TableHead className="whitespace-nowrap">Tamanho</TableHead>
+                <TableHead>Categoria</TableHead>
+                <TableHead>Subcategoria</TableHead>
                 <TableHead>Ano</TableHead>
                 <TableHead className="max-w-[min(280px,28vw)]">Legenda</TableHead>
                 <TableHead className="w-[1%] text-right whitespace-nowrap">Ações</TableHead>
@@ -720,6 +851,9 @@ export function AdminArtworksPage() {
             <TableBody>
               {Array.from({ length: 8 }, (_, i) => (
                 <TableRow key={i}>
+                  <TableCell className="w-10 p-1">
+                    <Skeleton className="mx-auto size-8 rounded-md" />
+                  </TableCell>
                   <TableCell>
                     <Skeleton className="size-14 shrink-0 rounded-md" />
                   </TableCell>
@@ -727,7 +861,19 @@ export function AdminArtworksPage() {
                     <Skeleton className="h-4 w-32" />
                   </TableCell>
                   <TableCell>
-                    <Skeleton className="h-4 w-16" />
+                    <Skeleton className="h-4 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-14" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-28" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-28" />
                   </TableCell>
                   <TableCell>
                     <Skeleton className="h-4 w-10" />
@@ -750,60 +896,178 @@ export function AdminArtworksPage() {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-10 px-1" aria-label="Expandir grupo" />
                 <TableHead className="w-[72px]">Imagem</TableHead>
                 <TableHead>Título</TableHead>
-                <TableHead>Resolução</TableHead>
+                <TableHead>Grupo</TableHead>
+                <TableHead className="whitespace-nowrap">Resolução</TableHead>
+                <TableHead className="whitespace-nowrap">Tamanho</TableHead>
+                <TableHead>Categoria</TableHead>
+                <TableHead>Subcategoria</TableHead>
                 <TableHead>Ano</TableHead>
                 <TableHead className="max-w-[min(280px,28vw)]">Legenda</TableHead>
                 <TableHead className="w-[1%] text-right whitespace-nowrap">Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {list.map((a) => (
-                <TableRow key={a.id}>
-                  <TableCell className="w-[72px]">
-                    {a.image ? (
-                      <span className="relative block size-14 shrink-0">
-                        <ArtworkLazyImage
-                          className="border-border size-14 rounded object-cover"
-                          skeletonClassName="pointer-events-none absolute inset-0 z-[1] size-full rounded-md"
-                          src={getArtworkImageSrc(a)}
-                          alt=""
-                          width={56}
-                          height={56}
-                          loading="lazy"
-                        />
-                      </span>
-                    ) : (
-                      <span
-                        className="border-border bg-muted block size-14 rounded border"
-                        aria-hidden
-                      />
-                    )}
-                  </TableCell>
-                  <TableCell className="max-w-[220px] font-medium">{a.title || a.id}</TableCell>
-                  <TableCell>{formatResolution(a)}</TableCell>
-                  <TableCell>{a.date.slice(0, 4)}</TableCell>
-                  <TableCell className="text-muted-foreground max-w-[min(280px,28vw)] truncate whitespace-nowrap">
-                    {captionPreview(a)}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex flex-wrap justify-end gap-2">
-                      <Button type="button" variant="outline" size="sm" onClick={() => openEdit(a)}>
-                        Editar
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => void remove(a.id)}
-                      >
-                        Excluir
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {list.map((a) => {
+                const { cat, sub } = formatCategorySubColumns(a, adminCategories, subsCache)
+                const multi = artworkHasMultipleImages(a)
+                const expanded = openGroupAccordions[a.id] ?? false
+                const groupRows = multi ? buildAdminGroupImageRows(a) : []
+                return (
+                  <Fragment key={a.id}>
+                    <TableRow className={cn(multi && expanded && 'bg-muted/25')}>
+                      <TableCell className="w-10 p-1 align-middle">
+                        {multi ? (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="text-muted-foreground size-8 shrink-0"
+                            aria-expanded={expanded}
+                            aria-controls={`admin-group-detail-${a.id}`}
+                            id={`admin-group-trigger-${a.id}`}
+                            onClick={() =>
+                              setOpenGroupAccordions((prev) => ({
+                                ...prev,
+                                [a.id]: !prev[a.id],
+                              }))
+                            }
+                          >
+                            <ChevronDown
+                              className={cn('size-4 transition-transform', expanded && 'rotate-180')}
+                              aria-hidden
+                            />
+                          </Button>
+                        ) : null}
+                      </TableCell>
+                      <TableCell className="w-[72px]">
+                        {a.image ? (
+                          <span className="relative block size-14 shrink-0">
+                            <ArtworkLazyImage
+                              className="border-border size-14 rounded object-cover"
+                              skeletonClassName="pointer-events-none absolute inset-0 z-[1] size-full rounded-md"
+                              src={getArtworkImageSrc(a)}
+                              alt=""
+                              width={56}
+                              height={56}
+                              loading="lazy"
+                            />
+                          </span>
+                        ) : a.video ? (
+                          <span className="text-muted-foreground flex size-14 items-center justify-center rounded border text-[10px]">
+                            vídeo
+                          </span>
+                        ) : (
+                          <span
+                            className="border-border bg-muted block size-14 rounded border"
+                            aria-hidden
+                          />
+                        )}
+                      </TableCell>
+                      <TableCell className="max-w-[220px] font-medium">{a.title || a.id}</TableCell>
+                      <TableCell className="max-w-[min(160px,20vw)] text-sm break-words">
+                        {groupColumnLabel(a)}
+                      </TableCell>
+                      <TableCell className="max-w-[140px] text-sm whitespace-normal">
+                        {formatResolution(a)}
+                      </TableCell>
+                      <TableCell className="text-sm tabular-nums whitespace-nowrap">
+                        {formatMegabytes(a.mainMediaBytes)}
+                      </TableCell>
+                      <TableCell className="max-w-[min(200px,22vw)] text-sm break-words">
+                        {cat}
+                      </TableCell>
+                      <TableCell className="max-w-[min(200px,22vw)] text-sm break-words">
+                        {sub}
+                      </TableCell>
+                      <TableCell>{a.date.slice(0, 4)}</TableCell>
+                      <TableCell className="text-muted-foreground max-w-[min(280px,28vw)] truncate whitespace-nowrap">
+                        {captionPreview(a)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex flex-wrap justify-end gap-2">
+                          <Button type="button" variant="outline" size="sm" onClick={() => openEdit(a)}>
+                            Editar
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => void remove(a.id)}
+                          >
+                            Excluir
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                    {multi && expanded ? (
+                      <TableRow className="bg-muted/15 hover:bg-muted/15">
+                        <TableCell colSpan={ADMIN_TABLE_COL_COUNT} className="p-0 sm:p-2">
+                          <div
+                            id={`admin-group-detail-${a.id}`}
+                            role="region"
+                            aria-labelledby={`admin-group-trigger-${a.id}`}
+                            className="border-border mx-2 my-2 overflow-x-auto rounded-md border"
+                          >
+                            <Table>
+                              <TableHeader>
+                                <TableRow>
+                                  <TableHead className="w-[100px]">Papel</TableHead>
+                                  <TableHead className="w-[72px]">Imagem</TableHead>
+                                  <TableHead className="whitespace-nowrap">Resolução</TableHead>
+                                  <TableHead className="whitespace-nowrap">Tamanho</TableHead>
+                                  <TableHead className="min-w-[200px]">Legenda (pt-BR)</TableHead>
+                                  <TableHead className="min-w-[180px]">URL</TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                {groupRows.map((row) => (
+                                  <TableRow key={row.key}>
+                                    <TableCell className="text-sm font-medium">{row.role}</TableCell>
+                                    <TableCell>
+                                      {row.isVideo ? (
+                                        <span className="text-muted-foreground flex size-12 items-center justify-center rounded border text-[9px]">
+                                          vídeo
+                                        </span>
+                                      ) : (
+                                        <span className="relative block size-12 shrink-0">
+                                          <ArtworkLazyImage
+                                            className="border-border size-12 rounded object-cover"
+                                            skeletonClassName="pointer-events-none absolute inset-0 z-[1] size-full rounded-md"
+                                            src={getArtworkImageSrc({ image: row.url })}
+                                            alt=""
+                                            width={48}
+                                            height={48}
+                                            loading="lazy"
+                                          />
+                                        </span>
+                                      )}
+                                    </TableCell>
+                                    <TableCell className="text-sm whitespace-normal">
+                                      {row.resolution}
+                                    </TableCell>
+                                    <TableCell className="text-sm tabular-nums whitespace-nowrap">
+                                      {row.sizeLabel}
+                                    </TableCell>
+                                    <TableCell className="text-muted-foreground max-w-[min(360px,40vw)] text-sm break-words">
+                                      {row.caption}
+                                    </TableCell>
+                                    <TableCell className="text-muted-foreground max-w-[min(280px,32vw)] font-mono text-xs break-all">
+                                      {row.url}
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ) : null}
+                  </Fragment>
+                )
+              })}
             </TableBody>
           </Table>
         ) : null}

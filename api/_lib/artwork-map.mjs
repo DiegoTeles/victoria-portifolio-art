@@ -43,6 +43,10 @@ export function rowToArtwork(row, categoryAssignments) {
     image: row.image_url ?? undefined,
     video: row.video_url ?? undefined,
     resolution: row.resolution ?? undefined,
+    mainMediaBytes:
+      row.main_media_bytes != null && Number.isFinite(Number(row.main_media_bytes))
+        ? Number(row.main_media_bytes)
+        : undefined,
     group: row.group_key ?? null,
     groupDisplay: row.group_display ?? undefined,
     types: normalizeTypes(row.types),
@@ -72,6 +76,13 @@ export function bodyToInsertPayload(body) {
       : typeof body.resolution === 'object'
         ? body.resolution
         : null
+  const rawBytes = body.mainMediaBytes ?? body.main_media_bytes
+  const main_media_bytes =
+    rawBytes == null || rawBytes === ''
+      ? null
+      : Number.isFinite(Number(rawBytes))
+        ? Math.max(0, Math.floor(Number(rawBytes)))
+        : null
   const extra_images = normalizeExtraImages(body.extra_images)
   const extra_descriptions = normalizeExtraDescriptions(body.extra_descriptions, extra_images.length)
 
@@ -90,6 +101,7 @@ export function bodyToInsertPayload(body) {
     types,
     info,
     resolution,
+    main_media_bytes,
     extra_images,
     extra_descriptions,
   }
