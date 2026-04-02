@@ -251,6 +251,11 @@ function groupColumnLabel(a: Artwork): string {
   return g || `${n} imagens`
 }
 
+function artworkMediaFileCount(a: Artwork): number {
+  const main = a.image?.trim() || a.video?.trim() ? 1 : 0
+  return main + (a.extra_images?.length ?? 0)
+}
+
 type AdminGroupImageRow = {
   key: string
   imageUrl: string
@@ -457,6 +462,8 @@ export function AdminArtworksPage() {
   const [createCategoryAssignments, setCreateCategoryAssignments] = useState<ArtworkCategoryAssignment[]>([])
   const [editCategoryAssignments, setEditCategoryAssignments] = useState<ArtworkCategoryAssignment[]>([])
   const [openGroupAccordions, setOpenGroupAccordions] = useState<Record<string, boolean>>({})
+  const [deleteTarget, setDeleteTarget] = useState<Artwork | null>(null)
+  const [deletePending, setDeletePending] = useState(false)
 
   const refreshList = useCallback(async () => {
     setLoading(true)
@@ -882,20 +889,27 @@ export function AdminArtworksPage() {
     }
   }
 
-  const remove = async (id: string) => {
-    if (!window.confirm('Apagar esta obra?')) return
-    const r = await fetch(`/api/admin/artworks/${encodeURIComponent(id)}`, {
-      method: 'DELETE',
-      credentials: 'include',
-    })
-    if (r.ok) {
-      setList((prev) => prev.filter((x) => x.id !== id))
-      toast.success('Removido.')
-      if (editingId === id) closeEdit()
-      void refreshList()
-    } else {
-      const err = await r.json().catch(() => ({}))
-      toast.error((err as { error?: string }).error || 'Erro ao apagar')
+  const confirmDeleteArtwork = async () => {
+    if (!deleteTarget) return
+    const id = deleteTarget.id
+    setDeletePending(true)
+    try {
+      const r = await fetch(`/api/admin/artworks/${encodeURIComponent(id)}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      })
+      if (r.ok) {
+        setList((prev) => prev.filter((x) => x.id !== id))
+        toast.success('Obra e mídias removidas.')
+        if (editingId === id) closeEdit()
+        setDeleteTarget(null)
+        void refreshList()
+      } else {
+        const err = await r.json().catch(() => ({}))
+        toast.error((err as { error?: string }).error || 'Erro ao apagar')
+      }
+    } finally {
+      setDeletePending(false)
     }
   }
 
@@ -972,22 +986,35 @@ export function AdminArtworksPage() {
           </Button>
         </div>
       </div>
-      <div className="admin-table-wrap border-border bg-card rounded-lg border">
+      <div className="admin-table-wrap border-border bg-card rounded-lg border [&_table]:border-collapse [&_td]:text-left [&_th]:text-left">
         {loading ? (
-          <Table aria-busy="true">
+          <Table aria-busy="true" className="table-fixed">
+            <colgroup>
+              <col style={{ width: 40 }} />
+              <col style={{ width: 72 }} />
+              <col style={{ width: '11%' }} />
+              <col style={{ width: '17%' }} />
+              <col style={{ width: '9%' }} />
+              <col style={{ width: '11%' }} />
+              <col style={{ width: '11%' }} />
+              <col style={{ width: 52 }} />
+              <col style={{ width: '11%' }} />
+              <col style={{ width: '10%' }} />
+              <col style={{ width: 92 }} />
+            </colgroup>
             <TableHeader>
               <TableRow>
                 <TableHead className="w-10 px-1" aria-label="Expandir grupo" />
-                <TableHead className="w-[72px]"></TableHead>
+                <TableHead className="w-[72px]">Imagem</TableHead>
                 <TableHead>Título</TableHead>
-                <TableHead className="max-w-[min(280px,28vw)]">Legenda</TableHead>
+                <TableHead>Legenda</TableHead>
                 <TableHead>Grupo</TableHead>
                 <TableHead>Categoria</TableHead>
                 <TableHead>Subcategoria</TableHead>
                 <TableHead>Ano</TableHead>
-                <TableHead className="max-w-[min(200px,22vw)]">Dimensões</TableHead>
-                <TableHead className="whitespace-nowrap">Resolução</TableHead>
-                <TableHead className="w-[1%] text-right whitespace-nowrap">Ações</TableHead>
+                <TableHead>Dimensões</TableHead>
+                <TableHead>Resolução</TableHead>
+                <TableHead className="text-right whitespace-nowrap">Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -996,34 +1023,34 @@ export function AdminArtworksPage() {
                   <TableCell className="w-10 p-1">
                     <Skeleton className="mx-auto size-8 rounded-md" />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="w-[72px] min-w-0">
                     <Skeleton className="size-14 shrink-0 rounded-md" />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="min-w-0 whitespace-normal break-words">
                     <Skeleton className="h-4 w-32" />
                   </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-4 w-48 max-w-[min(280px,28vw)]" />
+                  <TableCell className="min-w-0 whitespace-normal break-words">
+                    <Skeleton className="h-4 w-full max-w-full" />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="min-w-0 whitespace-normal break-words">
                     <Skeleton className="h-4 w-24" />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="min-w-0 whitespace-normal break-words">
                     <Skeleton className="h-4 w-28" />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="min-w-0 whitespace-normal break-words">
                     <Skeleton className="h-4 w-28" />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="min-w-0 tabular-nums">
                     <Skeleton className="h-4 w-10" />
                   </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-4 w-24 max-w-[min(200px,22vw)]" />
+                  <TableCell className="min-w-0 whitespace-normal break-words">
+                    <Skeleton className="h-4 w-full max-w-full" />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="min-w-0 whitespace-normal break-words">
                     <Skeleton className="h-4 w-24" />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="whitespace-nowrap text-right">
                     <div className="flex justify-end gap-1.5">
                       <Skeleton className="size-9 shrink-0 rounded-full" />
                       <Skeleton className="size-9 shrink-0 rounded-full" />
@@ -1035,20 +1062,33 @@ export function AdminArtworksPage() {
           </Table>
         ) : null}
         {!loading && list.length > 0 ? (
-          <Table>
+          <Table className="table-fixed">
+            <colgroup>
+              <col style={{ width: 40 }} />
+              <col style={{ width: 72 }} />
+              <col style={{ width: '11%' }} />
+              <col style={{ width: '17%' }} />
+              <col style={{ width: '9%' }} />
+              <col style={{ width: '11%' }} />
+              <col style={{ width: '11%' }} />
+              <col style={{ width: 52 }} />
+              <col style={{ width: '11%' }} />
+              <col style={{ width: '10%' }} />
+              <col style={{ width: 92 }} />
+            </colgroup>
             <TableHeader>
               <TableRow>
                 <TableHead className="w-10 px-1" aria-label="Expandir grupo" />
-                <TableHead className="w-[72px]"></TableHead>
+                <TableHead className="w-[72px]">Imagem</TableHead>
                 <TableHead>Título</TableHead>
-                <TableHead className="max-w-[min(280px,28vw)]">Legenda</TableHead>
+                <TableHead>Legenda</TableHead>
                 <TableHead>Grupo</TableHead>
                 <TableHead>Categoria</TableHead>
                 <TableHead>Subcategoria</TableHead>
                 <TableHead>Ano</TableHead>
-                <TableHead className="max-w-[min(200px,22vw)]">Dimensões</TableHead>
-                <TableHead className="whitespace-nowrap">Resolução</TableHead>
-                <TableHead className="w-[1%] text-right whitespace-nowrap">Ações</TableHead>
+                <TableHead>Dimensões</TableHead>
+                <TableHead>Resolução</TableHead>
+                <TableHead className="text-right whitespace-nowrap">Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -1084,7 +1124,7 @@ export function AdminArtworksPage() {
                           </Button>
                         ) : null}
                       </TableCell>
-                      <TableCell className="w-[72px]">
+                      <TableCell className="w-[72px] min-w-0">
                         {a.image ? (
                           <span className="relative block size-14 shrink-0">
                             <ArtworkLazyImage
@@ -1108,27 +1148,29 @@ export function AdminArtworksPage() {
                           />
                         )}
                       </TableCell>
-                      <TableCell className="max-w-[220px] font-medium">{a.title || a.id}</TableCell>
-                      <TableCell className="text-muted-foreground max-w-[min(280px,28vw)] text-sm break-words">
+                      <TableCell className="min-w-0 whitespace-normal break-words font-medium">
+                        {a.title || a.id}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground min-w-0 whitespace-normal break-words text-sm">
                         {adminMediumColumn(a)}
                       </TableCell>
-                      <TableCell className="max-w-[min(160px,20vw)] text-sm break-words">
+                      <TableCell className="min-w-0 whitespace-normal break-words text-sm">
                         {groupColumnLabel(a)}
                       </TableCell>
-                      <TableCell className="max-w-[min(200px,22vw)] text-sm break-words">
+                      <TableCell className="min-w-0 whitespace-normal break-words text-sm">
                         {cat}
                       </TableCell>
-                      <TableCell className="max-w-[min(200px,22vw)] text-sm break-words">
+                      <TableCell className="min-w-0 whitespace-normal break-words text-sm">
                         {sub}
                       </TableCell>
-                      <TableCell>{a.date.slice(0, 4)}</TableCell>
-                      <TableCell className="text-muted-foreground max-w-[min(200px,22vw)] text-sm break-words">
+                      <TableCell className="min-w-0 tabular-nums">{a.date.slice(0, 4)}</TableCell>
+                      <TableCell className="text-muted-foreground min-w-0 whitespace-normal break-words text-sm">
                         {adminDimensionsColumn(a)}
                       </TableCell>
-                      <TableCell className="max-w-[140px] text-sm whitespace-normal">
+                      <TableCell className="min-w-0 whitespace-normal break-words text-sm">
                         {formatResolution(a)}
                       </TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="whitespace-nowrap text-right align-middle">
                         <div className="flex justify-end gap-1.5">
                           <Button
                             type="button"
@@ -1150,7 +1192,7 @@ export function AdminArtworksPage() {
                             aria-label="Excluir"
                             data-tooltip-id={rowActionsTooltipId}
                             data-tooltip-content="Excluir"
-                            onClick={() => void remove(a.id)}
+                            onClick={() => setDeleteTarget(a)}
                           >
                             <Trash2 className="size-4" aria-hidden />
                           </Button>
@@ -1166,21 +1208,29 @@ export function AdminArtworksPage() {
                             aria-labelledby={`admin-group-trigger-${a.id}`}
                             className="border-border mx-2 my-2 overflow-x-auto rounded-md border"
                           >
-                            <Table>
+                            <Table className="table-fixed min-w-[640px]">
+                              <colgroup>
+                                <col style={{ width: 56 }} />
+                                <col style={{ width: '15%' }} />
+                                <col style={{ width: '32%' }} />
+                                <col style={{ width: 56 }} />
+                                <col style={{ width: '19%' }} />
+                                <col style={{ width: '19%' }} />
+                              </colgroup>
                               <TableHeader>
                                 <TableRow>
-                                  <TableHead className="w-[72px]"></TableHead>
-                                  <TableHead className="min-w-[120px]">Título</TableHead>
-                                  <TableHead className="min-w-[160px]">Legenda</TableHead>
-                                  <TableHead className="w-14">Ano</TableHead>
-                                  <TableHead className="min-w-[120px]">Dimensões</TableHead>
-                                  <TableHead className="whitespace-nowrap">Resolução</TableHead>
+                                  <TableHead className="w-14">Imagem</TableHead>
+                                  <TableHead>Título</TableHead>
+                                  <TableHead>Legenda</TableHead>
+                                  <TableHead>Ano</TableHead>
+                                  <TableHead>Dimensões</TableHead>
+                                  <TableHead>Resolução</TableHead>
                                 </TableRow>
                               </TableHeader>
                               <TableBody>
                                 {groupRows.map((row) => (
                                   <TableRow key={row.key}>
-                                    <TableCell className="w-[72px]">
+                                    <TableCell className="w-14 min-w-0 align-middle">
                                       {row.isVideo ? (
                                         <span className="text-muted-foreground flex size-12 items-center justify-center rounded border text-[9px]">
                                           vídeo
@@ -1199,17 +1249,19 @@ export function AdminArtworksPage() {
                                         </span>
                                       )}
                                     </TableCell>
-                                    <TableCell className="max-w-[min(200px,24vw)] text-sm font-medium break-words">
+                                    <TableCell className="min-w-0 whitespace-normal break-words text-sm font-medium">
                                       {row.imageTitle}
                                     </TableCell>
-                                    <TableCell className="text-muted-foreground max-w-[min(320px,36vw)] text-sm break-words">
+                                    <TableCell className="text-muted-foreground min-w-0 whitespace-normal break-words text-sm">
                                       {row.legenda}
                                     </TableCell>
-                                    <TableCell className="text-sm tabular-nums">{row.year}</TableCell>
-                                    <TableCell className="text-muted-foreground max-w-[min(200px,28vw)] text-sm break-words">
+                                    <TableCell className="min-w-0 whitespace-normal break-words text-sm tabular-nums">
+                                      {row.year}
+                                    </TableCell>
+                                    <TableCell className="text-muted-foreground min-w-0 whitespace-normal break-words text-sm">
                                       {row.dimensions}
                                     </TableCell>
-                                    <TableCell className="text-sm whitespace-normal">
+                                    <TableCell className="min-w-0 whitespace-normal break-words text-sm">
                                       {row.resolution}
                                     </TableCell>
                                   </TableRow>
@@ -1239,6 +1291,65 @@ export function AdminArtworksPage() {
         delayShow={ROW_ACTIONS_TOOLTIP_DELAY_SHOW}
         delayHide={ROW_ACTIONS_TOOLTIP_DELAY_HIDE}
       />
+
+      <Dialog
+        open={deleteTarget != null}
+        onOpenChange={(open) => {
+          if (!open && !deletePending) setDeleteTarget(null)
+        }}
+      >
+        <DialogContent showCloseButton={!deletePending} className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Excluir obra e todas as mídias</DialogTitle>
+          </DialogHeader>
+          {deleteTarget ? (
+            <div className="text-muted-foreground space-y-3 text-sm">
+              <p>Esta ação não pode ser desfeita.</p>
+              <ul className="list-disc space-y-2 pl-4">
+                <li>
+                  Serão eliminados{' '}
+                  <strong className="text-foreground">{artworkMediaFileCount(deleteTarget)}</strong> ficheiro(s)
+                  de mídia (principal e extras) no armazenamento e na base de dados.
+                </li>
+                <li>
+                  Grupo (chave):{' '}
+                  <strong className="text-foreground">
+                    {deleteTarget.group?.trim() || '— (nenhuma; só esta obra)'}
+                  </strong>
+                </li>
+                <li>
+                  Rótulo na tabela:{' '}
+                  <strong className="text-foreground">{groupColumnLabel(deleteTarget)}</strong>
+                </li>
+                <li>
+                  Título:{' '}
+                  <strong className="text-foreground">
+                    {deleteTarget.title?.trim() || deleteTarget.id}
+                  </strong>
+                </li>
+              </ul>
+            </div>
+          ) : null}
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button
+              type="button"
+              variant="outline"
+              disabled={deletePending}
+              onClick={() => setDeleteTarget(null)}
+            >
+              Cancelar
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              disabled={deletePending}
+              onClick={() => void confirmDeleteArtwork()}
+            >
+              {deletePending ? 'A apagar…' : 'Excluir tudo'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <Dialog
         open={createOpen}

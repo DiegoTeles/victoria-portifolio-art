@@ -1,6 +1,7 @@
 import { getSql, hasDatabase } from '../../_lib/db.mjs'
 import { requireAdmin } from '../../_lib/require-admin.mjs'
 import { bodyToInsertPayload, rowToArtwork } from '../../_lib/artwork-map.mjs'
+import { deleteArtworkBlobsFromRow } from '../../_lib/delete-artwork-blobs.mjs'
 import {
   validateAndSyncArtworkCategories,
   loadCategoriesForArtwork,
@@ -87,6 +88,22 @@ export default async function handler(req, res) {
   if (req.method === 'DELETE') {
     try {
       const sql = getSql()
+      const rows = await sql`
+        SELECT image_url, video_url, extra_images
+        FROM artworks WHERE id = ${id} LIMIT 1
+      `
+      if (!rows.length) {
+        res.status(404).json({ error: 'Not found' })
+        return
+      }
+      const row = rows[0]
+      try {
+        await deleteArtworkBlobsFromRow(row)
+      } catch (blobErr) {
+        console.error(blobErr)
+        res.status(502).json({ error: 'Falha ao apagar ficheiros no armazenamento' })
+        return
+      }
       const result = await sql`
         DELETE FROM artworks WHERE id = ${id} RETURNING id
       `
