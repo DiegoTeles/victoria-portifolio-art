@@ -739,7 +739,11 @@ export function AdminArtworksPage() {
       })
       if (!r.ok) {
         const err = await r.json().catch(() => ({}))
-        toast.error((err as { error?: string }).error || 'Erro ao salvar')
+        const errObj = err as { error?: string; message?: string | string[] }
+        const msg = Array.isArray(errObj.message)
+          ? errObj.message.join(', ')
+          : errObj.message ?? errObj.error
+        toast.error(msg || 'Erro ao salvar')
         return
       }
       const created = (await r.json().catch(() => null)) as Artwork | null
@@ -881,7 +885,11 @@ export function AdminArtworksPage() {
       })
       if (!r.ok) {
         const err = await r.json().catch(() => ({}))
-        toast.error((err as { error?: string }).error || 'Erro ao salvar')
+        const errObj = err as { error?: string; message?: string | string[] }
+        const msg = Array.isArray(errObj.message)
+          ? errObj.message.join(', ')
+          : errObj.message ?? errObj.error
+        toast.error(msg || 'Erro ao salvar')
         return
       }
       const updated = (await r.json().catch(() => null)) as Artwork | null
@@ -913,7 +921,11 @@ export function AdminArtworksPage() {
         void refreshList()
       } else {
         const err = await r.json().catch(() => ({}))
-        toast.error((err as { error?: string }).error || 'Erro ao apagar')
+        const errDel = err as { error?: string; message?: string | string[] }
+        const delMsg = Array.isArray(errDel.message)
+          ? errDel.message.join(', ')
+          : errDel.message ?? errDel.error
+        toast.error(delMsg || 'Erro ao apagar')
       }
     } finally {
       setDeletePending(false)
