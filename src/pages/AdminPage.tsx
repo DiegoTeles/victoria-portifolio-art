@@ -7,8 +7,8 @@ import {
   type ChangeEvent,
   type FormEvent,
 } from 'react'
+import { apiUrl } from '@/lib/apiUrl'
 import { toast } from 'react-toastify'
-import { upload } from '@vercel/blob/client'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -468,7 +468,7 @@ export function AdminArtworksPage() {
   const refreshList = useCallback(async () => {
     setLoading(true)
     try {
-      const r = await fetch('/api/artworks', { credentials: 'include', cache: 'no-store' })
+      const r = await fetch(apiUrl('/api/artworks'), { credentials: 'include', cache: 'no-store' })
       if (r.ok) {
         const data = (await r.json()) as Artwork[]
         setList(data)
@@ -483,7 +483,7 @@ export function AdminArtworksPage() {
   }, [refreshList])
 
   useEffect(() => {
-    void fetch('/api/admin/categories', { credentials: 'include' }).then(async (r) => {
+    void fetch(apiUrl('/api/admin/categories'), { credentials: 'include' }).then(async (r) => {
       if (!r.ok) return
       const data = (await r.json()) as AdminCategoryRow[]
       setAdminCategories(Array.isArray(data) ? data : [])
@@ -493,7 +493,7 @@ export function AdminArtworksPage() {
   const ensureSubs = useCallback(async (categoryId: string) => {
     if (subsCache[categoryId] !== undefined) return
     const r = await fetch(
-      `/api/admin/subcategories?categoryId=${encodeURIComponent(categoryId)}`,
+      apiUrl(`/api/admin/subcategories?categoryId=${encodeURIComponent(categoryId)}`),
       { credentials: 'include' }
     )
     if (!r.ok) return
@@ -532,11 +532,27 @@ export function AdminArtworksPage() {
     setCreateCarouselIndex(0)
   }
 
+  const postMediaUpload = async (file: File): Promise<string> => {
+    const fd = new FormData()
+    fd.append('file', file)
+    const r = await fetch(apiUrl('/api/admin/blob'), {
+      method: 'POST',
+      credentials: 'include',
+      body: fd,
+    })
+    const j = (await r.json().catch(() => ({}))) as { url?: string; message?: string | string[] }
+    if (!r.ok) {
+      const msg = Array.isArray(j.message) ? j.message.join(', ') : j.message
+      throw new Error(msg || 'Falha no upload')
+    }
+    if (!j.url) throw new Error('Resposta inválida do servidor')
+    return j.url
+  }
+
   const uploadFile = async (file: File, target: 'create' | 'edit') => {
     const tid = toast.loading('A enviar…')
     if (target === 'create') setCreateMainUploading(true)
     else setEditMainUploading(true)
-    const pathname = `portfolio/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`
     let measured: Awaited<ReturnType<typeof measureMainMediaFile>> = null
     try {
       measured = await measureMainMediaFile(file)
@@ -544,22 +560,18 @@ export function AdminArtworksPage() {
       measured = null
     }
     try {
-      const blob = await upload(pathname, file, {
-        access: 'private',
-        handleUploadUrl: '/api/admin/blob',
-        multipart: file.size > 4 * 1024 * 1024,
-      })
+      const url = await postMediaUpload(file)
       if (target === 'create') {
         setCreateDraft((d) => ({
           ...d,
-          image: blob.url,
+          image: url,
           resolution: measured ?? undefined,
           mainMediaBytes: file.size,
         }))
       } else {
         setForm((f) => ({
           ...f,
-          image: blob.url,
+          image: url,
           video: '',
           resolution: measured ?? undefined,
           mainMediaBytes: file.size,
@@ -588,14 +600,9 @@ export function AdminArtworksPage() {
     } catch {
       measured = null
     }
-    const pathname = `portfolio/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`
-    const blob = await upload(pathname, file, {
-      access: 'private',
-      handleUploadUrl: '/api/admin/blob',
-      multipart: file.size > 4 * 1024 * 1024,
-    })
+    const url = await postMediaUpload(file)
     return {
-      url: blob.url,
+      url,
       resolution: measured ?? undefined,
       bytes: file.size,
     }
@@ -724,7 +731,7 @@ export function AdminArtworksPage() {
         resolution: createDraft.resolution,
         mainMediaBytes: createDraft.mainMediaBytes,
       }
-      const r = await fetch('/api/admin/artworks', {
+      const r = await fetch(apiUrl('/api/admin/artworks'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -866,7 +873,7 @@ export function AdminArtworksPage() {
           : [],
         categoryAssignments: editCategoryAssignments.filter((x) => x.categoryId.trim()),
       }
-      const r = await fetch(`/api/admin/artworks/${encodeURIComponent(form.id.trim())}`, {
+      const r = await fetch(apiUrl(`/api/admin/artworks/${encodeURIComponent(form.id.trim())}`), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -894,7 +901,7 @@ export function AdminArtworksPage() {
     const id = deleteTarget.id
     setDeletePending(true)
     try {
-      const r = await fetch(`/api/admin/artworks/${encodeURIComponent(id)}`, {
+      const r = await fetch(apiUrl(`/api/admin/artworks/${encodeURIComponent(id)}`), {
         method: 'DELETE',
         credentials: 'include',
       })

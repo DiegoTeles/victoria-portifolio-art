@@ -1,3 +1,4 @@
+import { apiUrl } from '@/lib/apiUrl'
 import { useId, useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
@@ -13,7 +14,7 @@ export function AdminLoginPage() {
   const login = async (e: FormEvent) => {
     e.preventDefault()
     setLoginError('')
-    const r = await fetch('/api/admin/login', {
+    const r = await fetch(apiUrl('/api/admin/login'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',

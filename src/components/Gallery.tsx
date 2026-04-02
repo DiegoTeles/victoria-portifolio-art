@@ -1,3 +1,4 @@
+import { apiUrl } from '@/lib/apiUrl'
 import { useMemo, useState, useEffect, useRef } from 'react'
 import { useSearchParams, useParams, useNavigate, useLocation } from 'react-router-dom'
 import { type Artwork, type ArtworkType, getLocalized } from '../data/artworks'
@@ -244,7 +245,7 @@ export function Gallery({ viewMode, typeFilter, categorySlug, subcategorySlug }:
 
   useEffect(() => {
     let cancelled = false
-    void fetch(`/api/categories?locale=${encodeURIComponent(locale)}`, { cache: 'no-store' })
+    void fetch(apiUrl(`/api/categories?locale=${encodeURIComponent(locale)}`), { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : []))
       .then((data: unknown) => {
         if (cancelled) return

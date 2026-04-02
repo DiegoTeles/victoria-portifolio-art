@@ -1,3 +1,4 @@
+import { apiUrl } from '@/lib/apiUrl'
 import { useEffect, useState } from 'react'
 import { useLocale } from '../i18n/LocaleContext'
 import { TccPdfPanel } from '../components/TccPdfPanel'
@@ -32,7 +33,7 @@ export function AboutPage() {
   useEffect(() => {
     let cancelled = false
     setCmsBioReady(false)
-    void fetch(`/api/about/bio?locale=${encodeURIComponent(locale)}`, { cache: 'no-store' })
+    void fetch(apiUrl(`/api/about/bio?locale=${encodeURIComponent(locale)}`), { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : null))
       .then((d: { content?: string; isPublished?: boolean } | null) => {
         if (cancelled) return
@@ -59,7 +60,7 @@ export function AboutPage() {
   useEffect(() => {
     let cancelled = false
     setCmsCvReady(false)
-    void fetch(`/api/about/curriculum?locale=${encodeURIComponent(locale)}`, { cache: 'no-store' })
+    void fetch(apiUrl(`/api/about/curriculum?locale=${encodeURIComponent(locale)}`), { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : null))
       .then((d: { content?: string; isPublished?: boolean } | null) => {
         if (cancelled) return
@@ -85,7 +86,7 @@ export function AboutPage() {
 
   useEffect(() => {
     let cancelled = false
-    void fetch('/api/social-links', { cache: 'no-store' })
+    void fetch(apiUrl('/api/social-links'), { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : []))
       .then((data: unknown) => {
         if (cancelled) return

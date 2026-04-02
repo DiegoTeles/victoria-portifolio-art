@@ -1,3 +1,4 @@
+import { apiUrl } from '@/lib/apiUrl'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { Button } from '@/components/ui/button'
@@ -86,14 +87,14 @@ export function AdminSubcategoriesPage() {
   const [subNames, setSubNames] = useState<Record<string, string>>({})
 
   const loadCategories = useCallback(async () => {
-    const r = await fetch('/api/admin/categories', { credentials: 'include' })
+    const r = await fetch(apiUrl('/api/admin/categories'), { credentials: 'include' })
     if (!r.ok) return
     const data = (await r.json()) as CatRow[]
     setCategories(Array.isArray(data) ? data : [])
   }, [])
 
   const loadSubs = useCallback(async () => {
-    const r = await fetch('/api/admin/subcategories', { credentials: 'include' })
+    const r = await fetch(apiUrl('/api/admin/subcategories'), { credentials: 'include' })
     if (!r.ok) return
     const data = (await r.json()) as SubAdminRow[]
     setRows(Array.isArray(data) ? data : [])
@@ -154,8 +155,8 @@ export function AdminSubcategoriesPage() {
     }
     const url =
       subDialog === 'edit' && editingSub
-        ? `/api/admin/subcategories/${encodeURIComponent(editingSub.id)}`
-        : '/api/admin/subcategories'
+        ? apiUrl(`/api/admin/subcategories/${encodeURIComponent(editingSub.id)}`)
+        : apiUrl('/api/admin/subcategories')
     const method = subDialog === 'edit' ? 'PUT' : 'POST'
     const r = await fetch(url, {
       method,
@@ -175,7 +176,7 @@ export function AdminSubcategoriesPage() {
 
   const deleteSub = async (s: SubAdminRow) => {
     if (!window.confirm('Eliminar subcategoria?')) return
-    const r = await fetch(`/api/admin/subcategories/${encodeURIComponent(s.id)}`, {
+    const r = await fetch(apiUrl(`/api/admin/subcategories/${encodeURIComponent(s.id)}`), {
       method: 'DELETE',
       credentials: 'include',
     })

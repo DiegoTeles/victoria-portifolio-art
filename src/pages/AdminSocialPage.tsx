@@ -1,3 +1,4 @@
+import { apiUrl } from '@/lib/apiUrl'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { Button } from '@/components/ui/button'
@@ -39,7 +40,7 @@ export function AdminSocialPage() {
   const [isActive, setIsActive] = useState(true)
 
   const load = useCallback(async () => {
-    const r = await fetch('/api/admin/social-links', { credentials: 'include' })
+    const r = await fetch(apiUrl('/api/admin/social-links'), { credentials: 'include' })
     if (!r.ok) return
     const data = (await r.json()) as LinkRow[]
     setList(Array.isArray(data) ? data : [])
@@ -78,7 +79,9 @@ export function AdminSocialPage() {
       isActive,
     }
     const r = await fetch(
-      editing ? `/api/admin/social-links/${encodeURIComponent(editing.id)}` : '/api/admin/social-links',
+      editing
+        ? apiUrl(`/api/admin/social-links/${encodeURIComponent(editing.id)}`)
+        : apiUrl('/api/admin/social-links'),
       {
         method: editing ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -98,7 +101,7 @@ export function AdminSocialPage() {
 
   const remove = async (row: LinkRow) => {
     if (!window.confirm('Remover este link?')) return
-    const r = await fetch(`/api/admin/social-links/${encodeURIComponent(row.id)}`, {
+    const r = await fetch(apiUrl(`/api/admin/social-links/${encodeURIComponent(row.id)}`), {
       method: 'DELETE',
       credentials: 'include',
     })

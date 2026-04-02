@@ -1,3 +1,4 @@
+import { apiUrl } from '@/lib/apiUrl'
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, Navigate, useLocation, useNavigate, Link } from 'react-router-dom'
 import { ChevronDown } from 'lucide-react'
@@ -27,7 +28,7 @@ export function AdminLayout() {
   }, [onCategoriesSection])
 
   useEffect(() => {
-    void fetch('/api/admin/me', { credentials: 'include' }).then(async (r) => {
+    void fetch(apiUrl('/api/admin/me'), { credentials: 'include' }).then(async (r) => {
       try {
         if (!r.headers.get('content-type')?.includes('application/json')) {
           setAuth('out')
@@ -42,7 +43,7 @@ export function AdminLayout() {
   }, [location.pathname])
 
   const logout = async () => {
-    await fetch('/api/admin/logout', { method: 'POST', credentials: 'include' })
+    await fetch(apiUrl('/api/admin/logout'), { method: 'POST', credentials: 'include' })
     setAuth('out')
     void navigate('/admin', { replace: true })
   }

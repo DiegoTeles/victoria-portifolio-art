@@ -1,3 +1,4 @@
+import { apiUrl } from '@/lib/apiUrl'
 import { useEffect, useState } from 'react'
 import { Outlet, Link, NavLink, useLocation } from 'react-router-dom'
 import { ChevronRight } from 'lucide-react'
@@ -22,7 +23,7 @@ export function Layout() {
 
   useEffect(() => {
     let cancelled = false
-    void fetch(`/api/categories?locale=${encodeURIComponent(locale)}`, { cache: 'no-store' })
+    void fetch(apiUrl(`/api/categories?locale=${encodeURIComponent(locale)}`), { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : []))
       .then((data: unknown) => {
         if (cancelled) return

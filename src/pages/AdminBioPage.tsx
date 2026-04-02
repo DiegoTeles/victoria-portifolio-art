@@ -1,3 +1,4 @@
+import { apiUrl } from '@/lib/apiUrl'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { AdminLocaleTabs, ADMIN_LOCALES, getAdminLocalePanelProps } from '@/components/admin/AdminLocaleTabs'
@@ -19,7 +20,7 @@ export function AdminBioPage() {
   const [loadVersion, setLoadVersion] = useState(0)
 
   const load = useCallback(async () => {
-    const r = await fetch('/api/admin/bio', { credentials: 'include' })
+    const r = await fetch(apiUrl('/api/admin/bio'), { credentials: 'include' })
     if (!r.ok) return
     const data = (await r.json()) as { entries: Entry[] }
     const map = {} as Record<Locale, Entry>
@@ -44,7 +45,7 @@ export function AdminBioPage() {
   const save = async () => {
     setSaving(true)
     try {
-      const r = await fetch('/api/admin/bio', {
+      const r = await fetch(apiUrl('/api/admin/bio'), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

@@ -1,3 +1,4 @@
+import { apiUrl } from '@/lib/apiUrl'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { Button } from '@/components/ui/button'
@@ -64,7 +65,7 @@ export function AdminCategoriesPage() {
   const [catNames, setCatNames] = useState<Record<string, string>>({})
 
   const loadCats = useCallback(async () => {
-    const r = await fetch('/api/admin/categories', { credentials: 'include' })
+    const r = await fetch(apiUrl('/api/admin/categories'), { credentials: 'include' })
     if (!r.ok) return
     const data = (await r.json()) as CatRow[]
     setCategories(Array.isArray(data) ? data : [])
@@ -117,8 +118,8 @@ export function AdminCategoriesPage() {
     }
     const url =
       catDialog === 'edit' && editingCat
-        ? `/api/admin/categories/${encodeURIComponent(editingCat.id)}`
-        : '/api/admin/categories'
+        ? apiUrl(`/api/admin/categories/${encodeURIComponent(editingCat.id)}`)
+        : apiUrl('/api/admin/categories')
     const method = catDialog === 'edit' ? 'PUT' : 'POST'
     const r = await fetch(url, {
       method,
@@ -138,7 +139,7 @@ export function AdminCategoriesPage() {
 
   const deleteCat = async (c: CatRow) => {
     if (!window.confirm('Eliminar categoria e subcategorias?')) return
-    const r = await fetch(`/api/admin/categories/${encodeURIComponent(c.id)}`, {
+    const r = await fetch(apiUrl(`/api/admin/categories/${encodeURIComponent(c.id)}`), {
       method: 'DELETE',
       credentials: 'include',
     })

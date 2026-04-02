@@ -1,3 +1,5 @@
+import { apiUrl } from '@/lib/apiUrl'
+
 const DEFAULT_ARTWORK_IMAGE = '/images/digital-art/digital-art-01.png'
 
 type ArtworkImageLike = { image?: string | null }
@@ -6,11 +8,12 @@ export function getArtworkImageSrc(artwork: ArtworkImageLike): string {
   const raw = typeof artwork.image === 'string' ? artwork.image.trim() : ''
   if (!raw) return DEFAULT_ARTWORK_IMAGE
   if (raw.startsWith('blob:')) return raw
+  if (raw.startsWith('/api/')) return apiUrl(raw)
   if (raw.startsWith('http://') || raw.startsWith('https://')) {
     try {
       const parsed = new URL(raw)
-      if (parsed.hostname.endsWith('.blob.vercel-storage.com')) {
-        return `/api/blob/private?url=${encodeURIComponent(raw)}`
+      if (parsed.pathname.startsWith('/api/')) {
+        return apiUrl(`${parsed.pathname}${parsed.search}`)
       }
     } catch {
       return raw
