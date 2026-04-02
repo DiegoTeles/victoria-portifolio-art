@@ -1,4 +1,4 @@
-import { useRef, useCallback } from 'react'
+import { useRef, useCallback, useEffect, useState } from 'react'
 import type { Artwork } from '../data/artworks'
 import type { Locale } from '../data/artworks'
 import { getLocalized } from '../data/artworks'
@@ -6,6 +6,8 @@ import { getArtworkImageSrc } from '@/lib/artworkImageUrl'
 import { formatCaptionText, plainCaptionText } from '../utils/formatCaptionText'
 import { captureVideoPoster } from '../utils/videoPoster'
 import { ArtworkInfoIcon } from './ArtworkInfoIcon'
+import { ArtworkLazyImage } from './ArtworkLazyImage'
+import { Skeleton } from '@/components/ui/skeleton'
 
 type Props = {
   artwork: Artwork
@@ -19,7 +21,14 @@ export function ArtworkCard({ artwork, locale, onSelect }: Props) {
   const alt = plainCaptionText(title || description || '')
   const videoRef = useRef<HTMLVideoElement>(null)
   const needPoster = Boolean(artwork.video && !artwork.image)
+  const [videoReady, setVideoReady] = useState(
+    !artwork.video || Boolean(artwork.image)
+  )
+  useEffect(() => {
+    setVideoReady(!artwork.video || Boolean(artwork.image))
+  }, [artwork.video, artwork.image])
   const onVideoLoadedData = useCallback(() => {
+    setVideoReady(true)
     const el = videoRef.current
     if (el && needPoster) captureVideoPoster(el)
   }, [needPoster])
@@ -45,20 +54,25 @@ export function ArtworkCard({ artwork, locale, onSelect }: Props) {
         <span className="artwork-image-wrap">
           <span className="artwork-image-inner">
             {artwork.video ? (
-              <video
-                ref={videoRef}
-                src={artwork.video}
-                poster={artwork.image ? getArtworkImageSrc(artwork) : undefined}
-                muted
-                loop
-                playsInline
-                preload="auto"
-                onLoadedData={onVideoLoadedData}
-                width={800}
-                height={600}
-              />
+              <>
+                {!artwork.image && !videoReady ? (
+                  <Skeleton className="pointer-events-none absolute inset-0 z-[1] size-full min-h-[12rem] rounded-sm" />
+                ) : null}
+                <video
+                  ref={videoRef}
+                  src={artwork.video}
+                  poster={artwork.image ? getArtworkImageSrc(artwork) : undefined}
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  onLoadedData={onVideoLoadedData}
+                  width={800}
+                  height={600}
+                />
+              </>
             ) : (
-              <img
+              <ArtworkLazyImage
                 src={getArtworkImageSrc(artwork)}
                 alt={alt}
                 loading="lazy"

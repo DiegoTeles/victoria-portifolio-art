@@ -35,6 +35,10 @@ async function applySqlFile(relativePath, label) {
 
 await applySqlFile('db/schema.sql', 'Schema base: artworks e índices.')
 await applySqlFile(
+  'db/migration-extra-descriptions.sql',
+  'Coluna extra_descriptions em artworks (bases antigas).'
+)
+await applySqlFile(
   'db/migration-cms-relational.sql',
   'Migração CMS: categorias, subcategorias, artwork_categories, bio, currículo, redes.'
 )

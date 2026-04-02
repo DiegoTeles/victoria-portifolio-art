@@ -27,6 +27,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Textarea } from '@/components/ui/textarea'
+import { Skeleton } from '@/components/ui/skeleton'
+import { ArtworkLazyImage } from '@/components/ArtworkLazyImage'
 import { ArtworkDateField } from '@/components/admin/ArtworkDateField'
 import { ADMIN_LOCALE_OPTIONS } from '@/components/admin/AdminLocaleTabs'
 import { CountryFlag } from 'react-country-flags-lazyload'
@@ -635,7 +637,45 @@ export function AdminArtworksPage() {
       </div>
       <div className="admin-table-wrap border-border bg-card rounded-lg border">
         {loading ? (
-          <p className="text-muted-foreground p-6 text-center text-sm">A carregar…</p>
+          <Table aria-busy="true">
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[72px]">Imagem</TableHead>
+                <TableHead>Título</TableHead>
+                <TableHead>Resolução</TableHead>
+                <TableHead>Ano</TableHead>
+                <TableHead className="max-w-[min(280px,28vw)]">Legenda</TableHead>
+                <TableHead className="w-[1%] text-right whitespace-nowrap">Ações</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {Array.from({ length: 8 }, (_, i) => (
+                <TableRow key={i}>
+                  <TableCell>
+                    <Skeleton className="size-14 shrink-0 rounded-md" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-32" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-16" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-10" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-48 max-w-[min(280px,28vw)]" />
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-wrap justify-end gap-2">
+                      <Skeleton className="h-8 w-16" />
+                      <Skeleton className="h-8 w-16" />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         ) : null}
         {!loading && list.length > 0 ? (
           <Table>
@@ -654,14 +694,17 @@ export function AdminArtworksPage() {
                 <TableRow key={a.id}>
                   <TableCell className="w-[72px]">
                     {a.image ? (
-                      <img
-                        className="border-border size-14 rounded object-cover"
-                        src={getArtworkImageSrc(a)}
-                        alt=""
-                        width={56}
-                        height={56}
-                        loading="lazy"
-                      />
+                      <span className="relative block size-14 shrink-0">
+                        <ArtworkLazyImage
+                          className="border-border size-14 rounded object-cover"
+                          skeletonClassName="pointer-events-none absolute inset-0 z-[1] size-full rounded-md"
+                          src={getArtworkImageSrc(a)}
+                          alt=""
+                          width={56}
+                          height={56}
+                          loading="lazy"
+                        />
+                      </span>
                     ) : (
                       <span
                         className="border-border bg-muted block size-14 rounded border"
@@ -708,13 +751,16 @@ export function AdminArtworksPage() {
           if (!open) closeCreate()
         }}
       >
-        <DialogContent className="sm:max-w-[92vw] lg:max-w-6xl" showCloseButton>
-          <DialogHeader>
+        <DialogContent
+          className="max-h-[min(92vh,100dvh-1rem)] min-h-0 flex flex-col overflow-hidden sm:max-w-[92vw] lg:max-w-6xl"
+          showCloseButton
+        >
+          <DialogHeader className="shrink-0">
             <DialogTitle>Nova obra</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 lg:grid-cols-[minmax(320px,46%)_1fr]">
+          <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden lg:grid lg:grid-cols-[minmax(320px,46%)_1fr] lg:items-stretch">
             <div
-              className="bg-muted/40 border-border relative overflow-hidden rounded-lg border lg:sticky lg:top-0 lg:h-[78vh]"
+              className="bg-muted/40 border-border relative max-h-[min(42vh,22rem)] min-h-[200px] shrink-0 overflow-hidden rounded-lg border lg:max-h-[min(78vh,calc(100dvh-14rem))] lg:min-h-0 lg:shrink"
               onTouchStart={(e) => setCreateTouchX(e.touches[0]?.clientX ?? null)}
               onTouchEnd={(e) => {
                 const endX = e.changedTouches[0]?.clientX ?? null
@@ -727,10 +773,11 @@ export function AdminArtworksPage() {
             >
               {createMedia.length > 0 ? (
                 <>
-                  <img
+                  <ArtworkLazyImage
                     src={getArtworkImageSrc({ image: createMedia[createCarouselIndex] })}
                     alt=""
                     className="h-full w-full object-cover"
+                    skeletonClassName="pointer-events-none absolute inset-0 z-[1] size-full rounded-none"
                   />
                   {createMedia.length > 1 ? (
                     <>
@@ -738,7 +785,7 @@ export function AdminArtworksPage() {
                         type="button"
                         variant="secondary"
                         size="sm"
-                        className="absolute top-1/2 left-3 -translate-y-1/2"
+                        className="absolute top-1/2 left-3 z-[2] -translate-y-1/2"
                         onClick={prevCreateMedia}
                       >
                         <ChevronLeft className="size-4" />
@@ -747,12 +794,12 @@ export function AdminArtworksPage() {
                         type="button"
                         variant="secondary"
                         size="sm"
-                        className="absolute top-1/2 right-3 -translate-y-1/2"
+                        className="absolute top-1/2 right-3 z-[2] -translate-y-1/2"
                         onClick={nextCreateMedia}
                       >
                         <ChevronRight className="size-4" />
                       </Button>
-                      <div className="absolute right-2 bottom-2 rounded bg-black/60 px-2 py-1 text-xs text-white">
+                      <div className="absolute right-2 bottom-2 z-[2] rounded bg-black/60 px-2 py-1 text-xs text-white">
                         {createCarouselIndex + 1}/{createMedia.length}
                       </div>
                     </>
@@ -766,8 +813,9 @@ export function AdminArtworksPage() {
             </div>
             <form
               onSubmit={saveCreate}
-              className="flex max-h-[78vh] flex-col gap-4 overflow-y-auto pr-1"
+              className="flex min-h-0 min-w-0 flex-1 flex-col gap-0 overflow-hidden lg:min-h-0"
             >
+            <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-4 overflow-y-auto overscroll-contain pr-1 [-webkit-overflow-scrolling:touch]">
             <div className="grid gap-4">
               <Label htmlFor="create-title">Título</Label>
               <Input
@@ -1019,12 +1067,13 @@ export function AdminArtworksPage() {
                     {createDraft.extra_images.map((url, idx) => (
                       <div key={url} className="flex min-w-0 flex-col gap-2">
                         <div className="group relative aspect-square overflow-hidden rounded-lg border">
-                          <img
+                          <ArtworkLazyImage
                             src={getArtworkImageSrc({ image: url })}
                             alt=""
                             className="size-full object-cover"
+                            skeletonClassName="pointer-events-none absolute inset-0 z-[1] size-full rounded-lg"
                           />
-                          <div className="absolute inset-0 flex items-start justify-end bg-black/0 p-1 opacity-0 transition-opacity group-hover:bg-black/20 group-hover:opacity-100">
+                          <div className="absolute inset-0 z-[2] flex items-start justify-end bg-black/0 p-1 opacity-0 transition-opacity group-hover:bg-black/20 group-hover:opacity-100">
                             <Button
                               type="button"
                               variant="secondary"
@@ -1065,12 +1114,13 @@ export function AdminArtworksPage() {
                         key={p.id}
                         className="relative aspect-square overflow-hidden rounded-lg border"
                       >
-                        <img
+                        <ArtworkLazyImage
                           src={p.preview}
                           alt=""
                           className="size-full object-cover"
+                          skeletonClassName="pointer-events-none absolute inset-0 z-[1] size-full rounded-lg"
                         />
-                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-background/70 p-2 text-center">
+                        <div className="absolute inset-0 z-[2] flex flex-col items-center justify-center gap-1 bg-background/70 p-2 text-center">
                           <span className="text-xs font-medium">A enviar…</span>
                           <span className="text-muted-foreground line-clamp-2 text-[10px]">{p.name}</span>
                         </div>
@@ -1081,7 +1131,8 @@ export function AdminArtworksPage() {
                 </div>
               </div>
             ) : null}
-              <DialogFooter>
+            </div>
+              <DialogFooter className="bg-background shrink-0 border-t pt-4">
                 <Button type="button" variant="outline" onClick={closeCreate}>
                   Cancelar
                 </Button>
@@ -1100,13 +1151,18 @@ export function AdminArtworksPage() {
           if (!open) closeEdit()
         }}
       >
-        <DialogContent className={cn('sm:max-w-[92vw] lg:max-w-6xl')} showCloseButton>
-          <DialogHeader>
+        <DialogContent
+          className={cn(
+            'max-h-[min(92vh,100dvh-1rem)] min-h-0 flex flex-col overflow-hidden sm:max-w-[92vw] lg:max-w-6xl'
+          )}
+          showCloseButton
+        >
+          <DialogHeader className="shrink-0">
             <DialogTitle>Editar obra</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 lg:grid-cols-[minmax(320px,46%)_1fr]">
+          <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden lg:grid lg:grid-cols-[minmax(320px,46%)_1fr] lg:items-stretch">
             <div
-              className="bg-muted/40 border-border relative overflow-hidden rounded-lg border lg:sticky lg:top-0 lg:h-[78vh]"
+              className="bg-muted/40 border-border relative max-h-[min(42vh,22rem)] min-h-[200px] shrink-0 overflow-hidden rounded-lg border lg:max-h-[min(78vh,calc(100dvh-14rem))] lg:min-h-0 lg:shrink"
               onTouchStart={(e) => setEditTouchX(e.touches[0]?.clientX ?? null)}
               onTouchEnd={(e) => {
                 const endX = e.changedTouches[0]?.clientX ?? null
@@ -1119,10 +1175,11 @@ export function AdminArtworksPage() {
             >
               {editMedia.length > 0 ? (
                 <>
-                  <img
+                  <ArtworkLazyImage
                     src={getArtworkImageSrc({ image: editMedia[editCarouselIndex] })}
                     alt=""
                     className="h-full w-full object-cover"
+                    skeletonClassName="pointer-events-none absolute inset-0 z-[1] size-full rounded-none"
                   />
                   {editMedia.length > 1 ? (
                     <>
@@ -1130,7 +1187,7 @@ export function AdminArtworksPage() {
                         type="button"
                         variant="secondary"
                         size="sm"
-                        className="absolute top-1/2 left-3 -translate-y-1/2"
+                        className="absolute top-1/2 left-3 z-[2] -translate-y-1/2"
                         onClick={prevEditMedia}
                       >
                         <ChevronLeft className="size-4" />
@@ -1139,12 +1196,12 @@ export function AdminArtworksPage() {
                         type="button"
                         variant="secondary"
                         size="sm"
-                        className="absolute top-1/2 right-3 -translate-y-1/2"
+                        className="absolute top-1/2 right-3 z-[2] -translate-y-1/2"
                         onClick={nextEditMedia}
                       >
                         <ChevronRight className="size-4" />
                       </Button>
-                      <div className="absolute right-2 bottom-2 rounded bg-black/60 px-2 py-1 text-xs text-white">
+                      <div className="absolute right-2 bottom-2 z-[2] rounded bg-black/60 px-2 py-1 text-xs text-white">
                         {editCarouselIndex + 1}/{editMedia.length}
                       </div>
                     </>
@@ -1156,7 +1213,11 @@ export function AdminArtworksPage() {
                 </div>
               )}
             </div>
-            <form onSubmit={saveEdit} className="grid max-h-[78vh] gap-4 overflow-y-auto pr-1">
+            <form
+              onSubmit={saveEdit}
+              className="flex min-h-0 min-w-0 flex-1 flex-col gap-0 overflow-hidden lg:min-h-0"
+            >
+            <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-4 overflow-y-auto overscroll-contain pr-1 [-webkit-overflow-scrolling:touch]">
             <div className="grid gap-2">
               <Label htmlFor="edit-title">Título</Label>
               <Input
@@ -1423,12 +1484,13 @@ export function AdminArtworksPage() {
                     {(form.extra_images ?? []).map((url, idx) => (
                       <div key={url} className="flex min-w-0 flex-col gap-2">
                         <div className="group relative aspect-square overflow-hidden rounded-lg border">
-                          <img
+                          <ArtworkLazyImage
                             src={getArtworkImageSrc({ image: url })}
                             alt=""
                             className="size-full object-cover"
+                            skeletonClassName="pointer-events-none absolute inset-0 z-[1] size-full rounded-lg"
                           />
-                          <div className="absolute inset-0 flex items-start justify-end bg-black/0 p-1 opacity-0 transition-opacity group-hover:bg-black/20 group-hover:opacity-100">
+                          <div className="absolute inset-0 z-[2] flex items-start justify-end bg-black/0 p-1 opacity-0 transition-opacity group-hover:bg-black/20 group-hover:opacity-100">
                             <Button
                               type="button"
                               variant="secondary"
@@ -1472,12 +1534,13 @@ export function AdminArtworksPage() {
                         key={p.id}
                         className="relative aspect-square overflow-hidden rounded-lg border"
                       >
-                        <img
+                        <ArtworkLazyImage
                           src={p.preview}
                           alt=""
                           className="size-full object-cover"
+                          skeletonClassName="pointer-events-none absolute inset-0 z-[1] size-full rounded-lg"
                         />
-                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-background/70 p-2 text-center">
+                        <div className="absolute inset-0 z-[2] flex flex-col items-center justify-center gap-1 bg-background/70 p-2 text-center">
                           <span className="text-xs font-medium">A enviar…</span>
                           <span className="text-muted-foreground line-clamp-2 text-[10px]">{p.name}</span>
                         </div>
@@ -1488,7 +1551,8 @@ export function AdminArtworksPage() {
                 </div>
               </div>
             ) : null}
-              <DialogFooter>
+            </div>
+              <DialogFooter className="bg-background shrink-0 border-t pt-4">
                 <Button type="button" variant="outline" onClick={closeEdit}>
                   Cancelar
                 </Button>

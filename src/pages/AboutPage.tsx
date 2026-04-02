@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useLocale } from '../i18n/LocaleContext'
 import { TccPdfPanel } from '../components/TccPdfPanel'
+import { ArtworkLazyImage } from '../components/ArtworkLazyImage'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const PORTRAIT_IMAGE = '/images/profile.webp'
 
@@ -144,13 +146,16 @@ export function AboutPage() {
         {tab !== 'tcc' && (
           <>
             <div className="about-photo-block">
-              <img
-                src={PORTRAIT_IMAGE}
-                alt=""
-                className="about-portrait"
-                width={400}
-                height={600}
-              />
+              <span className="relative block w-full">
+                <ArtworkLazyImage
+                  src={PORTRAIT_IMAGE}
+                  alt=""
+                  className="about-portrait"
+                  width={400}
+                  height={600}
+                  skeletonClassName="pointer-events-none absolute inset-0 z-[1] size-full rounded-sm"
+                />
+              </span>
               <div className="about-social" aria-label="Redes sociais">
                 {socialLinks && socialLinks.length > 0 ? (
                   socialLinks.map((s) => (
@@ -196,7 +201,15 @@ export function AboutPage() {
         <div className="about-bio" role="tabpanel">
           {tab === 'about' && (
             <>
-              {!cmsBioReady ? null : cmsBio !== null ? (
+              {!cmsBioReady ? (
+                <div className="flex flex-col gap-3" aria-busy="true">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-[92%]" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-4/5" />
+                </div>
+              ) : cmsBio !== null ? (
                 <CmsRichOrPlain html={cmsBio} />
               ) : (
                 <>
@@ -216,7 +229,17 @@ export function AboutPage() {
           )}
           {tab === 'curriculum' && (
             <>
-              {!cmsCvReady ? null : cmsCv !== null ? (
+              {!cmsCvReady ? (
+                <div className="about-curriculum flex flex-col gap-3" aria-busy="true">
+                  <Skeleton className="h-5 w-48" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="mt-4 h-5 w-56" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-[88%]" />
+                </div>
+              ) : cmsCv !== null ? (
                 <div className="about-curriculum">
                   <CmsRichOrPlain html={cmsCv} />
                 </div>
@@ -243,13 +266,16 @@ export function AboutPage() {
                     </ul>
                   </section>
                   <figure className="about-curriculum-figure">
-                    <img
-                      src="/images/drawing/drawing-01.png"
-                      alt=""
-                      className="about-curriculum-image"
-                      width={400}
-                      height={533}
-                    />
+                    <span className="relative block w-full max-w-full">
+                      <ArtworkLazyImage
+                        src="/images/drawing/drawing-01.png"
+                        alt=""
+                        className="about-curriculum-image"
+                        width={400}
+                        height={533}
+                        skeletonClassName="pointer-events-none absolute inset-0 z-[1] size-full max-h-[min(70vh,560px)] rounded-sm"
+                      />
+                    </span>
                     <figcaption className="about-curriculum-caption">{t('curriculumBookCaption')}</figcaption>
                   </figure>
                   <section className="about-curriculum-section">

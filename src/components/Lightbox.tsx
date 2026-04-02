@@ -9,6 +9,7 @@ import { formatArtworkTypes } from '../i18n/formatArtworkTypes'
 import { formatCaptionText, plainCaptionText } from '../utils/formatCaptionText'
 import { captureVideoPoster } from '../utils/videoPoster'
 import { ArtworkInfoIcon } from './ArtworkInfoIcon'
+import { Skeleton } from '@/components/ui/skeleton'
 
 type Props = {
   artworks: Artwork[]
@@ -26,6 +27,7 @@ export function Lightbox({
   const { t } = useLocale()
   const [index, setIndex] = useState(initialIndex)
   const containerRef = useRef<HTMLDivElement>(null)
+  const [rasterReady, setRasterReady] = useState(false)
 
   const current = artworks[index]
   const hasPrev = index > 0
@@ -45,6 +47,28 @@ export function Lightbox({
       document.body.style.overflow = prev
     }
   }, [])
+
+  useEffect(() => {
+    if (!current) return
+    if (current.video) {
+      setRasterReady(Boolean(current.image))
+      return
+    }
+    setRasterReady(false)
+    let cancelled = false
+    const url = getArtworkImageSrc(current)
+    const im = new globalThis.Image()
+    im.onload = () => {
+      if (!cancelled) setRasterReady(true)
+    }
+    im.onerror = () => {
+      if (!cancelled) setRasterReady(true)
+    }
+    im.src = url
+    return () => {
+      cancelled = true
+    }
+  }, [current, index])
 
   useEffect(() => {
     const el = containerRef.current
@@ -92,10 +116,21 @@ export function Lightbox({
     >
       <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
         <div className="lightbox-media-wrap">
+          {!rasterReady ? (
+            <Skeleton className="absolute inset-0 z-[1] min-h-[min(70vh,560px)] w-full max-w-[90vw] rounded-md" />
+          ) : null}
           {current.video ? (
             <video
               ref={(el) => {
-                if (el && !current.image) el.addEventListener('loadeddata', () => captureVideoPoster(el), { once: true })
+                if (!el || current.image) return
+                el.addEventListener(
+                  'loadeddata',
+                  () => {
+                    captureVideoPoster(el)
+                    setRasterReady(true)
+                  },
+                  { once: true }
+                )
               }}
               src={current.video}
               poster={current.image ? getArtworkImageSrc(current) : undefined}

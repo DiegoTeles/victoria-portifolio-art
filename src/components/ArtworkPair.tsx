@@ -4,6 +4,7 @@ import { getLocalized } from '../data/artworks'
 import { getArtworkImageSrc } from '@/lib/artworkImageUrl'
 import { useLocale } from '../i18n/LocaleContext'
 import { formatArtworkTypes } from '../i18n/formatArtworkTypes'
+import { ArtworkLazyImage } from './ArtworkLazyImage'
 
 type Props = {
   artworks: [Artwork, Artwork]
@@ -41,13 +42,15 @@ export function ArtworkPair({
         }}
         aria-label={aTitle || aDesc}
       >
-        <img
-          src={getArtworkImageSrc(a)}
-          alt={aTitle || aDesc}
-          loading="lazy"
-          width={800}
-          height={600}
-        />
+        <span className="relative block w-full">
+          <ArtworkLazyImage
+            src={getArtworkImageSrc(a)}
+            alt={aTitle || aDesc || ''}
+            loading="lazy"
+            width={800}
+            height={600}
+          />
+        </span>
       </button>
       <button
         type="button"
@@ -61,13 +64,15 @@ export function ArtworkPair({
         }}
         aria-label={bTitle || bDesc}
       >
-        <img
-          src={getArtworkImageSrc(b)}
-          alt={bTitle || bDesc}
-          loading="lazy"
-          width={800}
-          height={600}
-        />
+        <span className="relative block w-full">
+          <ArtworkLazyImage
+            src={getArtworkImageSrc(b)}
+            alt={bTitle || bDesc || ''}
+            loading="lazy"
+            width={800}
+            height={600}
+          />
+        </span>
       </button>
       <figcaption style={{ gridColumn: '1 / -1' }}>
         {typeA && <span className="artwork-types">{typeA}</span>}

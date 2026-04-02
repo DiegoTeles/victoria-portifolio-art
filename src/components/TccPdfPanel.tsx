@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Document, Page, pdfjs } from 'react-pdf'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useLocale } from '../i18n/LocaleContext'
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 import 'react-pdf/dist/Page/TextLayer.css'
@@ -42,7 +43,11 @@ export function TccPdfPanel() {
       ) : (
         <Document
           file={PDF_URL}
-          loading={null}
+          loading={
+            <div className="flex w-full flex-col gap-3" aria-busy="true">
+              <Skeleton className="mx-auto h-[min(72vh,820px)] w-full max-w-3xl rounded-md" />
+            </div>
+          }
           onLoadSuccess={({ numPages }) => {
             setLoadError(false)
             setPageCount(numPages)

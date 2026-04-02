@@ -3,6 +3,7 @@ import { NavLink, Outlet, Navigate, useLocation, useNavigate, Link } from 'react
 import { ChevronDown } from 'lucide-react'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 
 const navClass = ({ isActive }: { isActive: boolean }) =>
@@ -48,8 +49,30 @@ export function AdminLayout() {
 
   if (auth === 'unknown') {
     return (
-      <div className="admin-shell-loading flex min-h-[50vh] items-center justify-center p-8">
-        <p className="text-muted-foreground text-sm">A carregar…</p>
+      <div
+        className="admin-shell-loading flex min-h-[50vh] w-full flex-col md:flex-row"
+        aria-busy="true"
+      >
+        <aside className="border-border flex w-full shrink-0 flex-col gap-4 border-b p-4 md:w-56 md:border-r md:border-b-0">
+          <Skeleton className="h-7 w-36" />
+          <Skeleton className="h-3 w-16" />
+          <div className="mt-2 flex flex-col gap-2">
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+          </div>
+          <div className="mt-auto flex flex-col gap-2 border-t pt-3">
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+          </div>
+        </aside>
+        <main className="min-w-0 flex-1 space-y-4 p-4 md:p-8">
+          <Skeleton className="h-9 w-40" />
+          <Skeleton className="h-64 w-full max-w-3xl" />
+          <Skeleton className="h-4 w-full max-w-xl" />
+          <Skeleton className="h-4 w-2/3 max-w-lg" />
+        </main>
       </div>
     )
   }

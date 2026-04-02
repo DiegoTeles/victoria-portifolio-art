@@ -4,6 +4,7 @@ import { getLocalized } from '../data/artworks'
 import { getArtworkImageSrc } from '@/lib/artworkImageUrl'
 import { formatCaptionText } from '../utils/formatCaptionText'
 import { ArtworkInfoIcon } from './ArtworkInfoIcon'
+import { ArtworkLazyImage } from './ArtworkLazyImage'
 
 type Props = {
   artworks: Artwork[]
@@ -75,7 +76,7 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
             >
               <span className="artwork-image-wrap">
                 <span className="artwork-image-inner">
-                  <img
+                  <ArtworkLazyImage
                     src={getArtworkImageSrc(artwork)}
                     alt={alt}
                     loading="lazy"
@@ -134,7 +135,7 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
             >
               <span className="artwork-image-wrap">
                 <span className="artwork-image-inner">
-                  <img
+                  <ArtworkLazyImage
                     src={getArtworkImageSrc(artwork)}
                     alt={alt}
                     loading="lazy"
@@ -176,7 +177,7 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
             >
               <span className="artwork-image-wrap">
                 <span className="artwork-image-inner">
-                  <img
+                  <ArtworkLazyImage
                     src={getArtworkImageSrc(artwork)}
                     alt={alt}
                     loading="lazy"
@@ -224,7 +225,7 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
             >
               <span className="artwork-image-wrap">
                 <span className="artwork-image-inner">
-                  <img
+                  <ArtworkLazyImage
                     src={getArtworkImageSrc(artwork)}
                     alt={alt}
                     loading="lazy"

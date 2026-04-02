@@ -53,6 +53,7 @@ import type { ViewMode } from './ViewToggle'
 import { ArtworkCard } from './ArtworkCard'
 import { ArtworkGroup } from './ArtworkGroup'
 import { Lightbox } from './Lightbox'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export type GalleryFilterType = ArtworkType | 'drawing-painting'
 
@@ -177,6 +178,28 @@ type GalleryProps = {
   typeFilter?: GalleryFilterType
   categorySlug?: string
   subcategorySlug?: string
+}
+
+function GalleryGridSkeleton({ viewMode }: { viewMode: ViewMode }) {
+  return (
+    <section id="gallery" className="gallery" aria-label="Galeria" aria-busy="true">
+      <div className={`gallery-grid view-${viewMode}`}>
+        {Array.from({ length: PAGE_SIZE }, (_, i) => (
+          <figure key={i} className="artwork-card" style={{ margin: 0 }}>
+            <div className="artwork-image-wrap">
+              <div className="artwork-image-inner">
+                <Skeleton className="aspect-[4/3] w-full max-w-full rounded-sm" />
+              </div>
+            </div>
+            <figcaption>
+              <Skeleton className="h-3 w-4/5 max-w-md" />
+              <Skeleton className="mt-2 h-3 w-3/5 max-w-sm" />
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  )
 }
 
 export function Gallery({ viewMode, typeFilter, categorySlug, subcategorySlug }: GalleryProps) {
@@ -388,11 +411,7 @@ export function Gallery({ viewMode, typeFilter, categorySlug, subcategorySlug }:
   }
 
   if (artworksList === null) {
-    return (
-      <section id="gallery" className="gallery" aria-label="Galeria">
-        <p className="page-text gallery-loading">A carregar…</p>
-      </section>
-    )
+    return <GalleryGridSkeleton viewMode={viewMode} />
   }
 
   return (
