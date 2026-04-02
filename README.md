@@ -63,6 +63,12 @@ npm install
 npm run dev
 ```
 
+O Vite faz proxy de `/api` para o Nest (`VITE_NEST_API_TARGET`, por defeito `http://localhost:3000`). Variáveis: copia `.env.example` para `.env.local` se precisares de ajustar.
+
+## API e base de dados
+
+O esquema PostgreSQL e as migrações vivem apenas no projeto **`vic-api`** (`migrations/`, `npm run db:migrate` ou Docker com serviço `migrate`). Este front não inclui scripts SQL nem `db:init`. Conteúdo dinâmico (obras, CMS) vem da API; `src/data/artworks.json` pode servir de fallback estático conforme a lógica da app.
+
 ## Build
 
 ```bash
