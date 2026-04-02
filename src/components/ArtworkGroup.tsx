@@ -19,6 +19,7 @@ const ASYMMETRIC_5_CAPTION_SLOT = 2
 export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props) {
   const count = Math.max(artworks.length, 2)
   const slice = artworks.slice(0, count)
+  const gridCountClass = count > 8 ? 'artwork-group-many' : `artwork-group-${count}`
   const descriptions = slice.map((a) => getLocalized(a.description, locale))
   const nonEmptyCount = descriptions.filter(Boolean).length
   const singleCaption = nonEmptyCount <= 1
@@ -31,8 +32,53 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
     (!groupDisplay && captionInGridAuto)
   const useSingleCaption =
     groupDisplay === 'single-caption' || (!groupDisplay && singleCaption && !useCaptionInGrid)
-  const usePerImageCaption =
-    groupDisplay === 'per-image-caption' || (!groupDisplay && !singleCaption)
+
+  const renderPerImageCaption = () => (
+    <div
+      className={`artwork-group ${gridCountClass} artwork-group--per-image-caption`}
+      style={{ margin: 0 }}
+      role="group"
+    >
+      {slice.map((artwork, idx) => {
+        const desc = getLocalized(artwork.description, locale)
+        const alt = desc || artwork.id
+        return (
+          <figure key={artwork.id} style={{ margin: 0 }}>
+            <button
+              type="button"
+              onClick={() => onSelect(idx)}
+              style={{
+                padding: 0,
+                border: 'none',
+                background: 'none',
+                cursor: 'pointer',
+                width: '100%',
+              }}
+              aria-label={alt}
+            >
+              <span className="artwork-image-wrap">
+                <span className="artwork-image-inner">
+                  <ArtworkLazyImage
+                    src={getArtworkImageSrc(artwork)}
+                    alt={alt}
+                    loading="lazy"
+                    width={800}
+                    height={600}
+                  />
+                  <ArtworkInfoIcon info={getLocalized(artwork.info, locale) || null} />
+                </span>
+              </span>
+            </button>
+            <figcaption>
+              {desc ? (
+                <span className="artwork-description">{formatCaptionText(desc)}</span>
+              ) : null}
+            </figcaption>
+          </figure>
+        )
+      })}
+    </div>
+  )
 
   if (useAsymmetric5) {
     const hasCaption = singleCaption && !!sharedCaption
@@ -155,7 +201,7 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
   if (useSingleCaption) {
     return (
       <figure
-        className={`artwork-group artwork-group-${count} artwork-group--single-caption`}
+        className={`artwork-group ${gridCountClass} artwork-group--single-caption`}
         style={{ margin: 0 }}
       >
         {slice.map((artwork, idx) => {
@@ -199,54 +245,5 @@ export function ArtworkGroup({ artworks, locale, groupDisplay, onSelect }: Props
     )
   }
 
-  if (usePerImageCaption) {
-  return (
-    <div
-      className={`artwork-group artwork-group-${count} artwork-group--per-image-caption`}
-      style={{ margin: 0 }}
-      role="group"
-    >
-      {slice.map((artwork, idx) => {
-        const desc = getLocalized(artwork.description, locale)
-        const alt = desc || artwork.id
-        return (
-          <figure key={artwork.id} style={{ margin: 0 }}>
-            <button
-              type="button"
-              onClick={() => onSelect(idx)}
-              style={{
-                padding: 0,
-                border: 'none',
-                background: 'none',
-                cursor: 'pointer',
-                width: '100%',
-              }}
-              aria-label={alt}
-            >
-              <span className="artwork-image-wrap">
-                <span className="artwork-image-inner">
-                  <ArtworkLazyImage
-                    src={getArtworkImageSrc(artwork)}
-                    alt={alt}
-                    loading="lazy"
-                    width={800}
-                    height={600}
-                  />
-                  <ArtworkInfoIcon info={getLocalized(artwork.info, locale) || null} />
-                </span>
-              </span>
-            </button>
-            <figcaption>
-              {desc ? (
-                <span className="artwork-description">{formatCaptionText(desc)}</span>
-              ) : null}
-            </figcaption>
-          </figure>
-        )
-      })}
-    </div>
-  )
-  }
-
-  return null
+  return renderPerImageCaption()
 }

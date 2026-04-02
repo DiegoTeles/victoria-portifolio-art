@@ -63,16 +63,26 @@ type Cell =
   | { type: 'single'; artwork: Artwork }
   | { type: 'group'; artworks: Artwork[] }
 
+function virtualBundleGroupId(artworkId: string) {
+  return `__cms_bundle:${artworkId}`
+}
+
 function expandArtworksWithExtras(artworks: Artwork[]): Artwork[] {
   const out: Artwork[] = []
   for (const a of artworks) {
     const extras = a.extra_images ?? []
-    if (!a.group || extras.length === 0) {
+    if (extras.length === 0) {
       out.push(a)
       continue
     }
+    const bundleGroup = a.group ?? virtualBundleGroupId(a.id)
     const ed = a.extra_descriptions ?? []
-    out.push({ ...a, extra_images: undefined })
+    out.push({
+      ...a,
+      extra_images: undefined,
+      extra_descriptions: undefined,
+      group: bundleGroup,
+    })
     for (let i = 0; i < extras.length; i++) {
       out.push({
         ...a,
@@ -82,6 +92,7 @@ function expandArtworksWithExtras(artworks: Artwork[]): Artwork[] {
         extra_images: undefined,
         extra_descriptions: undefined,
         video: undefined,
+        group: bundleGroup,
       })
     }
   }

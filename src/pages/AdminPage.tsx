@@ -204,6 +204,63 @@ function subLabel(s: AdminSubRow) {
   return s.translations.find((t) => t.locale === 'pt-Br')?.name || s.slug
 }
 
+function GroupDisplayRulesCard({ imageCount }: { imageCount: number }) {
+  return (
+    <div className="bg-muted/50 border-border rounded-md border px-3 py-2 text-xs">
+      <p className="text-foreground mb-2 font-medium">Regras dos modos (galeria pública)</p>
+      <ul className="text-muted-foreground list-inside list-disc space-y-1">
+        <li>Mínimo 2 imagens no total (principal + extras) para escolher um modo.</li>
+        <li>Grelha com célula de texto: só com 5 ou 6 imagens no total.</li>
+        <li>Mosaico assimétrico: só com exatamente 5 imagens no total.</li>
+        <li>Mais de 6 imagens: apenas legenda única ou legenda por imagem.</li>
+      </ul>
+      <p className="text-muted-foreground mt-2 border-border border-t pt-2">
+        Total neste grupo:{' '}
+        <span className="text-foreground font-semibold tabular-nums">{imageCount}</span> imagem(ns)
+        (principal + extras).
+      </p>
+    </div>
+  )
+}
+
+function GroupDisplayModeRadios({
+  choices,
+  resolved,
+  onPick,
+  radioName,
+}: {
+  choices: GroupDisplayChoice[]
+  resolved: GroupDisplayType | undefined
+  onPick: (v: GroupDisplayType) => void
+  radioName: string
+}) {
+  return (
+    <fieldset className="grid gap-3">
+      <legend className="text-sm font-medium">Modo de exibição na galeria</legend>
+      <div className="grid gap-3" role="radiogroup" aria-label="Modo de exibição na galeria">
+        {choices.map((opt) => (
+          <label
+            key={opt.value}
+            className="border-input has-[:checked]:border-primary flex cursor-pointer gap-4 rounded-md border p-3 has-[:checked]:bg-accent/40"
+          >
+            <input
+              type="radio"
+              name={radioName}
+              className="mt-1 size-4 shrink-0"
+              checked={resolved === opt.value}
+              onChange={() => onPick(opt.value)}
+            />
+            <span className="min-w-0">
+              <span className="block text-sm font-medium">{opt.title}</span>
+              <span className="text-muted-foreground block text-xs">{opt.hint}</span>
+            </span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  )
+}
+
 export function AdminArtworksPage() {
   const titleId = useId()
   const [list, setList] = useState<Artwork[]>([])
@@ -623,6 +680,18 @@ export function AdminArtworksPage() {
   const nextEditMedia = () =>
     setEditCarouselIndex((i) => (i === editMedia.length - 1 ? 0 : i + 1))
 
+  useEffect(() => {
+    if (!createDraft.hasGroup || createGroupImageCount < 2) return
+    const next = resolveGroupDisplay(createGroupImageCount, createDraft.groupDisplay)
+    setCreateDraft((d) => (d.groupDisplay === next ? d : { ...d, groupDisplay: next }))
+  }, [createDraft.hasGroup, createGroupImageCount])
+
+  useEffect(() => {
+    if (!editOpen || !editHasGroup || editGroupImageCount < 2) return
+    const next = resolveGroupDisplay(editGroupImageCount, form.groupDisplay)
+    setForm((f) => (f.groupDisplay === next ? f : { ...f, groupDisplay: next }))
+  }, [editOpen, editHasGroup, editGroupImageCount])
+
   return (
     <section className="page-content admin-page" aria-labelledby={titleId}>
       <div className="admin-toolbar admin-toolbar--table">
@@ -1008,39 +1077,6 @@ export function AdminArtworksPage() {
                     placeholder="Identificador do grupo"
                   />
                 </div>
-                {createGroupDisplayChoices.length > 0 ? (
-                  <fieldset className="grid gap-4">
-                    <legend className="text-sm font-medium">Tipo de exibição do grupo</legend>
-                    <div className="grid gap-4" role="radiogroup" aria-label="Tipo de exibição do grupo">
-                      {createGroupDisplayChoices.map((opt) => {
-                        const resolved = resolveGroupDisplay(
-                          createGroupImageCount,
-                          createDraft.groupDisplay
-                        )
-                        return (
-                          <label
-                            key={opt.value}
-                            className="border-input has-[:checked]:border-primary flex cursor-pointer gap-4 rounded-md border p-3 has-[:checked]:bg-accent/40"
-                          >
-                            <input
-                              type="radio"
-                              name="create-group-display"
-                              className="mt-1 size-4 shrink-0"
-                              checked={resolved === opt.value}
-                              onChange={() =>
-                                setCreateDraft((d) => ({ ...d, groupDisplay: opt.value }))
-                              }
-                            />
-                            <span className="min-w-0">
-                              <span className="block text-sm font-medium">{opt.title}</span>
-                              <span className="text-muted-foreground block text-xs">{opt.hint}</span>
-                            </span>
-                          </label>
-                        )
-                      })}
-                    </div>
-                  </fieldset>
-                ) : null}
                 <div className="grid gap-4">
                   <span className="text-sm font-medium">Imagens do grupo</span>
                   <Button
@@ -1129,6 +1165,23 @@ export function AdminArtworksPage() {
                   </div>
                 ) : null}
                 </div>
+                <GroupDisplayRulesCard imageCount={createGroupImageCount} />
+                {createGroupImageCount < 2 ? (
+                  <p className="text-muted-foreground text-sm">
+                    Envie a imagem principal e pelo menos uma imagem extra para escolher o modo de
+                    exibição (as opções dependem do número total de imagens).
+                  </p>
+                ) : createGroupDisplayChoices.length > 0 ? (
+                  <GroupDisplayModeRadios
+                    choices={createGroupDisplayChoices}
+                    resolved={resolveGroupDisplay(
+                      createGroupImageCount,
+                      createDraft.groupDisplay
+                    )}
+                    onPick={(v) => setCreateDraft((d) => ({ ...d, groupDisplay: v }))}
+                    radioName="create-group-display"
+                  />
+                ) : null}
               </div>
             ) : null}
             </div>
@@ -1422,42 +1475,6 @@ export function AdminArtworksPage() {
                     placeholder="Identificador do grupo"
                   />
                 </div>
-                {editGroupDisplayChoices.length > 0 ? (
-                  <fieldset className="grid gap-4">
-                    <legend className="text-sm font-medium">Tipo de exibição do grupo</legend>
-                    <div className="grid gap-4" role="radiogroup" aria-label="Tipo de exibição do grupo">
-                      {editGroupDisplayChoices.map((opt) => {
-                        const resolved = resolveGroupDisplay(
-                          editGroupImageCount,
-                          form.groupDisplay
-                        )
-                        return (
-                          <label
-                            key={opt.value}
-                            className="border-input has-[:checked]:border-primary flex cursor-pointer gap-4 rounded-md border p-3 has-[:checked]:bg-accent/40"
-                          >
-                            <input
-                              type="radio"
-                              name="edit-group-display"
-                              className="mt-1 size-4 shrink-0"
-                              checked={resolved === opt.value}
-                              onChange={() =>
-                                setForm((f) => ({
-                                  ...f,
-                                  groupDisplay: opt.value,
-                                }))
-                              }
-                            />
-                            <span className="min-w-0">
-                              <span className="block text-sm font-medium">{opt.title}</span>
-                              <span className="text-muted-foreground block text-xs">{opt.hint}</span>
-                            </span>
-                          </label>
-                        )
-                      })}
-                    </div>
-                  </fieldset>
-                ) : null}
                 <div className="grid gap-2">
                   <span className="text-sm font-medium">Imagens do grupo</span>
                   <Button
@@ -1549,6 +1566,20 @@ export function AdminArtworksPage() {
                   </div>
                 ) : null}
                 </div>
+                <GroupDisplayRulesCard imageCount={editGroupImageCount} />
+                {editGroupImageCount < 2 ? (
+                  <p className="text-muted-foreground text-sm">
+                    Defina a imagem principal e pelo menos uma imagem extra para escolher o modo de
+                    exibição (as opções dependem do número total de imagens).
+                  </p>
+                ) : editGroupDisplayChoices.length > 0 ? (
+                  <GroupDisplayModeRadios
+                    choices={editGroupDisplayChoices}
+                    resolved={resolveGroupDisplay(editGroupImageCount, form.groupDisplay)}
+                    onPick={(v) => setForm((f) => ({ ...f, groupDisplay: v }))}
+                    radioName="edit-group-display"
+                  />
+                ) : null}
               </div>
             ) : null}
             </div>
