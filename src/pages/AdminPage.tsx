@@ -33,7 +33,8 @@ import { ArtworkLazyImage } from '@/components/ArtworkLazyImage'
 import { ArtworkDateField } from '@/components/admin/ArtworkDateField'
 import { ADMIN_LOCALE_OPTIONS } from '@/components/admin/AdminLocaleTabs'
 import { CountryFlag } from 'react-country-flags-lazyload'
-import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronDown, ChevronLeft, ChevronRight, Pencil, Trash2 } from 'lucide-react'
+import { Tooltip } from 'react-tooltip'
 import type {
   Artwork,
   ArtworkCategoryAssignment,
@@ -234,14 +235,10 @@ function formatResolution(a: Artwork): string {
   return formatResolutionObject(a.resolution)
 }
 
-function formatMegabytes(bytes: number | null | undefined): string {
-  if (bytes == null || !Number.isFinite(bytes) || bytes < 0) return '—'
-  const mb = bytes / (1024 * 1024)
-  if (mb < 0.01 && bytes > 0) return '<0,01 MB'
-  return `${mb.toFixed(2).replace('.', ',')} MB`
-}
+const ADMIN_TABLE_COL_COUNT = 11
 
-const ADMIN_TABLE_COL_COUNT = 12
+const ROW_ACTIONS_TOOLTIP_DELAY_SHOW = 400
+const ROW_ACTIONS_TOOLTIP_DELAY_HIDE = 150
 
 function artworkHasMultipleImages(a: Artwork): boolean {
   return (a.extra_images?.length ?? 0) > 0
@@ -256,15 +253,13 @@ function groupColumnLabel(a: Artwork): string {
 
 type AdminGroupImageRow = {
   key: string
-  role: string
   imageUrl: string
   isVideo: boolean
-  resolution: string
-  sizeLabel: string
   imageTitle: string
+  legenda: string
   year: string
-  medium: string
   dimensions: string
+  resolution: string
 }
 
 function rowTitleForLocale(
@@ -278,43 +273,46 @@ function rowTitleForLocale(
   return t || '—'
 }
 
+function adminLegendaSubRowExtra(a: Artwork, index: number, loc: Locale): string {
+  const xcm = a.extraCaptionMedia ?? []
+  const eds = a.extra_descriptions ?? []
+  const m = getLocalized(xcm[index], loc).trim()
+  if (m) return m
+  const d = getLocalized(eds[index], loc).trim()
+  return d || '—'
+}
+
 function buildAdminGroupImageRows(a: Artwork): AdminGroupImageRow[] {
   const rows: AdminGroupImageRow[] = []
   const extras = a.extra_images ?? []
   const loc: Locale = 'pt-Br'
   const year = a.date.slice(0, 4)
   const xt = a.extraTitles ?? []
-  const xcm = a.extraCaptionMedia ?? []
   const xpd = a.extraPhysicalDimensions ?? []
   const xr = a.extraResolutions ?? []
-  const xb = a.extraMediaBytes ?? []
   if (a.image || a.video) {
     rows.push({
       key: `${a.id}__main`,
-      role: 'Principal',
       imageUrl: (a.image || a.video) as string,
       isVideo: Boolean(a.video && !a.image),
-      resolution: formatResolution(a),
-      sizeLabel: formatMegabytes(a.mainMediaBytes),
       imageTitle: a.title.trim() || '—',
+      legenda: adminMediumColumn(a),
       year,
-      medium: getLocalized(a.captionMedium, loc).trim() || '—',
       dimensions: getLocalized(a.physicalDimensions, loc).trim() || '—',
+      resolution: formatResolution(a),
     })
   }
   for (let i = 0; i < extras.length; i++) {
     const imageUrl = extras[i]!
     rows.push({
       key: `${a.id}__extra_${i}`,
-      role: `Extra ${i + 1}`,
       imageUrl,
       isVideo: false,
-      resolution: formatResolutionObject(xr[i]),
-      sizeLabel: formatMegabytes(xb[i]),
       imageTitle: rowTitleForLocale(a.title, xt[i], loc),
+      legenda: adminLegendaSubRowExtra(a, i, loc),
       year,
-      medium: getLocalized(xcm[i], loc).trim() || '—',
       dimensions: getLocalized(xpd[i], loc).trim() || '—',
+      resolution: formatResolutionObject(xr[i]),
     })
   }
   return rows
@@ -434,6 +432,7 @@ function GroupDisplayModeRadios({
 
 export function AdminArtworksPage() {
   const titleId = useId()
+  const rowActionsTooltipId = useId()
   const [list, setList] = useState<Artwork[]>([])
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -979,16 +978,15 @@ export function AdminArtworksPage() {
             <TableHeader>
               <TableRow>
                 <TableHead className="w-10 px-1" aria-label="Expandir grupo" />
-                <TableHead className="w-[72px]">Imagem</TableHead>
+                <TableHead className="w-[72px]"></TableHead>
                 <TableHead>Título</TableHead>
+                <TableHead className="max-w-[min(280px,28vw)]">Legenda</TableHead>
                 <TableHead>Grupo</TableHead>
-                <TableHead className="whitespace-nowrap">Resolução</TableHead>
-                <TableHead className="whitespace-nowrap">Tamanho</TableHead>
                 <TableHead>Categoria</TableHead>
                 <TableHead>Subcategoria</TableHead>
                 <TableHead>Ano</TableHead>
-                <TableHead className="max-w-[min(280px,28vw)]">Legenda</TableHead>
                 <TableHead className="max-w-[min(200px,22vw)]">Dimensões</TableHead>
+                <TableHead className="whitespace-nowrap">Resolução</TableHead>
                 <TableHead className="w-[1%] text-right whitespace-nowrap">Ações</TableHead>
               </TableRow>
             </TableHeader>
@@ -1005,13 +1003,10 @@ export function AdminArtworksPage() {
                     <Skeleton className="h-4 w-32" />
                   </TableCell>
                   <TableCell>
-                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-4 w-48 max-w-[min(280px,28vw)]" />
                   </TableCell>
                   <TableCell>
                     <Skeleton className="h-4 w-24" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-4 w-14" />
                   </TableCell>
                   <TableCell>
                     <Skeleton className="h-4 w-28" />
@@ -1023,15 +1018,15 @@ export function AdminArtworksPage() {
                     <Skeleton className="h-4 w-10" />
                   </TableCell>
                   <TableCell>
-                    <Skeleton className="h-4 w-48 max-w-[min(280px,28vw)]" />
-                  </TableCell>
-                  <TableCell>
                     <Skeleton className="h-4 w-24 max-w-[min(200px,22vw)]" />
                   </TableCell>
                   <TableCell>
-                    <div className="flex flex-wrap justify-end gap-2">
-                      <Skeleton className="h-8 w-16" />
-                      <Skeleton className="h-8 w-16" />
+                    <Skeleton className="h-4 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex justify-end gap-1.5">
+                      <Skeleton className="size-9 shrink-0 rounded-full" />
+                      <Skeleton className="size-9 shrink-0 rounded-full" />
                     </div>
                   </TableCell>
                 </TableRow>
@@ -1044,16 +1039,15 @@ export function AdminArtworksPage() {
             <TableHeader>
               <TableRow>
                 <TableHead className="w-10 px-1" aria-label="Expandir grupo" />
-                <TableHead className="w-[72px]">Imagem</TableHead>
+                <TableHead className="w-[72px]"></TableHead>
                 <TableHead>Título</TableHead>
+                <TableHead className="max-w-[min(280px,28vw)]">Legenda</TableHead>
                 <TableHead>Grupo</TableHead>
-                <TableHead className="whitespace-nowrap">Resolução</TableHead>
-                <TableHead className="whitespace-nowrap">Tamanho</TableHead>
                 <TableHead>Categoria</TableHead>
                 <TableHead>Subcategoria</TableHead>
                 <TableHead>Ano</TableHead>
-                <TableHead className="max-w-[min(280px,28vw)]">Legenda</TableHead>
                 <TableHead className="max-w-[min(200px,22vw)]">Dimensões</TableHead>
+                <TableHead className="whitespace-nowrap">Resolução</TableHead>
                 <TableHead className="w-[1%] text-right whitespace-nowrap">Ações</TableHead>
               </TableRow>
             </TableHeader>
@@ -1115,14 +1109,11 @@ export function AdminArtworksPage() {
                         )}
                       </TableCell>
                       <TableCell className="max-w-[220px] font-medium">{a.title || a.id}</TableCell>
+                      <TableCell className="text-muted-foreground max-w-[min(280px,28vw)] text-sm break-words">
+                        {adminMediumColumn(a)}
+                      </TableCell>
                       <TableCell className="max-w-[min(160px,20vw)] text-sm break-words">
                         {groupColumnLabel(a)}
-                      </TableCell>
-                      <TableCell className="max-w-[140px] text-sm whitespace-normal">
-                        {formatResolution(a)}
-                      </TableCell>
-                      <TableCell className="text-sm tabular-nums whitespace-nowrap">
-                        {formatMegabytes(a.mainMediaBytes)}
                       </TableCell>
                       <TableCell className="max-w-[min(200px,22vw)] text-sm break-words">
                         {cat}
@@ -1131,24 +1122,37 @@ export function AdminArtworksPage() {
                         {sub}
                       </TableCell>
                       <TableCell>{a.date.slice(0, 4)}</TableCell>
-                      <TableCell className="text-muted-foreground max-w-[min(280px,28vw)] truncate whitespace-nowrap">
-                        {adminMediumColumn(a)}
-                      </TableCell>
                       <TableCell className="text-muted-foreground max-w-[min(200px,22vw)] text-sm break-words">
                         {adminDimensionsColumn(a)}
                       </TableCell>
+                      <TableCell className="max-w-[140px] text-sm whitespace-normal">
+                        {formatResolution(a)}
+                      </TableCell>
                       <TableCell className="text-right">
-                        <div className="flex flex-wrap justify-end gap-2">
-                          <Button type="button" variant="outline" size="sm" onClick={() => openEdit(a)}>
-                            Editar
+                        <div className="flex justify-end gap-1.5">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            className="size-9 shrink-0 rounded-full"
+                            aria-label="Editar"
+                            data-tooltip-id={rowActionsTooltipId}
+                            data-tooltip-content="Editar"
+                            onClick={() => openEdit(a)}
+                          >
+                            <Pencil className="size-4" aria-hidden />
                           </Button>
                           <Button
                             type="button"
-                            variant="destructive"
-                            size="sm"
+                            variant="outline"
+                            size="icon"
+                            className="size-9 shrink-0 rounded-full border-destructive/40 text-destructive hover:bg-destructive/10"
+                            aria-label="Excluir"
+                            data-tooltip-id={rowActionsTooltipId}
+                            data-tooltip-content="Excluir"
                             onClick={() => void remove(a.id)}
                           >
-                            Excluir
+                            <Trash2 className="size-4" aria-hidden />
                           </Button>
                         </div>
                       </TableCell>
@@ -1165,21 +1169,18 @@ export function AdminArtworksPage() {
                             <Table>
                               <TableHeader>
                                 <TableRow>
-                                  <TableHead className="w-[100px]">Papel</TableHead>
-                                  <TableHead className="w-[72px]">Imagem</TableHead>
-                                  <TableHead className="whitespace-nowrap">Resolução</TableHead>
-                                  <TableHead className="whitespace-nowrap">Tamanho</TableHead>
+                                  <TableHead className="w-[72px]"></TableHead>
                                   <TableHead className="min-w-[120px]">Título</TableHead>
-                                  <TableHead className="w-14">Ano</TableHead>
                                   <TableHead className="min-w-[160px]">Legenda</TableHead>
+                                  <TableHead className="w-14">Ano</TableHead>
                                   <TableHead className="min-w-[120px]">Dimensões</TableHead>
+                                  <TableHead className="whitespace-nowrap">Resolução</TableHead>
                                 </TableRow>
                               </TableHeader>
                               <TableBody>
                                 {groupRows.map((row) => (
                                   <TableRow key={row.key}>
-                                    <TableCell className="text-sm font-medium">{row.role}</TableCell>
-                                    <TableCell>
+                                    <TableCell className="w-[72px]">
                                       {row.isVideo ? (
                                         <span className="text-muted-foreground flex size-12 items-center justify-center rounded border text-[9px]">
                                           vídeo
@@ -1198,21 +1199,18 @@ export function AdminArtworksPage() {
                                         </span>
                                       )}
                                     </TableCell>
-                                    <TableCell className="text-sm whitespace-normal">
-                                      {row.resolution}
-                                    </TableCell>
-                                    <TableCell className="text-sm tabular-nums whitespace-nowrap">
-                                      {row.sizeLabel}
-                                    </TableCell>
-                                    <TableCell className="max-w-[min(200px,24vw)] text-sm break-words">
+                                    <TableCell className="max-w-[min(200px,24vw)] text-sm font-medium break-words">
                                       {row.imageTitle}
                                     </TableCell>
-                                    <TableCell className="text-sm tabular-nums">{row.year}</TableCell>
                                     <TableCell className="text-muted-foreground max-w-[min(320px,36vw)] text-sm break-words">
-                                      {row.medium}
+                                      {row.legenda}
                                     </TableCell>
+                                    <TableCell className="text-sm tabular-nums">{row.year}</TableCell>
                                     <TableCell className="text-muted-foreground max-w-[min(200px,28vw)] text-sm break-words">
                                       {row.dimensions}
+                                    </TableCell>
+                                    <TableCell className="text-sm whitespace-normal">
+                                      {row.resolution}
                                     </TableCell>
                                   </TableRow>
                                 ))}
@@ -1234,6 +1232,13 @@ export function AdminArtworksPage() {
           </p>
         ) : null}
       </div>
+
+      <Tooltip
+        id={rowActionsTooltipId}
+        className="z-[200] rounded-md px-2 py-1 text-xs"
+        delayShow={ROW_ACTIONS_TOOLTIP_DELAY_SHOW}
+        delayHide={ROW_ACTIONS_TOOLTIP_DELAY_HIDE}
+      />
 
       <Dialog
         open={createOpen}
