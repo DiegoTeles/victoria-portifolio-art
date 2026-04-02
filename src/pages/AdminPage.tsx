@@ -116,6 +116,28 @@ function padExtraDescriptions(urls: string[], descs: LocalizedText[]): Localized
   }))
 }
 
+function alignExtraResolutionsForSave(
+  urls: string[],
+  list: (Artwork['resolution'] | undefined | null)[]
+): (Artwork['resolution'] | null)[] {
+  return urls.map((_, i) => {
+    const r = list[i]
+    if (r && r.width > 0 && r.height > 0) return r
+    return null
+  })
+}
+
+function alignExtraMediaBytesForSave(
+  urls: string[],
+  list: (number | undefined | null)[]
+): (number | null)[] {
+  return urls.map((_, i) => {
+    const b = list[i]
+    if (b != null && Number.isFinite(Number(b))) return Math.max(0, Math.floor(Number(b)))
+    return null
+  })
+}
+
 function slugId(title: string) {
   const base = title
     .trim()
@@ -145,6 +167,8 @@ const emptyForm = (): Partial<Artwork> & { order_index: number } => ({
   extraTitles: [],
   extraCaptionMedia: [],
   extraPhysicalDimensions: [],
+  extraResolutions: [],
+  extraMediaBytes: [],
 })
 
 type CreateDraft = {
@@ -164,6 +188,8 @@ type CreateDraft = {
   extraTitles: LocalizedText[]
   extraCaptionMedia: LocalizedText[]
   extraPhysicalDimensions: LocalizedText[]
+  extraResolutions: (Artwork['resolution'] | undefined)[]
+  extraMediaBytes: (number | undefined)[]
 }
 
 const emptyCreate = (): CreateDraft => ({
@@ -183,6 +209,8 @@ const emptyCreate = (): CreateDraft => ({
   extraTitles: [],
   extraCaptionMedia: [],
   extraPhysicalDimensions: [],
+  extraResolutions: [],
+  extraMediaBytes: [],
 })
 
 type PendingExtra = { id: string; preview: string; name: string }
@@ -193,14 +221,17 @@ function revokePendingList(list: PendingExtra[]) {
   }
 }
 
-function formatResolution(a: Artwork): string {
-  const r = a.resolution
+function formatResolutionObject(r: Artwork['resolution'] | null | undefined): string {
   if (!r?.width || !r?.height) return '—'
   const mp =
     r.megapixels != null && Number.isFinite(r.megapixels)
       ? ` (${r.megapixels} MP)`
       : ''
   return `${r.width}×${r.height}${mp}`
+}
+
+function formatResolution(a: Artwork): string {
+  return formatResolutionObject(a.resolution)
 }
 
 function formatMegabytes(bytes: number | null | undefined): string {
@@ -255,6 +286,8 @@ function buildAdminGroupImageRows(a: Artwork): AdminGroupImageRow[] {
   const xt = a.extraTitles ?? []
   const xcm = a.extraCaptionMedia ?? []
   const xpd = a.extraPhysicalDimensions ?? []
+  const xr = a.extraResolutions ?? []
+  const xb = a.extraMediaBytes ?? []
   if (a.image || a.video) {
     rows.push({
       key: `${a.id}__main`,
@@ -276,8 +309,8 @@ function buildAdminGroupImageRows(a: Artwork): AdminGroupImageRow[] {
       role: `Extra ${i + 1}`,
       imageUrl,
       isVideo: false,
-      resolution: '—',
-      sizeLabel: '—',
+      resolution: formatResolutionObject(xr[i]),
+      sizeLabel: formatMegabytes(xb[i]),
       imageTitle: rowTitleForLocale(a.title, xt[i], loc),
       year,
       medium: getLocalized(xcm[i], loc).trim() || '—',
@@ -542,19 +575,23 @@ export function AdminArtworksPage() {
     }
   }
 
-  const uploadToBlob = async (file: File) => {
-    const pathname = `portfolio/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`
+  const uploadExtraGroupFile = async (file: File) => {
+    let measured: Awaited<ReturnType<typeof measureMainMediaFile>> = null
     try {
-      const blob = await upload(pathname, file, {
-        access: 'private',
-        handleUploadUrl: '/api/admin/blob',
-        multipart: file.size > 4 * 1024 * 1024,
-      })
-      return blob.url
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : 'Falha no upload'
-      toast.error(msg)
-      throw e
+      measured = await measureMainMediaFile(file)
+    } catch {
+      measured = null
+    }
+    const pathname = `portfolio/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`
+    const blob = await upload(pathname, file, {
+      access: 'private',
+      handleUploadUrl: '/api/admin/blob',
+      multipart: file.size > 4 * 1024 * 1024,
+    })
+    return {
+      url: blob.url,
+      resolution: measured ?? undefined,
+      bytes: file.size,
     }
   }
 
@@ -567,7 +604,7 @@ export function AdminArtworksPage() {
       setCreatePendingExtras((prev) => [...prev, { id, preview, name: file.name }])
       void (async () => {
         try {
-          const url = await uploadToBlob(file)
+          const { url, resolution, bytes } = await uploadExtraGroupFile(file)
           setCreateDraft((d) => ({
             ...d,
             extra_images: [...d.extra_images, url],
@@ -575,6 +612,8 @@ export function AdminArtworksPage() {
             extraTitles: [...d.extraTitles, emptyLocales()],
             extraCaptionMedia: [...d.extraCaptionMedia, emptyLocales()],
             extraPhysicalDimensions: [...d.extraPhysicalDimensions, emptyLocales()],
+            extraResolutions: [...d.extraResolutions, resolution],
+            extraMediaBytes: [...d.extraMediaBytes, bytes],
           }))
           toast.success('Imagem adicionada ao grupo.')
         } catch {
@@ -597,7 +636,7 @@ export function AdminArtworksPage() {
       setEditPendingExtras((prev) => [...prev, { id, preview, name: file.name }])
       void (async () => {
         try {
-          const url = await uploadToBlob(file)
+          const { url, resolution, bytes } = await uploadExtraGroupFile(file)
           setForm((f) => ({
             ...f,
             extra_images: [...(f.extra_images ?? []), url],
@@ -605,6 +644,8 @@ export function AdminArtworksPage() {
             extraTitles: [...(f.extraTitles ?? []), emptyLocales()],
             extraCaptionMedia: [...(f.extraCaptionMedia ?? []), emptyLocales()],
             extraPhysicalDimensions: [...(f.extraPhysicalDimensions ?? []), emptyLocales()],
+            extraResolutions: [...(f.extraResolutions ?? []), resolution],
+            extraMediaBytes: [...(f.extraMediaBytes ?? []), bytes],
           }))
           toast.success('Imagem adicionada ao grupo.')
         } catch {
@@ -666,6 +707,12 @@ export function AdminArtworksPage() {
           : [],
         extraPhysicalDimensions: createDraft.hasGroup
           ? padExtraDescriptions(ex, createDraft.extraPhysicalDimensions)
+          : [],
+        extraResolutions: createDraft.hasGroup
+          ? alignExtraResolutionsForSave(ex, createDraft.extraResolutions)
+          : [],
+        extraMediaBytes: createDraft.hasGroup
+          ? alignExtraMediaBytesForSave(ex, createDraft.extraMediaBytes)
           : [],
         categoryAssignments: createCategoryAssignments.filter((x) => x.categoryId.trim()),
         resolution: createDraft.resolution,
@@ -738,6 +785,8 @@ export function AdminArtworksPage() {
       extraTitles: padExtraDescriptions(ex, a.extraTitles ?? []),
       extraCaptionMedia: padExtraDescriptions(ex, a.extraCaptionMedia ?? []),
       extraPhysicalDimensions: padExtraDescriptions(ex, a.extraPhysicalDimensions ?? []),
+      extraResolutions: ex.map((_, i) => a.extraResolutions?.[i]),
+      extraMediaBytes: ex.map((_, i) => a.extraMediaBytes?.[i]),
     })
     const assigns = (a.categoryAssignments ?? []).map((x) => ({
       categoryId: x.categoryId,
@@ -802,6 +851,12 @@ export function AdminArtworksPage() {
           : [],
         extraPhysicalDimensions: editHasGroup
           ? padExtraDescriptions(ex, form.extraPhysicalDimensions ?? [])
+          : [],
+        extraResolutions: editHasGroup
+          ? alignExtraResolutionsForSave(ex, form.extraResolutions ?? [])
+          : [],
+        extraMediaBytes: editHasGroup
+          ? alignExtraMediaBytesForSave(ex, form.extraMediaBytes ?? [])
           : [],
         categoryAssignments: editCategoryAssignments.filter((x) => x.categoryId.trim()),
       }
@@ -1460,6 +1515,8 @@ export function AdminArtworksPage() {
                     extraTitles: checked ? d.extraTitles : [],
                     extraCaptionMedia: checked ? d.extraCaptionMedia : [],
                     extraPhysicalDimensions: checked ? d.extraPhysicalDimensions : [],
+                    extraResolutions: checked ? d.extraResolutions : [],
+                    extraMediaBytes: checked ? d.extraMediaBytes : [],
                     groupDisplay: checked ? d.groupDisplay : undefined,
                   }))
                 }}
@@ -1526,6 +1583,8 @@ export function AdminArtworksPage() {
                                   extraPhysicalDimensions: d.extraPhysicalDimensions.filter(
                                     (_, i) => i !== idx
                                   ),
+                                  extraResolutions: d.extraResolutions.filter((_, i) => i !== idx),
+                                  extraMediaBytes: d.extraMediaBytes.filter((_, i) => i !== idx),
                                 }))
                               }
                             >
@@ -1943,6 +2002,8 @@ export function AdminArtworksPage() {
                       extraTitles: [],
                       extraCaptionMedia: [],
                       extraPhysicalDimensions: [],
+                      extraResolutions: [],
+                      extraMediaBytes: [],
                       groupDisplay: undefined,
                     }))
                   }
@@ -2017,6 +2078,12 @@ export function AdminArtworksPage() {
                                     (_, i) => i !== idx
                                   ),
                                   extraPhysicalDimensions: (f.extraPhysicalDimensions ?? []).filter(
+                                    (_, i) => i !== idx
+                                  ),
+                                  extraResolutions: (f.extraResolutions ?? []).filter(
+                                    (_, i) => i !== idx
+                                  ),
+                                  extraMediaBytes: (f.extraMediaBytes ?? []).filter(
                                     (_, i) => i !== idx
                                   ),
                                 }))

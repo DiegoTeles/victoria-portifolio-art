@@ -49,6 +49,8 @@ export default async function handler(req, res) {
           extra_titles = ${JSON.stringify(p.extra_titles)}::jsonb,
           extra_caption_media = ${JSON.stringify(p.extra_caption_media)}::jsonb,
           extra_physical_dimensions = ${JSON.stringify(p.extra_physical_dimensions)}::jsonb,
+          extra_resolutions = ${JSON.stringify(p.extra_resolutions)}::jsonb,
+          extra_media_bytes = ${JSON.stringify(p.extra_media_bytes)}::jsonb,
           updated_at = NOW()
         WHERE id = ${id}
       `
@@ -63,7 +65,8 @@ export default async function handler(req, res) {
       const rows = await sql`
         SELECT id, order_index, title, artwork_date, description, caption_medium, physical_dimensions,
                image_url, video_url, group_key, group_display, types, info, resolution, main_media_bytes,
-               extra_images, extra_descriptions, extra_titles, extra_caption_media, extra_physical_dimensions
+               extra_images, extra_descriptions, extra_titles, extra_caption_media, extra_physical_dimensions,
+               extra_resolutions, extra_media_bytes
         FROM artworks WHERE id = ${id}
       `
       let cats = []

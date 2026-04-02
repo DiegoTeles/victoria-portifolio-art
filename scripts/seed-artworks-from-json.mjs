@@ -49,12 +49,15 @@ for (const item of items) {
   const extra_physical_dimensions = Array.isArray(item.extraPhysicalDimensions)
     ? item.extraPhysicalDimensions
     : []
+  const extra_resolutions = Array.isArray(item.extraResolutions) ? item.extraResolutions : []
+  const extra_media_bytes = Array.isArray(item.extraMediaBytes) ? item.extraMediaBytes : []
 
   await sql`
     INSERT INTO artworks (
       id, order_index, title, artwork_date, description, caption_medium, physical_dimensions,
       image_url, video_url, group_key, group_display, types, info, resolution, main_media_bytes,
-      extra_images, extra_descriptions, extra_titles, extra_caption_media, extra_physical_dimensions
+      extra_images, extra_descriptions, extra_titles, extra_caption_media, extra_physical_dimensions,
+      extra_resolutions, extra_media_bytes
     ) VALUES (
       ${id},
       ${order_index},
@@ -75,7 +78,9 @@ for (const item of items) {
       ${JSON.stringify(extra_descriptions)}::jsonb,
       ${JSON.stringify(extra_titles)}::jsonb,
       ${JSON.stringify(extra_caption_media)}::jsonb,
-      ${JSON.stringify(extra_physical_dimensions)}::jsonb
+      ${JSON.stringify(extra_physical_dimensions)}::jsonb,
+      ${JSON.stringify(extra_resolutions)}::jsonb,
+      ${JSON.stringify(extra_media_bytes)}::jsonb
     )
     ON CONFLICT (id) DO UPDATE SET
       order_index = EXCLUDED.order_index,
@@ -97,6 +102,8 @@ for (const item of items) {
       extra_titles = EXCLUDED.extra_titles,
       extra_caption_media = EXCLUDED.extra_caption_media,
       extra_physical_dimensions = EXCLUDED.extra_physical_dimensions,
+      extra_resolutions = EXCLUDED.extra_resolutions,
+      extra_media_bytes = EXCLUDED.extra_media_bytes,
       updated_at = NOW()
   `
   console.log('ok', id)

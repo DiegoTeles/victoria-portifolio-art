@@ -47,4 +47,8 @@ await applySqlFile(
   'db/migration-artwork-caption-parts.sql',
   'Campos de legenda estruturada (meio, dimensões físicas, extras).'
 )
+await applySqlFile(
+  'db/migration-extra-image-media-meta.sql',
+  'Resolução e tamanho em bytes por imagem extra.'
+)
 console.log('Concluído.')

@@ -26,7 +26,8 @@ export default async function handler(req, res) {
         INSERT INTO artworks (
           id, order_index, title, artwork_date, description, caption_medium, physical_dimensions,
           image_url, video_url, group_key, group_display, types, info, resolution, main_media_bytes,
-          extra_images, extra_descriptions, extra_titles, extra_caption_media, extra_physical_dimensions
+          extra_images, extra_descriptions, extra_titles, extra_caption_media, extra_physical_dimensions,
+          extra_resolutions, extra_media_bytes
         ) VALUES (
           ${p.id},
           ${p.order_index},
@@ -47,7 +48,9 @@ export default async function handler(req, res) {
           ${JSON.stringify(p.extra_descriptions)}::jsonb,
           ${JSON.stringify(p.extra_titles)}::jsonb,
           ${JSON.stringify(p.extra_caption_media)}::jsonb,
-          ${JSON.stringify(p.extra_physical_dimensions)}::jsonb
+          ${JSON.stringify(p.extra_physical_dimensions)}::jsonb,
+          ${JSON.stringify(p.extra_resolutions)}::jsonb,
+          ${JSON.stringify(p.extra_media_bytes)}::jsonb
         )
       `
       if (body.categoryAssignments !== undefined || body.categories !== undefined) {
@@ -62,7 +65,8 @@ export default async function handler(req, res) {
       const rows = await sql`
         SELECT id, order_index, title, artwork_date, description, caption_medium, physical_dimensions,
                image_url, video_url, group_key, group_display, types, info, resolution, main_media_bytes,
-               extra_images, extra_descriptions, extra_titles, extra_caption_media, extra_physical_dimensions
+               extra_images, extra_descriptions, extra_titles, extra_caption_media, extra_physical_dimensions,
+               extra_resolutions, extra_media_bytes
         FROM artworks WHERE id = ${p.id}
       `
       let cats = []

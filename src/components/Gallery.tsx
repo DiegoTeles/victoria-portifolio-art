@@ -77,10 +77,14 @@ function expandArtworksWithExtras(artworks: Artwork[]): Artwork[] {
     }
     const bundleGroup = a.group ?? virtualBundleGroupId(a.id)
     const ed = a.extra_descriptions ?? []
+    const xr = a.extraResolutions ?? []
+    const xb = a.extraMediaBytes ?? []
     out.push({
       ...a,
       extra_images: undefined,
       extra_descriptions: undefined,
+      extraResolutions: undefined,
+      extraMediaBytes: undefined,
       group: bundleGroup,
     })
     for (let i = 0; i < extras.length; i++) {
@@ -89,8 +93,12 @@ function expandArtworksWithExtras(artworks: Artwork[]): Artwork[] {
         id: `${a.id}__extra_${i}`,
         image: extras[i]!,
         description: ed[i] ?? {},
+        resolution: xr[i],
+        mainMediaBytes: xb[i],
         extra_images: undefined,
         extra_descriptions: undefined,
+        extraResolutions: undefined,
+        extraMediaBytes: undefined,
         video: undefined,
         group: bundleGroup,
       })

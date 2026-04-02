@@ -54,6 +54,8 @@ export interface Artwork {
   extraTitles?: LocalizedText[]
   extraCaptionMedia?: LocalizedText[]
   extraPhysicalDimensions?: LocalizedText[]
+  extraResolutions?: (ArtworkResolution | undefined)[]
+  extraMediaBytes?: (number | undefined)[]
   categoryAssignments?: ArtworkCategoryAssignment[]
 }
 

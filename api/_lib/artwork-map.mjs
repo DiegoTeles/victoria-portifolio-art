@@ -28,6 +28,57 @@ function normalizeLocalizedObject(raw) {
   return { ...raw }
 }
 
+function inferResolutionTier(width, height) {
+  const minEdge = Math.min(width, height)
+  const mp = (width * height) / 1_000_000
+  if (minEdge >= 2000 || mp >= 4) return 'high'
+  if (minEdge >= 1200 || mp >= 1.5) return 'medium'
+  return 'low'
+}
+
+function normalizeExtraResolutions(raw, extraImagesCount) {
+  const arr = Array.isArray(raw) ? raw : []
+  const out = []
+  for (let i = 0; i < extraImagesCount; i++) {
+    const o = arr[i]
+    if (o && typeof o === 'object' && !Array.isArray(o)) {
+      const w = Number(o.width)
+      const h = Number(o.height)
+      if (w > 0 && h > 0) {
+        const megapixels = Number.isFinite(Number(o.megapixels))
+          ? Number(o.megapixels)
+          : Math.round(((w * h) / 1_000_000) * 100) / 100
+        const tier =
+          o.tier === 'high' || o.tier === 'medium' || o.tier === 'low'
+            ? o.tier
+            : inferResolutionTier(w, h)
+        out.push({
+          width: w,
+          height: h,
+          megapixels,
+          tier,
+          repo: o.repo ?? null,
+        })
+        continue
+      }
+    }
+    out.push(null)
+  }
+  return out
+}
+
+function normalizeExtraMediaBytesArr(raw, extraImagesCount) {
+  const arr = Array.isArray(raw) ? raw : []
+  const out = []
+  for (let i = 0; i < extraImagesCount; i++) {
+    const v = arr[i]
+    out.push(
+      v != null && Number.isFinite(Number(v)) ? Math.max(0, Math.floor(Number(v))) : null
+    )
+  }
+  return out
+}
+
 export function rowToArtwork(row, categoryAssignments) {
   const d = row.artwork_date
   const dateStr =
@@ -43,6 +94,11 @@ export function rowToArtwork(row, categoryAssignments) {
   const extra_caption_media = normalizeExtraDescriptions(row.extra_caption_media, extra_images.length)
   const extra_physical_dimensions = normalizeExtraDescriptions(
     row.extra_physical_dimensions,
+    extra_images.length
+  )
+  const extra_resolutions = normalizeExtraResolutions(row.extra_resolutions, extra_images.length)
+  const extra_media_bytes_arr = normalizeExtraMediaBytesArr(
+    row.extra_media_bytes,
     extra_images.length
   )
   const base = {
@@ -69,6 +125,8 @@ export function rowToArtwork(row, categoryAssignments) {
     extraTitles: extra_titles,
     extraCaptionMedia: extra_caption_media,
     extraPhysicalDimensions: extra_physical_dimensions,
+    extraResolutions: extra_resolutions.map((x) => x ?? undefined),
+    extraMediaBytes: extra_media_bytes_arr.map((x) => (x != null ? x : undefined)),
   }
   if (categoryAssignments !== undefined) {
     base.categoryAssignments = categoryAssignments
@@ -114,6 +172,14 @@ export function bodyToInsertPayload(body) {
     body.extraPhysicalDimensions ?? body.extra_physical_dimensions,
     extra_images.length
   )
+  const extra_resolutions = normalizeExtraResolutions(
+    body.extraResolutions ?? body.extra_resolutions,
+    extra_images.length
+  )
+  const extra_media_bytes = normalizeExtraMediaBytesArr(
+    body.extraMediaBytes ?? body.extra_media_bytes,
+    extra_images.length
+  )
 
   return {
     id: String(body.id || '').trim(),
@@ -138,5 +204,7 @@ export function bodyToInsertPayload(body) {
     extra_titles,
     extra_caption_media,
     extra_physical_dimensions,
+    extra_resolutions,
+    extra_media_bytes,
   }
 }
