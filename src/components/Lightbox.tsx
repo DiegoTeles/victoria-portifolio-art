@@ -3,7 +3,7 @@ import ImageZoom from 'react-image-zooom'
 import type { Artwork } from '../data/artworks'
 import type { Locale } from '../data/artworks'
 import { getLocalized } from '../data/artworks'
-import { getArtworkImageSrc } from '@/lib/artworkImageUrl'
+import { getArtworkImageSrc, getArtworkVideoSrc } from '@/lib/artworkImageUrl'
 import { useLocale } from '../i18n/LocaleContext'
 import { formatArtworkTypes } from '../i18n/formatArtworkTypes'
 import { formatCaptionText, plainCaptionText } from '../utils/formatCaptionText'
@@ -28,6 +28,11 @@ export function Lightbox({
   const [index, setIndex] = useState(initialIndex)
   const containerRef = useRef<HTMLDivElement>(null)
   const [rasterReady, setRasterReady] = useState(false)
+
+  useEffect(() => {
+    const max = Math.max(0, artworks.length - 1)
+    setIndex(Math.min(Math.max(0, initialIndex), max))
+  }, [initialIndex, artworks.length])
 
   const current = artworks[index]
   const hasPrev = index > 0
@@ -132,7 +137,7 @@ export function Lightbox({
                   { once: true }
                 )
               }}
-              src={current.video}
+              src={getArtworkVideoSrc(current.video)}
               poster={current.image ? getArtworkImageSrc(current) : undefined}
               controls
               preload="auto"

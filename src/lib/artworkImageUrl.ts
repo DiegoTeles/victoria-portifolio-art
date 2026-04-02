@@ -25,6 +25,27 @@ export function getArtworkImageSrc(artwork: ArtworkImageLike): string {
   return `/${raw}`
 }
 
+export function getArtworkVideoSrc(video: string | null | undefined): string {
+  const raw = typeof video === 'string' ? video.trim() : ''
+  if (!raw) return ''
+  if (raw.startsWith('blob:')) return raw
+  if (raw.startsWith('/api/')) return apiUrl(raw)
+  if (raw.startsWith('http://') || raw.startsWith('https://')) {
+    try {
+      const parsed = new URL(raw)
+      if (parsed.pathname.startsWith('/api/')) {
+        return apiUrl(`${parsed.pathname}${parsed.search}`)
+      }
+    } catch {
+      return raw
+    }
+    return raw
+  }
+  if (raw.startsWith('//')) return `https:${raw}`
+  if (raw.startsWith('/')) return raw
+  return `/${raw}`
+}
+
 export function getAbsoluteArtworkImageUrl(artwork: ArtworkImageLike): string {
   const src = getArtworkImageSrc(artwork)
   if (src.startsWith('http://') || src.startsWith('https://')) return src

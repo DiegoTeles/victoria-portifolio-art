@@ -2,7 +2,7 @@ import { useRef, useCallback, useEffect, useState } from 'react'
 import type { Artwork } from '../data/artworks'
 import type { Locale } from '../data/artworks'
 import { getLocalized } from '../data/artworks'
-import { getArtworkImageSrc } from '@/lib/artworkImageUrl'
+import { getArtworkImageSrc, getArtworkVideoSrc } from '@/lib/artworkImageUrl'
 import { formatCaptionText, plainCaptionText } from '../utils/formatCaptionText'
 import { captureVideoPoster } from '../utils/videoPoster'
 import { ArtworkInfoIcon } from './ArtworkInfoIcon'
@@ -60,7 +60,7 @@ export function ArtworkCard({ artwork, locale, onSelect }: Props) {
                 ) : null}
                 <video
                   ref={videoRef}
-                  src={artwork.video}
+                  src={getArtworkVideoSrc(artwork.video)}
                   poster={artwork.image ? getArtworkImageSrc(artwork) : undefined}
                   muted
                   loop

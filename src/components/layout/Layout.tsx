@@ -6,8 +6,6 @@ import { useLocale } from '../../i18n/LocaleContext'
 import { LocaleSelector } from '../LocaleSelector'
 import { ThemeToggle } from '../ThemeToggle'
 
-const GALLERY_TYPES = ['drawing-painting', 'photography', 'digital-art', 'movies'] as const
-
 type PublicCategory = {
   id: string
   slug: string
@@ -60,13 +58,6 @@ export function Layout() {
     setDrawerOpen(false)
   }, [location.pathname])
 
-  const typeKeys = {
-    'drawing-painting': 'typeDrawingPainting',
-    'photography': 'typePhotography',
-    'digital-art': 'typeDigitalArt',
-    'movies': 'typeMovies',
-  } as const
-
   return (
     <div className="layout">
       <header className="header">
@@ -74,26 +65,9 @@ export function Layout() {
           Victória Maria
         </Link>
         <nav className="header-nav-center">
-          <div className="nav-item-with-dropdown">
-            <NavLink to="/" className="nav-link">
-              {t('navHome')}
-            </NavLink>
-            <div className="nav-submenu" role="menu">
-              {GALLERY_TYPES.map((type) => (
-                <Link
-                  key={type}
-                  to={type === 'movies' ? '/movies' : `/?gallery=${encodeURIComponent(type)}`}
-                  className="nav-submenu-link"
-                  role="menuitem"
-                >
-                  {t(typeKeys[type])}
-                </Link>
-              ))}
-            </div>
-          </div>
           {cmsCategories.length > 0 ? (
             <div className="nav-item-with-dropdown">
-              <span className="nav-link nav-dropdown-label">{t('navCategories')}</span>
+              <span className="nav-link nav-dropdown-label">{t('navGallery')}</span>
               <div className="nav-submenu nav-submenu--categories" role="menu">
                 {cmsCategories.map((c) => (
                   <div key={c.id} className="nav-category-flyout">
@@ -125,7 +99,11 @@ export function Layout() {
                 ))}
               </div>
             </div>
-          ) : null}
+          ) : (
+            <NavLink to="/" className="nav-link">
+              {t('navGallery')}
+            </NavLink>
+          )}
           <NavLink to="/sobre" className="nav-link">
             {t('navAbout')}
           </NavLink>
@@ -172,26 +150,9 @@ export function Layout() {
               </svg>
             </button>
             <nav className="drawer-nav">
-              <div className="drawer-gallery-block">
-                <NavLink to="/" className="drawer-link" onClick={() => setDrawerOpen(false)}>
-                  {t('navHome')}
-                </NavLink>
-                <div className="drawer-submenu">
-                  {GALLERY_TYPES.map((type) => (
-                    <Link
-                      key={type}
-                      to={type === 'movies' ? '/movies' : `/?gallery=${encodeURIComponent(type)}`}
-                      className="drawer-submenu-link"
-                      onClick={() => setDrawerOpen(false)}
-                    >
-                      {t(typeKeys[type])}
-                    </Link>
-                  ))}
-                </div>
-              </div>
               {cmsCategories.length > 0 ? (
                 <div className="drawer-gallery-block">
-                  <p className="drawer-subsection-title">{t('navCategories')}</p>
+                  <p className="drawer-subsection-title">{t('navGallery')}</p>
                   <div className="drawer-submenu">
                     {cmsCategories.map((c) => (
                       <div key={c.id} className="drawer-submenu-group">
@@ -216,7 +177,11 @@ export function Layout() {
                     ))}
                   </div>
                 </div>
-              ) : null}
+              ) : (
+                <NavLink to="/" className="drawer-link" onClick={() => setDrawerOpen(false)}>
+                  {t('navGallery')}
+                </NavLink>
+              )}
               <NavLink to="/sobre" className="drawer-link" onClick={() => setDrawerOpen(false)}>
                 {t('navAbout')}
               </NavLink>

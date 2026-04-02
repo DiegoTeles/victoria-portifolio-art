@@ -170,7 +170,7 @@ function artworkMatchesCategorySlugs(
   subSlug: string | undefined
 ) {
   if (!catSlug && !subSlug) return true
-  if (!tree?.length) return true
+  if (!tree?.length) return false
   const assigns = artwork.categoryAssignments ?? []
   if (!assigns.length) return false
   if (catSlug) {
@@ -259,8 +259,13 @@ export function Gallery({ viewMode, typeFilter, categorySlug, subcategorySlug }:
     }
   }, [locale])
 
+  const needsCategoryTree = Boolean(categorySlug || subcategorySlug)
+
   const filteredArtworks = useMemo(() => {
     const list = artworksList ?? []
+    if (needsCategoryTree && categoryTree === null) {
+      return []
+    }
     let next = list
     if (typeFilter) {
       if (typeFilter === 'drawing-painting') {
@@ -275,7 +280,14 @@ export function Gallery({ viewMode, typeFilter, categorySlug, subcategorySlug }:
       )
     }
     return next
-  }, [typeFilter, artworksList, categoryTree, categorySlug, subcategorySlug])
+  }, [
+    typeFilter,
+    artworksList,
+    categoryTree,
+    categorySlug,
+    subcategorySlug,
+    needsCategoryTree,
+  ])
 
   const displayArtworks = useMemo(
     () => expandArtworksWithExtras(filteredArtworks),
@@ -430,7 +442,7 @@ export function Gallery({ viewMode, typeFilter, categorySlug, subcategorySlug }:
     }
   }
 
-  if (artworksList === null) {
+  if (artworksList === null || (needsCategoryTree && categoryTree === null)) {
     return <GalleryGridSkeleton viewMode={viewMode} />
   }
 
