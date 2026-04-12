@@ -63,7 +63,7 @@ export const translations = {
     maintenanceModalMessage:
       'O site está em manutenção. Pedimos desculpa pelo incómodo e agradecemos a sua compreensão.',
     maintenanceModalOk: 'OK',
-    maintenanceBanner: 'Página em manutenção',
+    maintenanceBanner: 'Site em manutenção',
   },
   en: {
     next: 'Next',
