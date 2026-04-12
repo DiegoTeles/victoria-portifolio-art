@@ -59,6 +59,11 @@ export const translations = {
     paginationNext: 'Próxima',
     paginationPage: 'Página',
     paginationOf: 'de',
+    maintenanceModalTitle: 'Manutenção',
+    maintenanceModalMessage:
+      'O site está em manutenção. Pedimos desculpa pelo incómodo e agradecemos a sua compreensão.',
+    maintenanceModalOk: 'OK',
+    maintenanceBanner: 'Página em manutenção',
   },
   en: {
     next: 'Next',
@@ -118,6 +123,11 @@ export const translations = {
     paginationNext: 'Next',
     paginationPage: 'Page',
     paginationOf: 'of',
+    maintenanceModalTitle: 'Maintenance',
+    maintenanceModalMessage:
+      'The site is under maintenance. We apologize for the inconvenience and thank you for your understanding.',
+    maintenanceModalOk: 'OK',
+    maintenanceBanner: 'Site under maintenance',
   },
   fr: {
     next: 'Suivante',
@@ -177,6 +187,11 @@ export const translations = {
     paginationNext: 'Suivant',
     paginationPage: 'Page',
     paginationOf: 'sur',
+    maintenanceModalTitle: 'Maintenance',
+    maintenanceModalMessage:
+      'Le site est en maintenance. Nous nous excusons pour la gêne occasionnée et vous remercions de votre compréhension.',
+    maintenanceModalOk: 'OK',
+    maintenanceBanner: 'Site en maintenance',
   },
   it: {
     next: 'Successiva',
@@ -236,6 +251,11 @@ export const translations = {
     paginationNext: 'Successiva',
     paginationPage: 'Pagina',
     paginationOf: 'di',
+    maintenanceModalTitle: 'Manutenzione',
+    maintenanceModalMessage:
+      'Il sito è in manutenzione. Ci scusiamo per l\'inconveniente e ringraziamo per la comprensione.',
+    maintenanceModalOk: 'OK',
+    maintenanceBanner: 'Sito in manutenzione',
   },
   de: {
     next: 'Weiter',
@@ -295,6 +315,11 @@ export const translations = {
     paginationNext: 'Weiter',
     paginationPage: 'Seite',
     paginationOf: 'von',
+    maintenanceModalTitle: 'Wartung',
+    maintenanceModalMessage:
+      'Die Website befindet sich in Wartung. Wir bitten um Entschuldigung und danken für Ihr Verständnis.',
+    maintenanceModalOk: 'OK',
+    maintenanceBanner: 'Website in Wartung',
   },
 } as const satisfies Record<Locale, Record<string, string>>
 

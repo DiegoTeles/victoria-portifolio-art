@@ -9,6 +9,8 @@ const GALLERY_TYPES = ['drawing-painting', 'photography', 'digital-art', 'movies
 export function Layout() {
   const { locale, t } = useLocale()
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [maintenanceOpen, setMaintenanceOpen] = useState(true)
+  const [maintenanceBannerVisible, setMaintenanceBannerVisible] = useState(true)
   const location = useLocation()
 
   useEffect(() => {
@@ -43,6 +45,58 @@ export function Layout() {
 
   return (
     <div className="layout">
+      {maintenanceOpen && (
+        <div
+          className="maintenance-modal-backdrop"
+          onClick={() => setMaintenanceOpen(false)}
+          role="presentation"
+        >
+          <div
+            className="maintenance-modal"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="maintenance-modal-title"
+            aria-describedby="maintenance-modal-desc"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 id="maintenance-modal-title" className="maintenance-modal-title">
+              {t('maintenanceModalTitle')}
+            </h2>
+            <p id="maintenance-modal-desc" className="maintenance-modal-message">
+              {t('maintenanceModalMessage')}
+            </p>
+            <button
+              type="button"
+              className="maintenance-modal-ok"
+              onClick={() => setMaintenanceOpen(false)}
+            >
+              {t('maintenanceModalOk')}
+            </button>
+          </div>
+        </div>
+      )}
+      {maintenanceBannerVisible && (
+        <div className="maintenance-message-bar">
+          <div className="maintenance-message" role="status" aria-live="polite">
+            <div className="maintenance-message-track">
+              {[...Array(10)].map((_, index) => (
+                <>{" "}<span key={index}>{` ${t('maintenanceBanner')} · `}</span></>
+              ))}
+            </div>
+          </div>
+          <button
+            type="button"
+            className="maintenance-message-close"
+            aria-label={t('close')}
+            onClick={() => setMaintenanceBannerVisible(false)}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+      )}
       <header className="header">
         <Link to="/" className="navbar-logo" aria-label={t('goHome')}>
           Victória Maria
