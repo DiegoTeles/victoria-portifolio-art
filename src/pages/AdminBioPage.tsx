@@ -10,7 +10,7 @@ import type { Locale } from '../data/artworks'
 type Entry = {
   locale: Locale
   content: string
-  isPublished: boolean
+  updatedAt?: string | null
 }
 
 export function AdminBioPage() {
@@ -23,13 +23,14 @@ export function AdminBioPage() {
     const r = await fetch(apiUrl('/api/admin/bio'), { credentials: 'include' })
     if (!r.ok) return
     const data = (await r.json()) as { entries: Entry[] }
+    const list = data.entries ?? []
     const map = {} as Record<Locale, Entry>
     for (const loc of ADMIN_LOCALES) {
-      const e = data.entries?.find((x) => x.locale === loc)
+      const e = list.find((x) => x.locale === loc)
       map[loc] = {
         locale: loc,
         content: e?.content ?? '',
-        isPublished: e?.isPublished ?? false,
+        updatedAt: e?.updatedAt ?? null,
       }
     }
     setEntries(map)
@@ -40,7 +41,7 @@ export function AdminBioPage() {
     void load()
   }, [load])
 
-  const cur = entries[tab] ?? { locale: tab, content: '', isPublished: false }
+  const cur = entries[tab] ?? { locale: tab, content: '' }
 
   const save = async () => {
     setSaving(true)
@@ -52,7 +53,6 @@ export function AdminBioPage() {
         body: JSON.stringify({
           locale: tab,
           content: cur.content,
-          isPublished: cur.isPublished,
         }),
       })
       if (!r.ok) {
@@ -86,26 +86,12 @@ export function AdminBioPage() {
             placeholder="Texto da bio neste idioma…"
             onChange={(html) =>
               setEntries((prev) => {
-                const e = prev[tab] ?? { locale: tab, content: '', isPublished: false }
+                const e = prev[tab] ?? { locale: tab, content: '' }
                 return { ...prev, [tab]: { ...e, content: html } }
               })
             }
           />
         </div>
-        <label className="flex items-center gap-2 text-sm">
-          <input
-            type="checkbox"
-            checked={cur.isPublished}
-            onChange={(e) =>
-              setEntries((prev) => ({
-                ...prev,
-                [tab]: { ...cur, isPublished: e.target.checked },
-              }))
-            }
-            className="size-4 rounded border"
-          />
-          Publicar neste idioma
-        </label>
         <Button type="button" onClick={() => void save()} disabled={saving}>
           {saving ? 'A guardar…' : 'Guardar'}
         </Button>

@@ -1,4 +1,5 @@
 import { apiUrl } from '@/lib/apiUrl'
+import { fetchAboutBio, fetchAboutCurriculum } from '@/data/fetchAboutCms'
 import { useEffect, useState } from 'react'
 import { useLocale } from '../i18n/LocaleContext'
 import { TccPdfPanel } from '../components/TccPdfPanel'
@@ -33,25 +34,12 @@ export function AboutPage() {
   useEffect(() => {
     let cancelled = false
     setCmsBioReady(false)
-    void fetch(apiUrl(`/api/about/bio?locale=${encodeURIComponent(locale)}`), { cache: 'no-store' })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d: { content?: string; isPublished?: boolean } | null) => {
-        if (cancelled) return
-        if (!d) {
-          setCmsBio(null)
-          setCmsBioReady(true)
-          return
-        }
-        if (d.isPublished && (d.content ?? '').trim()) setCmsBio(d.content ?? '')
-        else setCmsBio(null)
+    void fetchAboutBio(locale).then((html) => {
+      if (!cancelled) {
+        setCmsBio(html)
         setCmsBioReady(true)
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setCmsBio(null)
-          setCmsBioReady(true)
-        }
-      })
+      }
+    })
     return () => {
       cancelled = true
     }
@@ -60,25 +48,12 @@ export function AboutPage() {
   useEffect(() => {
     let cancelled = false
     setCmsCvReady(false)
-    void fetch(apiUrl(`/api/about/curriculum?locale=${encodeURIComponent(locale)}`), { cache: 'no-store' })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d: { content?: string; isPublished?: boolean } | null) => {
-        if (cancelled) return
-        if (!d) {
-          setCmsCv(null)
-          setCmsCvReady(true)
-          return
-        }
-        if (d.isPublished && (d.content ?? '').trim()) setCmsCv(d.content ?? '')
-        else setCmsCv(null)
+    void fetchAboutCurriculum(locale).then((html) => {
+      if (!cancelled) {
+        setCmsCv(html)
         setCmsCvReady(true)
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setCmsCv(null)
-          setCmsCvReady(true)
-        }
-      })
+      }
+    })
     return () => {
       cancelled = true
     }
@@ -212,15 +187,7 @@ export function AboutPage() {
                 </div>
               ) : cmsBio !== null ? (
                 <CmsRichOrPlain html={cmsBio} />
-              ) : (
-                <>
-                  <p className="page-text">{t('aboutBio1')}</p>
-                  <p className="page-text">{t('aboutBio2')}</p>
-                  <p className="page-text">{t('aboutBio3')}</p>
-                  <blockquote className="about-bio-quote">{t('aboutBio4')}</blockquote>
-                  <p className="page-text">{t('aboutBio5')}</p>
-                </>
-              )}
+              ) : null}
             </>
           )}
           {tab === 'tcc' && (
@@ -244,80 +211,7 @@ export function AboutPage() {
                 <div className="about-curriculum">
                   <CmsRichOrPlain html={cmsCv} />
                 </div>
-              ) : (
-                <div className="about-curriculum">
-                  <p className="about-curriculum-contact">{t('curriculumContact')}</p>
-                  <section className="about-curriculum-section">
-                    <h2 className="about-curriculum-title">{t('curriculumSectionObjective')}</h2>
-                    <p className="page-text">{t('curriculumObjective')}</p>
-                  </section>
-                  <section className="about-curriculum-section">
-                    <h2 className="about-curriculum-title">{t('curriculumSectionFormation')}</h2>
-                    <p className="page-text">{t('curriculumFormation')}</p>
-                  </section>
-                  <section className="about-curriculum-section">
-                    <h2 className="about-curriculum-title">{t('curriculumSectionExperience')}</h2>
-                    <ul className="about-curriculum-list">
-                      {t('curriculumExperience')
-                        .split('\n')
-                        .filter(Boolean)
-                        .map((item, i) => (
-                          <li key={i}>{item}</li>
-                        ))}
-                    </ul>
-                  </section>
-                  <figure className="about-curriculum-figure">
-                    <span className="relative block w-full max-w-full">
-                      <ArtworkLazyImage
-                        src="/images/drawing/drawing-01.png"
-                        alt=""
-                        className="about-curriculum-image"
-                        width={400}
-                        height={533}
-                        skeletonClassName="pointer-events-none absolute inset-0 z-[1] size-full max-h-[min(70vh,560px)] rounded-sm"
-                      />
-                    </span>
-                    <figcaption className="about-curriculum-caption">{t('curriculumBookCaption')}</figcaption>
-                  </figure>
-                  <section className="about-curriculum-section">
-                    <h2 className="about-curriculum-title">{t('curriculumSectionSkills')}</h2>
-                    <ul className="about-curriculum-list">
-                      {t('curriculumSkills')
-                        .split('\n')
-                        .filter(Boolean)
-                        .map((item, i) => (
-                          <li key={i}>{item}</li>
-                        ))}
-                    </ul>
-                  </section>
-                  <section className="about-curriculum-section">
-                    <h2 className="about-curriculum-title">{t('curriculumSectionIT')}</h2>
-                    <ul className="about-curriculum-list">
-                      {t('curriculumIT')
-                        .split('\n')
-                        .filter(Boolean)
-                        .map((item, i) => (
-                          <li key={i}>{item}</li>
-                        ))}
-                    </ul>
-                  </section>
-                  <section className="about-curriculum-section">
-                    <h2 className="about-curriculum-title">{t('curriculumSectionLanguages')}</h2>
-                    <ul className="about-curriculum-list">
-                      {t('curriculumLanguages')
-                        .split('\n')
-                        .filter(Boolean)
-                        .map((item, i) => (
-                          <li key={i}>{item}</li>
-                        ))}
-                    </ul>
-                  </section>
-                  <section className="about-curriculum-section">
-                    <h2 className="about-curriculum-title">{t('curriculumSectionAdditional')}</h2>
-                    <p className="page-text">{t('curriculumAdditional')}</p>
-                  </section>
-                </div>
-              )}
+              ) : null}
             </>
           )}
         </div>
