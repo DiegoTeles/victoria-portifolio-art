@@ -41,6 +41,7 @@ export interface Artwork {
   groupDisplay?: GroupDisplayType
   types: ArtworkType[]
   info?: LocalizedText | null
+  gallerySubcategory?: string | null
 }
 
 type ArtworkWithOrder = Artwork & { order: number }

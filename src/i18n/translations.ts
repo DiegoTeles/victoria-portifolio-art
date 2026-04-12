@@ -64,6 +64,7 @@ export const translations = {
       'O site está em manutenção. Pedimos desculpa pelo incómodo e agradecemos a sua compreensão.',
     maintenanceModalOk: 'OK',
     maintenanceBanner: 'Site em manutenção',
+    galleryEmptyCategory: 'Categoria vazia',
   },
   en: {
     next: 'Next',
@@ -128,6 +129,7 @@ export const translations = {
       'The site is under maintenance. We apologize for the inconvenience and thank you for your understanding.',
     maintenanceModalOk: 'OK',
     maintenanceBanner: 'Site under maintenance',
+    galleryEmptyCategory: 'Empty category',
   },
   fr: {
     next: 'Suivante',
@@ -192,6 +194,7 @@ export const translations = {
       'Le site est en maintenance. Nous nous excusons pour la gêne occasionnée et vous remercions de votre compréhension.',
     maintenanceModalOk: 'OK',
     maintenanceBanner: 'Site en maintenance',
+    galleryEmptyCategory: 'Catégorie vide',
   },
   it: {
     next: 'Successiva',
@@ -256,6 +259,7 @@ export const translations = {
       'Il sito è in manutenzione. Ci scusiamo per l\'inconveniente e ringraziamo per la comprensione.',
     maintenanceModalOk: 'OK',
     maintenanceBanner: 'Sito in manutenzione',
+    galleryEmptyCategory: 'Categoria vuota',
   },
   de: {
     next: 'Weiter',
@@ -320,6 +324,7 @@ export const translations = {
       'Die Website befindet sich in Wartung. Wir bitten um Entschuldigung und danken für Ihr Verständnis.',
     maintenanceModalOk: 'OK',
     maintenanceBanner: 'Website in Wartung',
+    galleryEmptyCategory: 'Leere Kategorie',
   },
 } as const satisfies Record<Locale, Record<string, string>>
 

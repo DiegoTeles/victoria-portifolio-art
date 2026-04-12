@@ -155,6 +155,20 @@ body {
   width: 100%;
 }
 
+.gallery--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: min(65vh, calc(100dvh - 10rem));
+}
+
+.gallery-empty-message {
+  margin: 0;
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
 .gallery-grid {
   gap: 2rem;
 }
@@ -782,7 +796,7 @@ body {
   transform: translateX(-50%);
   margin-top: 0;
   padding: 0.5rem 0;
-  min-width: 10rem;
+  min-width: 11rem;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -793,6 +807,30 @@ body {
 }
 
 .nav-item-with-dropdown:hover .nav-submenu {
+  display: flex;
+}
+
+.nav-submenu-cascade {
+  position: relative;
+  width: 100%;
+}
+
+.nav-submenu-flyout {
+  position: absolute;
+  left: calc(100% - 2px);
+  top: 0;
+  min-width: 11rem;
+  padding: 0.35rem 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  display: none;
+  flex-direction: column;
+  z-index: 110;
+}
+
+.nav-submenu-cascade:hover .nav-submenu-flyout {
   display: flex;
 }
 
@@ -813,6 +851,20 @@ body {
 .nav-submenu-link:focus-visible {
   outline: 2px solid var(--text);
   outline-offset: -2px;
+}
+
+.nav-submenu-link--parent {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.nav-submenu-cascade:hover .nav-submenu-link--parent {
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.nav-submenu-flyout-link {
+  font-size: 0.88rem;
 }
 
 .maintenance-modal-backdrop {
@@ -960,6 +1012,29 @@ body {
 .drawer-submenu-link:hover {
   color: var(--text);
   background: rgba(0, 0, 0, 0.04);
+}
+
+.drawer-submenu-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.25rem 0;
+}
+
+.drawer-submenu-group:not(:first-child) {
+  margin-top: 0.25rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid var(--border);
+}
+
+.drawer-submenu-link--parent {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.drawer-submenu-link--sub {
+  padding-left: 1.75rem;
+  font-size: 0.9rem;
 }
 
 .drawer-link {

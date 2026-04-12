@@ -110,9 +110,9 @@ function findArtworkPageAndIndex(
   return null
 }
 
-type GalleryProps = { viewMode: ViewMode; typeFilter?: GalleryFilterType }
+type GalleryProps = { viewMode: ViewMode; typeFilter?: GalleryFilterType; subcategorySlug?: string }
 
-export function Gallery({ viewMode, typeFilter }: GalleryProps) {
+export function Gallery({ viewMode, typeFilter, subcategorySlug }: GalleryProps) {
   const { locale, t } = useLocale()
   const [searchParams, setSearchParams] = useSearchParams()
   const params = useParams()
@@ -122,12 +122,21 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
   const imageIdFromRoute = params.imageId ?? null
 
   const filteredArtworks = useMemo(() => {
-    if (!typeFilter) return artworksList
-    if (typeFilter === 'drawing-painting') {
-      return artworksList.filter((a) => a.types.includes('drawing') || a.types.includes('painting'))
+    let list: Artwork[]
+    if (!typeFilter) {
+      list = artworksList
+    } else if (typeFilter === 'drawing-painting') {
+      list = artworksList.filter((a) => a.types.includes('drawing') || a.types.includes('painting'))
+    } else {
+      list = artworksList.filter((a) => a.types.includes(typeFilter))
     }
-    return artworksList.filter((a) => a.types.includes(typeFilter))
-  }, [typeFilter])
+    if (subcategorySlug) {
+      list = list.filter((a) => a.gallerySubcategory === subcategorySlug)
+    }
+    return list
+  }, [typeFilter, subcategorySlug])
+
+  const isEmptyCategory = Boolean(typeFilter) && filteredArtworks.length === 0
 
   const allCells = useMemo(() => buildCells(filteredArtworks), [filteredArtworks])
   const totalPages = Math.max(1, Math.ceil(allCells.length / PAGE_SIZE))
@@ -138,6 +147,7 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
   )
 
   const prevFilterRef = useRef(typeFilter)
+  const prevSubRef = useRef(subcategorySlug)
 
   useEffect(() => {
     const param = searchParams.get('page')
@@ -162,6 +172,18 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
       })
     }
   }, [typeFilter, setSearchParams])
+
+  useEffect(() => {
+    if (prevSubRef.current !== subcategorySlug) {
+      prevSubRef.current = subcategorySlug
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev)
+        next.set('page', '1')
+        next.delete('image')
+        return next
+      })
+    }
+  }, [subcategorySlug, setSearchParams])
 
   const imageParam = searchParams.get('image') || imageIdFromRoute
   const imageTarget = useMemo(
@@ -257,65 +279,73 @@ export function Gallery({ viewMode, typeFilter }: GalleryProps) {
   }
 
   return (
-    <section id="gallery" className="gallery" aria-label="Galeria">
-      <div className={`gallery-grid view-${viewMode}`}>
-        {cells.map((cell) => {
-          if (cell.type === 'single') {
-            const idx = indexCounter++
-            return (
-              <ArtworkCard
-                key={cell.artwork.id}
-                artwork={cell.artwork}
-                locale={locale}
-                onSelect={() => openLightbox(idx)}
-              />
-            )
-          }
-          const startIdx = indexCounter
-          indexCounter += cell.artworks.length
-          return (
-            <ArtworkGroup
-              key={cell.artworks.map((a) => a.id).join('-')}
-              artworks={cell.artworks}
+    <section id="gallery" className={`gallery${isEmptyCategory ? ' gallery--empty' : ''}`} aria-label="Galeria">
+      {isEmptyCategory ? (
+        <p className="gallery-empty-message" aria-live="polite">
+          {t('galleryEmptyCategory')}
+        </p>
+      ) : (
+        <>
+          <div className={`gallery-grid view-${viewMode}`}>
+            {cells.map((cell) => {
+              if (cell.type === 'single') {
+                const idx = indexCounter++
+                return (
+                  <ArtworkCard
+                    key={cell.artwork.id}
+                    artwork={cell.artwork}
+                    locale={locale}
+                    onSelect={() => openLightbox(idx)}
+                  />
+                )
+              }
+              const startIdx = indexCounter
+              indexCounter += cell.artworks.length
+              return (
+                <ArtworkGroup
+                  key={cell.artworks.map((a) => a.id).join('-')}
+                  artworks={cell.artworks}
+                  locale={locale}
+                  groupDisplay={cell.artworks[0].groupDisplay}
+                  onSelect={(offset) => openLightbox(startIdx + offset)}
+                />
+              )
+            })}
+          </div>
+          {totalPages > 1 && (
+            <nav className="gallery-pagination" aria-label="Paginação da galeria">
+              <button
+                type="button"
+                className="pagination-btn"
+                disabled={currentPage <= 1}
+                onClick={() => goToPage(currentPage - 1)}
+                aria-label={t('paginationPrev')}
+              >
+                {t('paginationPrev')}
+              </button>
+              <span className="pagination-info" aria-live="polite">
+                {t('paginationPage')} {currentPage} {t('paginationOf')} {totalPages}
+              </span>
+              <button
+                type="button"
+                className="pagination-btn"
+                disabled={currentPage >= totalPages}
+                onClick={() => goToPage(currentPage + 1)}
+                aria-label={t('paginationNext')}
+              >
+                {t('paginationNext')}
+              </button>
+            </nav>
+          )}
+          {lightboxIndex !== null && (
+            <Lightbox
+              artworks={pageArtworks}
+              initialIndex={lightboxIndex}
               locale={locale}
-              groupDisplay={cell.artworks[0].groupDisplay}
-              onSelect={(offset) => openLightbox(startIdx + offset)}
+              onClose={closeLightbox}
             />
-          )
-        })}
-      </div>
-      {totalPages > 1 && (
-        <nav className="gallery-pagination" aria-label="Paginação da galeria">
-          <button
-            type="button"
-            className="pagination-btn"
-            disabled={currentPage <= 1}
-            onClick={() => goToPage(currentPage - 1)}
-            aria-label={t('paginationPrev')}
-          >
-            {t('paginationPrev')}
-          </button>
-          <span className="pagination-info" aria-live="polite">
-            {t('paginationPage')} {currentPage} {t('paginationOf')} {totalPages}
-          </span>
-          <button
-            type="button"
-            className="pagination-btn"
-            disabled={currentPage >= totalPages}
-            onClick={() => goToPage(currentPage + 1)}
-            aria-label={t('paginationNext')}
-          >
-            {t('paginationNext')}
-          </button>
-        </nav>
-      )}
-      {lightboxIndex !== null && (
-        <Lightbox
-          artworks={pageArtworks}
-          initialIndex={lightboxIndex}
-          locale={locale}
-          onClose={closeLightbox}
-        />
+          )}
+        </>
       )}
     </section>
   )

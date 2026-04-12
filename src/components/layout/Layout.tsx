@@ -3,8 +3,8 @@ import { Outlet, Link, NavLink, useLocation } from 'react-router-dom'
 import { useLocale } from '../../i18n/LocaleContext'
 import { LocaleSelector } from '../LocaleSelector'
 import { ThemeToggle } from '../ThemeToggle'
-
-const GALLERY_TYPES = ['drawing-painting', 'photography', 'digital-art', 'movies'] as const
+import { galleryTaxonomy } from '../../data/galleryTaxonomy'
+import { getLocalized } from '../../data/artworks'
 
 export function Layout() {
   const { locale, t } = useLocale()
@@ -35,13 +35,6 @@ export function Layout() {
   useEffect(() => {
     setDrawerOpen(false)
   }, [location.pathname])
-
-  const typeKeys = {
-    'drawing-painting': 'typeDrawingPainting',
-    'photography': 'typePhotography',
-    'digital-art': 'typeDigitalArt',
-    'movies': 'typeMovies',
-  } as const
 
   return (
     <div className="layout">
@@ -107,16 +100,35 @@ export function Layout() {
               {t('navHome')}
             </NavLink>
             <div className="nav-submenu" role="menu">
-              {GALLERY_TYPES.map((type) => (
-                <Link
-                  key={type}
-                  to={type === 'movies' ? '/movies' : `/?gallery=${encodeURIComponent(type)}`}
-                  className="nav-submenu-link"
-                  role="menuitem"
-                >
-                  {t(typeKeys[type])}
-                </Link>
+              {galleryTaxonomy.map((cat) => (
+                <div key={cat.gallery} className="nav-submenu-cascade">
+                  <Link
+                    to={`/?gallery=${encodeURIComponent(cat.gallery)}`}
+                    className="nav-submenu-link nav-submenu-link--parent"
+                    role="menuitem"
+                  >
+                    {getLocalized(cat.label, locale)}
+                  </Link>
+                  <div className="nav-submenu-flyout" role="presentation">
+                    {cat.subs.map((sub) => (
+                      <Link
+                        key={sub.slug}
+                        to={`/?gallery=${encodeURIComponent(cat.gallery)}&sub=${encodeURIComponent(sub.slug)}`}
+                        className="nav-submenu-link nav-submenu-flyout-link"
+                        role="menuitem"
+                      >
+                        {getLocalized(sub.label, locale)}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               ))}
+              <Link to="/?gallery=digital-art" className="nav-submenu-link" role="menuitem">
+                {t('typeDigitalArt')}
+              </Link>
+              <Link to="/movies" className="nav-submenu-link" role="menuitem">
+                {t('typeMovies')}
+              </Link>
             </div>
           </div>
           <NavLink to="/sobre" className="nav-link">
@@ -170,16 +182,41 @@ export function Layout() {
                   {t('navHome')}
                 </NavLink>
                 <div className="drawer-submenu">
-                  {GALLERY_TYPES.map((type) => (
-                    <Link
-                      key={type}
-                      to={type === 'movies' ? '/movies' : `/?gallery=${encodeURIComponent(type)}`}
-                      className="drawer-submenu-link"
-                      onClick={() => setDrawerOpen(false)}
-                    >
-                      {t(typeKeys[type])}
-                    </Link>
+                  {galleryTaxonomy.map((cat) => (
+                    <div key={cat.gallery} className="drawer-submenu-group">
+                      <Link
+                        to={`/?gallery=${encodeURIComponent(cat.gallery)}`}
+                        className="drawer-submenu-link drawer-submenu-link--parent"
+                        onClick={() => setDrawerOpen(false)}
+                      >
+                        {getLocalized(cat.label, locale)}
+                      </Link>
+                      {cat.subs.map((sub) => (
+                        <Link
+                          key={sub.slug}
+                          to={`/?gallery=${encodeURIComponent(cat.gallery)}&sub=${encodeURIComponent(sub.slug)}`}
+                          className="drawer-submenu-link drawer-submenu-link--sub"
+                          onClick={() => setDrawerOpen(false)}
+                        >
+                          {getLocalized(sub.label, locale)}
+                        </Link>
+                      ))}
+                    </div>
                   ))}
+                  <Link
+                    to="/?gallery=digital-art"
+                    className="drawer-submenu-link"
+                    onClick={() => setDrawerOpen(false)}
+                  >
+                    {t('typeDigitalArt')}
+                  </Link>
+                  <Link
+                    to="/movies"
+                    className="drawer-submenu-link"
+                    onClick={() => setDrawerOpen(false)}
+                  >
+                    {t('typeMovies')}
+                  </Link>
                 </div>
               </div>
               <NavLink to="/sobre" className="drawer-link" onClick={() => setDrawerOpen(false)}>
