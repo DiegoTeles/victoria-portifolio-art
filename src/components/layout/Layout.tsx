@@ -80,7 +80,7 @@ export function Layout() {
           <div className="maintenance-message" role="status" aria-live="polite">
             <div className="maintenance-message-track">
               {[...Array(10)].map((_, index) => (
-                <>{" "}<span key={index}>{` ${t('maintenanceBanner')} · `}</span></>
+                <div key={index}>{" "}<span>{` ${t('maintenanceBanner')} · `}</span></div>
               ))}
             </div>
           </div>
